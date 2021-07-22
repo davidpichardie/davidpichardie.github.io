@@ -1,0 +1,681 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage{maple2e}
+ 
+
+
+\title{corrigé TP3 {\sc Maple} : Suites}
+\author{}
+\date{}
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP3 {\sc Maple}}
+\rhead{Suites}
+
+
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\pgcd}{\operatorname{pgcd}}
+
+
+\begin{document}
+
+{\bf\Large Exercice 1}
+
+Pour réduire les temps de calcul, on utilise l'option {\tt remember}
+qui permet à {\sc Maple} de se souvenir des calculs précédents et on
+appelle qu'une seule fois l'évaluation de {\tt A(n-1)}~:
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=proc(n)}{}
+\vspace{-.5cm}
+\begin{verbatim}
+      local t;
+      option remenber;
+      if n=0 then 11/2
+      elif n=1 then 61/11
+      else t:=A(n-1);
+         111-(1130/t)+(3000/(t*A(n-2)))
+      fi;
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+
+On peut encore accélérer les calculs grace à une boucle {\tt for} et à
+deux variables qui représentent les deux derniers termes calculés. On
+garde en mémoire les termes successivement calculés dans une liste de
+façon à tracer la suite avec {\tt plot}.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Aliste1:=proc(n)}{}
+\vspace{-.5cm}
+\begin{verbatim}
+      local i,a,b,c,L;
+      a:=11/2;
+      b:=61/11;
+      L:=[0,a],[1,b];
+      for i from 2 to n do
+        c:=111-(1130/b)+(3000/(a*b));
+        a:=b;
+        b:=c;
+        L:=L,[i,c];
+      od;
+      [L]; 
+      end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(Aliste1(100),n=0..100);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP301.eps}
+\end{center}
+
+\end{maplegroup}
+
+On constate que la suite converge vers $6$. Il s'agit ici d'un calcul
+formel~: {\sc Maple} ne manipule que des rationnels.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Aliste2:=proc(n)}{}
+\vspace{-.5cm}
+\begin{verbatim}
+      local i,a,b,c,L;
+      a:=evalf(11/2);
+      b:=evalf(61/11);
+      L:=[0,a],[1,b];
+      for i from 2 to n do
+        c:=111-(1130/b)+(3000/(a*b));
+        a:=b;
+        b:=c;
+        L:=L,[i,c];
+      od;
+      [L];
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(Aliste2(100),n=0..100);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP302.eps}
+\end{center}
+
+\end{maplegroup}
+
+Si on force {\sc Maple} à faire du calcul numérique (en donnant les
+premières valeurs de la suite sous forme décimal), la suite calculée
+semble converger vers $100$. Le calcul numérique donne donc un
+résultat faux.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Uliste1:=proc(n)}{}
+\vspace{-.5cm}
+\begin{verbatim}
+      local i,a,b,c,L;
+      a:=1;
+      b:=1/3;
+      L:=[0,a],[1,b];
+      for i from 2 to n do
+        c:=10/3*b-a;
+        a:=b;
+        b:=c;
+        L:=L,[i,c];
+      od;
+      [L];
+      end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(Uliste1(20),n=0..20);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP303.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Uliste2:=proc(n)}{}
+\vspace{-.5cm}
+\begin{verbatim}
+      local i,a,b,c,L;
+      a:=1;
+      b:=evalf(1/3);
+      L:=[0,a],[1,b];
+      for i from 2 to n do
+        c:=10/3*b-a;
+        a:=b;
+        b:=c;
+        L:=L,[i,c];
+      od;
+      [L];
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(Uliste2(50),n=0..50);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP304.eps}
+\end{center}
+
+\end{maplegroup}
+
+Le calcul exacte sur $\Q$ montre que cette suite tend
+vers $0$, alors que le calcul numérique diverge.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{rsolve(\{y(n)=10/3*y(n-1)-y(n-2),y(0)=1,y(1)=
+1/3\},y);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+({\displaystyle \frac {1}{3}} )^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{rsolve(\{y(n)=10/3*y(n-1)-y(n-2),y(0)=1,y(1)=
+1/3+epsilon\},y);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {3}{8}} \,\varepsilon \,3^{n} - 
+{\displaystyle \frac {1}{3}} \,({\displaystyle \frac {9}{8}} \,
+\varepsilon  - 3)\,({\displaystyle \frac {1}{3}} )^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Lorsque {\sc Maple} calcule {\tt evalf(1/3)}, il manipule en fait
+$\frac{1}{3}+\varepsilon$ avec $\varepsilon\not=0$ et ce dernier
+calcul explique alors pourquoi la suite diverge (sans compter les
+autres erreurs d'arrondis au cours du calcul).
+
+\medskip
+{\bf\Large Exercice 2}
+\medskip
+
+Pour calculer les termes de la suite on utilise la fonction {\tt
+fsolve} qui permet de résoudre des équations non-linéaires de manière
+approchée. 
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{u:=n->fsolve(tan(x)=x,x,(n-1/2)*Pi..(n+1/2)*P
+i);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+u := n\rightarrow {\rm fsolve}({\rm tan}(x)=x, \,x, \,(n - 
+{\displaystyle \frac {1}{2}} )\,\pi  .. (n + {\displaystyle 
+\frac {1}{2}} )\,\pi )
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(u(i),i=1..6);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+4.493409458, \,7.725251837, \,10.90412166, \,14.06619391, \,
+17.22075527, \,20.37130296
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Pour tout $n\in\N$,
+$$(n-\frac{1}{2})\pi\leq n\leq(n+\frac{1}{2})\pi$$
+donc $\lim\limits_{n\to+\infty}u_n=+\infty$.
+
+Pour $n\in\N^*$, $](n-\frac{1}{2})\pi,(n+\frac{1}{2})\pi[
+\subset ]0,+\infty[$ donc $u_n>0$. On a ainsi $\tan(u_n)>0$ et
+$u_n\in]n\pi,(n+\frac{1}{2})\pi[$. Ceci permet d'affirmer que
+$v_n\in]0,\frac{\pi}{2}[$ pour $n\in\N^*$. On peut donc calculer
+$\tan(v_n)$~:
+\begin{eqnarray*}
+ \tan(v_n) &=& \tan(n\pi+\frac{\pi}{2}-u_n) \\
+           &=& \tan(\frac{\pi}{2}-u_n) \text{ par $\pi$-périodicité} \\
+           &=& \frac{1}{\tan(u_n)} 
+\end{eqnarray*}
+
+Or $\lim\limits_{n\to+\infty}u_n=+\infty$ donc
+$\lim\limits_{n\to+\infty}\tan(v_n)=0$. Mais puisque
+$v_n\in]0,\frac{\pi}{2}[$, on a $v_n=\operatorname{arctan}(\tan(v_n))$
+et ainsi $\lim\limits_{n\to+\infty}v_n=0$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{v:=n->n*Pi+Pi/2-u(n);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+v := n\rightarrow n\,\pi  + {\displaystyle \frac {1}{2}} \,\pi 
+ - {\rm u}(n)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq([i,v(i)],i=1..50)],i=1..50);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP305.eps}
+\end{center}
+
+\end{maplegroup}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{U:=n*Pi+Pi/2+sum(a[k]/n^k,k=1..p);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+U := n\,\pi  + {\displaystyle \frac {1}{2}} \,\pi  +  \left(  \! 
+{\displaystyle \sum _{k=1}^{p}} \,{\displaystyle \frac {{a_{k}}}{
+n^{k}}}  \!  \right) 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{p:=3;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+p := 3
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{U;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+n\,\pi  + {\displaystyle \frac {1}{2}} \,\pi  + {\displaystyle 
+\frac {{a_{1}}}{n}}  + {\displaystyle \frac {{a_{2}}}{n^{2}}}  + 
+{\displaystyle \frac {{a_{3}}}{n^{3}}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Grâce à quelques essais, on constate qu'il faut effectuer un
+développement à l'ordre $p-1$ pour avoir les $p$ premiers
+coefficients.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{series(tan(U-n*Pi)-U,n=infinity,p-1);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+( - {\displaystyle \frac {1}{{a_{1}}}}  - \pi )\,n + 
+{\displaystyle \frac {{a_{2}}}{{a_{1}}^{2}}}  - {\displaystyle 
+\frac {1}{2}} \,\pi  + {\displaystyle \frac { - {\displaystyle 
+\frac { - {\displaystyle \frac {{a_{3}}}{{a_{1}}}}  + 
+{\displaystyle \frac {{a_{2}}^{2}}{{a_{1}}^{2}}} }{{a_{1}}}}  - 
+{\displaystyle \frac {2}{3}} \,{a_{1}}}{n}}  + {\rm O}(
+{\displaystyle \frac {1}{n^{2}}} )
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{convert(",polynom):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{coeffs(",n):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=\{"\}:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(S);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+\{{a_{2}}={\displaystyle \frac {1}{2}} \,{\displaystyle \frac {1
+}{\pi }} , \,{a_{3}}= - {\displaystyle \frac {1}{12}} \,
+{\displaystyle \frac {3\,\pi ^{2} + 8}{\pi ^{3}}} , \,{a_{1}}= - 
+{\displaystyle \frac {1}{\pi }} \}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(");}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{U;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+n\,\pi  + {\displaystyle \frac {1}{2}} \,\pi  - {\displaystyle 
+\frac {1}{\pi \,n}}  + {\displaystyle \frac {1}{2}} \,
+{\displaystyle \frac {1}{\pi \,n^{2}}}  - {\displaystyle \frac {1
+}{12}} \,{\displaystyle \frac {3\,\pi ^{2} + 8}{\pi ^{3}\,n^{3}}
+} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Pour vérifier la valeur de $a_1$, on regarde
+$\lim\limits_{n\to+\infty}\pi n \left(n\pi+\frac{\pi}{2}-u_n\right)$
+qui doit valoir $1$~: 
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{w:=n->Pi*n*v(n);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+w := n\rightarrow \pi \,n\,{\rm v}(n)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq([i,w(i)],i=1..50)],i=1..50);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP306.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalf(w(1000));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+.9990264640
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+ 
+On peut aussi vérifier les autres coefficients de cette manière.
+
+En poussant plus loin les calculs, on obtient~:
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{unassign('a[1]','a[2]','a[3]','p');}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{U;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+n\,\pi  + {\displaystyle \frac {1}{2}} \,\pi  + {\displaystyle 
+\frac {{a_{1}}}{n}}  + {\displaystyle \frac {{a_{2}}}{n^{2}}}  + 
+{\displaystyle \frac {{a_{3}}}{n^{3}}}  + {\displaystyle \frac {{
+a_{4}}}{n^{4}}}  + {\displaystyle \frac {{a_{5}}}{n^{5}}}  + 
+{\displaystyle \frac {{a_{6}}}{n^{6}}}  + {\displaystyle \frac {{
+a_{7}}}{n^{7}}}  + {\displaystyle \frac {{a_{8}}}{n^{8}}}  + 
+{\displaystyle \frac {{a_{9}}}{n^{9}}}  + {\displaystyle \frac {{
+a_{10}}}{n^{10}}}  + {\displaystyle \frac {{a_{11}}}{n^{11}}}  + 
+{\displaystyle \frac {{a_{12}}}{n^{12}}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{p:=12:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{series(tan(U-n*Pi)-U,n=infinity,p-1):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{convert(",polynom):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=\{coeffs(",n)\}:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(S):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(");}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{U;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{n\,\pi  + {\displaystyle \frac {1}{2}} \,\pi  - 
+{\displaystyle \frac {1}{\pi \,n}}  + {\displaystyle \frac {1}{2}
+} \,{\displaystyle \frac {1}{\pi \,n^{2}}}  - {\displaystyle 
+\frac {1}{12}} \,{\displaystyle \frac {3\,\pi ^{2} + 8}{\pi ^{3}
+\,n^{3}}}  + {\displaystyle \frac {1}{8}} \,{\displaystyle 
+\frac {8 + \pi ^{2}}{\pi ^{3}\,n^{4}}}  - {\displaystyle \frac {1
+}{240}} \,{\displaystyle \frac {240\,\pi ^{2} + 15\,\pi ^{4} + 
+208}{\pi ^{5}\,n^{5}}} } \\
+ & & \mbox{} + {\displaystyle \frac {1}{96}} \,{\displaystyle 
+\frac {208 + 80\,\pi ^{2} + 3\,\pi ^{4}}{\pi ^{5}\,n^{6}}}  - 
+{\displaystyle \frac {1}{6720}} \,{\displaystyle \frac {21840\,
+\pi ^{2} + 9344 + 4200\,\pi ^{4} + 105\,\pi ^{6}}{\pi ^{7}\,n^{7}
+}}  \\
+ & & \mbox{} + {\displaystyle \frac {1}{1920}} \,{\displaystyle 
+\frac {9344 + 7280\,\pi ^{2} + 840\,\pi ^{4} + 15\,\pi ^{6}}{\pi 
+^{7}\,n^{8}}}  \\
+ & & \mbox{} - {\displaystyle \frac {1}{80640}} \,{\displaystyle 
+\frac {23520\,\pi ^{6} + 784896\,\pi ^{2} + 199936 + 315\,\pi ^{8
+} + 305760\,\pi ^{4}}{\pi ^{9}\,n^{9}}}  \\
+ & & \mbox{} + {\displaystyle \frac {1}{17920}} \,{\displaystyle 
+\frac {199936 + 261632\,\pi ^{2} + 61152\,\pi ^{4} + 3360\,\pi ^{
+6} + 35\,\pi ^{8}}{\pi ^{9}\,n^{10}}}  - {\displaystyle \frac {1
+}{3548160}}  \\
+ & & {\displaystyle \frac {98968320\,\pi ^{2} + 16719872 + 
+64753920\,\pi ^{4} + 10090080\,\pi ^{6} + 415800\,\pi ^{8} + 3465
+\,\pi ^{10}}{\pi ^{11}\,n^{11}}}  \\
+ & & \mbox{} + {\displaystyle \frac {1}{645120}} \,
+{\displaystyle \frac {32989440\,\pi ^{2} + 16719872 + 12950784\,
+\pi ^{4} + 1441440\,\pi ^{6} + 46200\,\pi ^{8} + 315\,\pi ^{10}}{
+\pi ^{11}\,n^{12}}} 
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+
+On compare les deux calculs de $u_{10}$~:
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalf(subs(\{n=10\},U));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+32.95638904
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{u(10);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+32.95638904
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+
+\end{document}

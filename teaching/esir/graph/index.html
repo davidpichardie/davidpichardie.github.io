@@ -1,0 +1,209 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ESIR : Algorithmique des graphes</title>
+    <link rel=STYLESHEET href="../../../style.css" type="text/css">
+  </head>
+
+<body>
+<a name="top" id="top"></a>
+
+<div id="header">
+  <h1>Algorithmique des graphes</h1>
+  <h2>ESIR 1ère année</h2>
+</div>
+
+<div id="content">
+
+<h1>Intervenants</h1>
+
+<p>Cours : <a href="http://people.irisa.fr/David.Pichardie/index.html">David Pichardie</a></p>
+
+
+<h1>Ressources pédagogiques</h1>
+
+<p>
+
+ <table border=1 class=mytab>
+ <tr>
+   <th width=80>Cours</th><th>Date</th><th width=50%>Sujet</th><th width=50%>Matériel supplémentaire</th>
+ </tr><tr>
+   <td align=center>1</td>
+   <td></td>
+   <td>Introduction
+     <lu>
+       <li> premières définitions</li>
+       <li>les graphes sont partout</li>
+       <li>représentation des graphes</li>
+       <li>parcours en profondeur recursif</li>
+   </lu></td>
+   <td>
+     <lu>
+       <li><a href="cm1.pdf">notes de cours</a>
+       </li>
+       <li>un <a href="maze_dfs_rec.pdf">parcours récursif en profondeur animé</a> (sous Acrobat Reader) du labyrinthe.
+	 Les sommets déjà vus sont noirs ou bleus. Les sommets bleus représentent 
+	 des sommets <i>i</i> dont l'appel récursif <i>VISITE(i)</i> n'est pas encore terminé.
+	 Pour les sommets noirs, la date de fin a été déjà choisie.
+       </li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>2</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>définitions : arbres et forêts</li>
+       <li>calcul du nombre de composantes connexes d’un graphe non-orienté</li>
+       <li>déterminer si un graphe est bipartie, 2-colorabilité</li>
+       <li>parcours en profondeur itératif, piles</li>
+       <li>Parcours en largeur, files</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm2.pdf">notes de cours</a>
+       </li>
+       <li>un <a href="maze_dfs_iter.pdf">parcours itératif en profondeur animé</a> (sous Acrobat Reader).
+       <li>un <a href="maze_bfs.pdf">parcours en largeur animé</a> (sous Acrobat Reader).
+       </li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>3</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>calcul des plus courts chemin d’un graphe par un parcours en largeur</li>
+       <li>classification des arcs par un parcours en profondeur</li>
+       <li>detection de cycle</li>
+       <li>algorithmes de tri topologique</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm3.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>4</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>fermeture transitive</li>
+       <li>calcul de composantes fortement connexes (Kosaraju)</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm4.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>5</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>algorithme de Warshall</li>
+       <li>algorithme de Kosaraju</li>
+       <li>algorithme de Tarjan</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm5.pdf">notes de cours</a></li>
+     </lu>
+</td>
+ </tr><tr>
+   <td align=center>6</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>graphes pondérés</li>
+       <li>arbres couvrants minimaux (ACM)</li>
+       <li>algorithme glouton abstrait pour les ACM</li>
+       <li>algorithme de Prim</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm6.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>7</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>arbres couvrants minimaux (ACM)</li>
+       <li>algorithme de Kruskal</li>
+       <li>Union-find</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm7.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>8</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>plus courts chemins</li>
+       <li>algorithme ordinal</li>
+       <li>algorithme de Dijkstra</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm8.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>9</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>compléments pour l'implémentation des algorithmes précédents avec des files de priorités</li>
+       <li>algorithme de Bellman-Ford</li>
+     </lu>
+</td>
+   <td>
+     <lu>
+       <li><a href="cm9.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>10</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>Problèmes d’ordonnancement</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm10.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>11</td>
+   <td></td>
+   <td>
+     <lu>
+       <li>Réseaux de flot</li>
+     </lu>
+   </td>
+   <td>
+     <lu>
+       <li><a href="cm11.pdf">notes de cours</a></li>
+     </lu>
+   </td>
+ </tr>
+</table></p>
+
+
+</div>
+  </body>
+</html>

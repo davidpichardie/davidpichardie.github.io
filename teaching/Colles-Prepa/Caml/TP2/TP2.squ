@@ -1,0 +1,46 @@
+type Couleur = Blanc | Noir ;;
+
+type ArbreRN =
+  Vide
+| Noeud of enreg_Noeud
+and enreg_Noeud = 
+  { mutable val     : int;
+    mutable couleur : Couleur;
+    mutable gauche  : ArbreRN;
+    mutable droit   : ArbreRN;
+    mutable pere    : ArbreRN; } ;;
+
+let rec a11 = Noeud {val=11; couleur=Noir; gauche=a2; droit=a14; pere=Vide}
+and a2 = Noeud {val=2; couleur=Blanc; gauche=a1; droit=a7; pere=a11}
+and a1 = Noeud {val=1; couleur=Noir; gauche=Vide; droit=Vide; pere=a2}
+and a7 = Noeud {val=7; couleur=Noir; gauche=a5; droit=a8; pere=a2}
+and a5 = Noeud {val=5; couleur=Blanc; gauche=Vide; droit=Vide; pere=a7}
+and a8 = Noeud {val=8; couleur=Blanc; gauche=Vide; droit=Vide; pere=a7}
+and a14 = Noeud {val=14; couleur=Noir; gauche=Vide; droit=a15; pere=a11}
+and a15 = Noeud {val=15; couleur=Blanc; gauche=Vide; droit=Vide; pere=a14} ;;
+
+type ArbreClassique =
+   V
+ | N of int*Couleur*ArbreClassique*ArbreClassique ;;
+
+
+let rec mauvais_blanc x =
+   let p=pere x in 
+   match p with
+     Vide     -> ...
+   | Noeud np -> match np.couleur with
+              Noir  -> ...
+            | Blanc -> let o=frere p and g=pere p in
+                       match couleur o with
+                          Blanc -> ...        (* cas 1 *)
+                        | Noir  -> if est_fils_gauche p then
+                                     if est_fils_gauche x then
+                                         ...  (* cas 2.1 *)
+                                     else
+                                         ...  (* cas 2.2 *)
+                                   else
+                                     if est_fils_gauche x then
+                                         ...  (* cas 2.3 *)
+                                     else
+                                         ...  (* cas 2.4 *) ;;
+

@@ -1,0 +1,169 @@
+\input pb.mac
+\guillemets
+\doublecrochets
+\defverbatimcharsµ§µ§
+\centerline{\Gros\bf Manipulation de formules booléennes}\SV
+
+On modélise les formules booléennes par des arbres
+selon la déclaration suivante~:
+\sv
+µtype binop = Et | Ou | Oubien | Impl | Equiv;;
+type formule =
+  | Vrai | Faux
+  | Var  of string
+  | Non  of formule
+  | Bin  of binop * formule * formule
+;;§
+\sv
+
+µVrai§ et µFaux§ sont des formules constantes~;
+µVar(§$x$µ)§ représente une variable booléenne où $x$ est la chaîne de caractères
+contenant le nom de cette variable~;
+µNon(§$f$µ)§ représente la formule $\overline f$~;
+µBin(Et,§$f$µ,§$g$µ)§,
+µBin(Ou,§$f$µ,§$g$µ)§,
+µBin(Oubien,§$f$µ,§$g$µ)§,
+µBin(Impl,§$f$µ,§$g$µ)§ et
+µBin(Equiv,§$f$µ,§$g$µ)§
+représentent les formules $fg$, $f+g$, $f\oplus g$, $f\=> g$ et $f\<=>g$.
+Par exemple si $p$ et $q$ sont deux variables booléennes, les
+formules~:
+$$f \equiv (p\=>q) \<=> (\overline q \=> \overline p)
+\qquad\text{et}\qquad
+g \equiv (p\=>q) \=> (q \=> p)$$
+sont représentées par~:
+\sv
+{\marge{\indent}µBin(Equiv, Bin (Impl, Var "p", Var "q"),
+           Bin (Impl, Non (Var "q"), Non (Var "p")))§
+\sv}et\sv{\marge{\indent}
+µBin (Impl, Bin (Impl, Var "p", Var "q"), Bin (Impl, Var "q", Var "p"))§.
+\sv}
+Pour faciliter la saisie de telles formules on utilisera les opérateurs
+infixes µ*,+,++,=>,<=>§ définis par ~:
+\sv
+µlet prefix *   f g = Bin(Et,    f,g)
+and prefix +   f g = Bin(Ou,    f,g)
+and prefix ++  f g = Bin(Oubien,f,g)
+and prefix =>  f g = Bin(Impl,  f,g)
+and prefix <=> f g = Bin(Equiv, f,g)
+;;§\sv
+De même, pour améliorer l'affichage des formules manipulées, on utilisera la
+fonction suivante~:
+\sv
+µlet rec affiche par f = match f with
+  | Vrai   -> print_string "Vrai"
+  | Faux   -> print_string "Faux"
+  | Var(x) -> print_string x
+  | Non(g) -> print_string "Non("; affiche false g; print_string ")"
+  | Bin(op,g,h) ->
+      if par then print_string "(";
+      affiche true g;
+      print_string(match op with
+                     | Et     -> " * "
+                     | Ou     -> " + "
+                     | Oubien -> " ++ "
+                     | Impl   -> " => " 
+                     | Equiv  -> " <=> ");
+      affiche true h;
+      if par then print_string ")"
+;;
+let print_formule f = affiche false f; print_newline();;§\sv
+µprint_formule§ $f$ affiche la formule~$f$ selon la notation
+infixe en plaçant des parenthèses autour des expressions
+composées quand c'est nécessaire. Exemple~;
+\sv
+{\marge{\indent}\catcode`?=\active\long\def?#1?{{\sltt#1}}
+µ#let p = Var "p" and q = Var "q" and r = Var "r";;
+?p : formule = Var "p"
+q : formule = Var "q"
+r : formule = Var "r"?
+#let g = (p => q) => (q => p);;
+?g : formule =
+ Bin (Impl, Bin (Impl, Var "p", Var "q"), Bin (Impl, Var "q", Var "p"))?
+#print_formule g;;
+?(p => q) => (q => p)
+- : unit = ()?
+§\sv}
+
+L'objectif de ce TP est d'étudier les manipulations élémentaires sur
+ce type de formules~: évaluation d'une formule sans variables,
+substitution d'une formule à une variable, reconnaissance de l'identité
+de deux formules et simplification.
+
+\sv\qq{\bf\'Evaluation d'une formule sans variables}
+
+On suppose que la formule $f$ est constituée uniquement des constantes
+µVrai§, µFaux§ et des connecteurs µNon§, µEt§, µOu§, µOubien§,
+µImpl§ et µEquiv§.
+\'Ecrire une fonction µévalue : formule -> bool§ qui retourne le booléen
+associé à cette expression. On devra obtenir par exemple~:
+\sv
+{\marge{\indent}\catcode`?=\active\long\def?#1?{{\sltt#1}}
+µ#evalue ((Vrai ++ Faux) => (Vrai => Faux));;
+?- : bool = false?
+#evalue ((Vrai => Faux) => (Vrai ++ Faux));;
+?- : bool = true?
+§\sv}
+
+\qq{\bf Substitution d'une formule à une variable}
+
+\'Ecrire une fonction µsubs : string -> formule -> formule§
+telle que µsubs§ $x$ $f$ $g$ remplace dans la formule $g$ toutes
+les occurrences de la variable $x$ par la formule $f$.
+Par exemple~:
+\sv
+{\marge{\indent}\catcode`?=\active\long\def?#1?{{\sltt#1}}
+µ#print_formule(subs "p" (q+r) (p ++ Non(p)));;
+?(q + r) ++ Non(q + r)
+- : unit = ()?
+§\sv}
+
+\qq{\bf Identité de deux formules}
+
+Si $f$ et $g$ sont deux formules dépendant des variables $p,q,r,\dots$
+on peut prouver l'identité de $f$ et $g$ en examinant tous les cas
+possibles pour $p,q,r,\dots$ et en vérifiant dans chaque cas que les
+évaluations de $f$ et $g$ rendent la même valeur. En pratique on
+utilisera les règles suivantes~:
+\sv{\marge{\indent}
+-- si $f$ et $g$ sont sans variables alors $f\equiv g$ si et seulement
+si µévalue§$(f) =$ µévalue§$(g)$~;
+
+-- si $p$ est l'une des variables de $f$ et $g$ alors $f\equiv g$ si et seulement
+si~:\par\indent $($µsubs "p" Vrai§ $f) \equiv ($ µsubs "p" Vrai§ $g)$ et
+$($µsubs "p" Faux§ $f) \equiv ($µsubs "p" Faux§ $g)$.
+\sv}
+Programmer cela. On écrira une fonction~:
+µidentique : formule -> formule -> string list -> bool§
+qui dit si deux formules sont identiques. Le troisième argument est la
+liste des variables apparaissant dans l'une ou l'autre des deux formules à tester.
+Vérifier les identités usuelles~:
+$p(q+r) \equiv pq + pr$,\quad $\overline{p+q} \equiv \overline p\,\overline q$,\quad
+$p \=> q \equiv \overline q \=> \overline p$,\dots
+\sv
+Lorsque deux formules ne sont pas identiques il peut être intérressant
+de produire un cas où leurs évaluations diffèrent. Modifier la fonction
+précédente de sorte qu'elle retourne en cas de différence une liste
+de valeurs pour les variables contredisant l'identité. On définira un
+type spécial pour la valeur retournée~:
+\sv\indent
+µtype Resultat = Identique | Différent of bool list;;§
+
+\sv\qq{\bf Simplification}
+
+On peut simplifier {\it grossièrement\/} une formule $f$ en évaluant les
+connecteurs dont un ou deux opérandes sont constants et en supprimant les
+doubles négations. Par exemple~:
+\sv
+{\marge{\indent}\catcode`?=\active\long\def?#1?{{\sltt#1}}
+µ#print_formule(simplifie ((p ++ Vrai) => Non(Non(q))));;
+?Non(p) => q
+- : unit = ()?
+§\sv}
+
+
+
+
+\bye
+
+

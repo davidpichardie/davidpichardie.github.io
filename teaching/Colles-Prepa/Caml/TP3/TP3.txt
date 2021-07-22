@@ -1,0 +1,100 @@
+(* tri selection *)
+
+let rec min_list = function
+   []   -> failwith "liste vide"
+  |[a]  -> (a,[])
+  |a::q -> let (b,l) = min_list q in 
+           (min a b,(max a b)::l) ;;
+
+let rec tri_selection = function
+  [] -> []
+ |l  -> let (a,q) = min_list l in
+        a::(tri_selection q) ;;
+
+(* tri par tas *)
+
+type Tas =
+   Vide
+ | Noeud of int * Tas * Tas ;;
+
+let min_tas = function
+  Vide -> failwith " tas vide"
+ |Noeud (a,_,_) -> a ;;
+
+let rec enleve_min = function
+  Vide -> Vide
+ |Noeud (_,Vide,d) -> d
+ |Noeud (_,g,Vide) -> g
+ |Noeud (_,g,d) -> let min_g = min_tas g and min_d = min_tas d in
+                   if min_g < min_d then Noeud (min_g,enleve_min g,d)
+                                    else Noeud (min_d,g,enleve_min d) ;;
+
+let rec ajouter x = function
+  Vide -> Noeud (x,Vide,Vide)
+ |Noeud (a,g,d) -> Noeud (min x a,d,ajouter (max x a) g) ;;
+
+let rec ajouter_list = function
+  [] -> Vide
+ |a::q -> ajouter a (ajouter_list q) ;;
+
+let rec vider = function
+  Vide -> []
+ |Noeud (a,g,d) as t -> a::(vider (enleve_min t)) ;;
+
+let tri_par_tas l = vider (ajouter_list l) ;;
+
+(* tri par tas avec tableau *)
+
+type Tas_vect =
+  { tab : int vect ; mutable taille : int } ;;
+
+let max_noeud t i =
+  let m = ref i in
+  if 2*i+1 < t.taille && t.tab.(i) < t.tab.(2*i+1) then
+    m := 2*i+1;
+  if 2*i+2 < t.taille && t.tab.(!m) < t.tab.(2*i+2) then
+    m := 2*i+2;
+  !m ;;
+
+let rec entasser t i =
+  let m = max_noeud t i in
+  if m<>i then (
+    let temp=t.tab.(i) in
+    t.tab.(i) <- t.tab.(m);
+    t.tab.(m) <- temp;
+    entasser t m ) ;;
+
+let construire_tas tab =
+  let t = { tab=tab; taille=(vect_length tab) } in
+  for i=t.taille/2-1 downto 0 do
+    entasser t i
+  done;
+  t ;;
+
+let retire_max t =
+  let temp = t.tab.(0) in
+  t.tab.(0) <- t.tab.(t.taille-1);
+  t.tab.(t.taille-1) <- temp;
+  t.taille <- t.taille -1 ;
+  entasser t 0 ;;
+
+let vide_tas t =
+  while t.taille > 1 do
+    retire_max t
+  done ;; 
+
+
+let tri_par_tas_vect tab =
+  let t = construire_tas tab in
+  vide_tas t;
+  t.tab ;;
+
+let tri_par_tas_vect l =
+  let tab = vect_of_list l in
+  let t = construire_tas tab in
+  vide_tas t;
+  list_of_vect t.tab ;;
+
+let rec liste_aleatoire = function
+   0 -> []
+ | n -> (random__int 10000)::(liste_aleatoire (n-1));;    

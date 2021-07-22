@@ -1,0 +1,901 @@
+%!PS-Adobe-3.0
+%%BoundingBox:24 24 571 818
+%%Title: a2ps output
+%%For: Jean-Christophe Filliatre
+%%Creator: a2ps version 4.7.20
+%%CreationDate: Wed Apr  9 07:48:31 1997
+%%DocumentData: Clean7Bit
+%%Orientation: Landscape
+%%Pages: 2
+%%PageOrder: Ascend
+%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentNeededResources: font Courier Courier-Bold
+%%+ font Courier-Oblique Courier-BoldOblique
+%%+ font Times-Roman Times-Bold
+%%+ font Helvetica Helvetica-Bold Symbol
+%%Requirements: numcopies(1)
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset a2ps-black+white-Prolog 2 1
+%%Copyright (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright (c) 1995, 96, 97 Akim Demaille, Miguel Santana
+%% Variables and Functions
+%
+% Variables from `outside'
+%	v:		virtual page number in current page
+%	l:		num of lines per virtual pages
+%	c:		num of columns per virtual pages
+%	sx:		number of chars in lines' prefix
+%	tab:		tab size (in chars)
+% Functions
+%	title:		title
+%	footer:		footer
+%	border:		border around the body text
+% Coordinates
+%	x, y:		the virtual pages (arrays)
+%	snx, sny:	left footer
+%	dx, dy:		the l-footer
+%	lx, ly:		the r-header
+%	fnx, fny:	the c-footer
+%	scx, scy:	the sheet center
+% Font sizes
+%	fnfs:		center title
+%	bfs:		body
+%	dfs:		date
+% Fonts
+%	df:		footer/header
+%	bf:		body
+%	bdf:		bold
+%	itf:		italic
+%	tf:		times
+%	sf:		symbol
+%	sfnf:		center title
+% Widths and heigths
+%	cw:		a Courier char
+%	pw, ph:		page
+%	sw, sh:		sheet
+%	th:		v.p. title
+% Margins
+%	hm:		header
+%	ury:		top
+%	bm:		body
+%	urx:		right
+%	llx:		left
+
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+
+% Page prefeed
+/page_prefeed {         % bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} bind def
+
+/deffont {
+  findfont exch scalefont def
+} bind def
+
+/reencoded_font {
+  findfont exch scalefont reencode 2 copy definefont pop def
+} bind def
+
+/reencoded_backspace_font {
+  findfont exch scalefont reencode_backspace_font 2 copy definefont pop def
+} bind def
+
+% Function c-show (str => -)
+% centers text only according to x axis.
+/c-show { 
+  dup stringwidth pop
+  2 div neg 0 rmoveto
+  show
+} bind def
+
+% Function l-show (str => -)
+% prints texts so that it ends at currentpoint
+/l-show {
+  dup stringwidth pop neg 
+  0 
+  rmoveto show
+} bind def
+
+% Draw the BoundingBox
+/area {
+  gsave
+    llx lly moveto
+    2 setlinewidth
+    0.9 setgray
+    urx lly lineto
+    urx ury lineto
+    llx ury lineto
+    closepath stroke
+  grestore
+} bind def
+
+% center-fit show (str w => -)
+% show centered, and scale currentfont so that the width is less than w
+/cfshow {
+  exch dup stringwidth pop
+  % If the title is too big, try to make it smaller
+  3 2 roll 2 copy
+  gt
+  { % if, i.e. too big
+    exch div
+    currentfont exch scalefont setfont
+  } { % ifelse
+    pop pop 
+  }
+  ifelse
+  c-show			% center title
+} bind def
+
+
+% Create Courier backspace font
+% <fontdict> -> <newfontdict>
+/reencode_backspace_font {
+  dup length 7 add dict begin
+    { %forall
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+
+    /Encoding encoding_vector def
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    FontBBox
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Define these in case they're not in the FontInfo (also, here
+    % they're easier to get to.
+    /UnderlinePosition 1 def
+    /UnderlineThickness 1 def
+    
+    % Get the underline position and thickness if they're defined.
+    currentdict /FontInfo known {
+      FontInfo
+      
+      dup /UnderlinePosition known {
+	dup /UnderlinePosition get
+	0 exch FontMatrix transform exch pop
+	/UnderlinePosition exch def
+      } if
+      
+      dup /UnderlineThickness known {
+	/UnderlineThickness get
+	0 exch FontMatrix transform exch pop
+	/UnderlineThickness exch def
+      } if
+      
+    } if
+    currentdict /UniqueID known { % if
+      /UniqueID UniqueID 16#800000 xor def
+    } if
+    CharStrings length 1 add dict begin
+      CharStrings { def } forall
+      /backspace { -600 0 0 0 0 0 setcachedevice } bind def
+      currentdict
+    end
+    /CharStrings exch def
+    /Encoding Encoding 256 array copy def
+    Encoding 8 /backspace put
+    currentdict 
+  end 
+} bind def
+
+% reencode the font given as argument according to ENCODING_VECTOR
+% <fontdict> -> <newfontdict>
+/reencode { %def
+  dup length 5 add dict begin
+    { %forall
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+    /Encoding encoding_vector def
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    FontBBox
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Define these in case they're not in the FontInfo (also, here
+    % they're easier to get to.
+    /UnderlinePosition 1 def
+    /UnderlineThickness 1 def
+    
+    % Get the underline position and thickness if they're defined.
+    currentdict /FontInfo known {
+      FontInfo
+      
+      dup /UnderlinePosition known {
+	dup /UnderlinePosition get
+	0 exch FontMatrix transform exch pop
+	/UnderlinePosition exch def
+      } if
+      
+      dup /UnderlineThickness known {
+	/UnderlineThickness get
+	0 exch FontMatrix transform exch pop
+	/UnderlineThickness exch def
+      } if
+      
+    } if
+    currentdict 
+  end 
+} bind def
+
+% Function title: prints page header.
+% <ct> <rt> <lt> are passed as argument
+/title { 
+  % 1. Draw the background
+  x v get y v get moveto
+  gsave
+    0 th 2 div neg rmoveto 
+    th setlinewidth
+    0.95 setgray
+    pw 0 rlineto stroke
+  grestore
+  % 2. Border it
+  gsave
+    0.7 setlinewidth
+    pw 0 rlineto
+    0 th neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+  % stk: ct rt lt
+  x v get y v get th sub 1 add moveto
+  df setfont
+  % 3. The left title
+  gsave
+    dup stringwidth pop dfs add exch % leave space took on stack
+    dfs hm rmoveto
+    show			% left title
+  grestore
+  exch
+  % stk: ct ltw rt
+  % 4. the right title
+  gsave
+    dup stringwidth pop dfs add exch % leave space took on stack
+    dup
+    pw exch stringwidth pop dfs add sub
+    hm
+    rmoveto
+    show			% right title
+  grestore
+  % stk: ct ltw rtw
+  % 5. the center title
+  gsave
+    pw 3 1 roll
+    % stk: ct pw ltw rtw
+    3 copy 
+    % Move to the center of the left room
+    sub add 2 div hm rmoveto
+    % What is the available space in here?
+    add sub dfs sub dfs sub
+    % stk: ct space_left
+    sfnf setfont
+    cfshow
+  grestore
+} bind def
+
+% Function border: prints virtual page border
+/border { %def
+  gsave				% print four sides
+    x v get y v get moveto
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function water: prints a water mark in background
+/water { %def
+  gsave
+    scx scy moveto rotate
+    wf setfont
+    .97 setgray
+    dup stringwidth pop 2 div neg -50 rmoveto
+    show
+  grestore
+} bind def
+
+% Function rhead: prints the right header
+/rhead {  %def
+  lx ly moveto
+  df setfont
+  l-show
+} bind def
+
+% Function footer (cf rf lf -> -)
+/footer {  %def
+  df setfont
+  dx dy moveto
+  show
+
+  snx sny moveto
+  l-show
+  
+  fnx fny moveto
+  c-show
+} bind def
+
+% -- Before this line, black+white.pro, gray.pro and color.pro are identical
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T { 
+  tab mul sx add cw mul x0 add y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n { %def
+  /y0 y0 bfs sub def
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  show
+  /y0 y0 bfs sub def
+  x0 y0 moveto
+}  bind def
+
+/s {
+  show
+} bind def
+
+% Functions b, st, i, bi, t, sy:
+% change to bold, standard, italic, bold-italic, times and symbol fonts
+/b {
+  bdf setfont
+  show
+} bind def
+/st {
+  bf setfont
+  show
+} bind def
+/i {
+  itf setfont
+  show
+} bind def
+/bi { 
+  bif setfont
+  show
+} bind def
+/t {
+  tf setfont
+  show
+} bind def
+/sy {
+  sf setfont
+  show
+} bind def
+
+% Functions kw, Kw, cm, Cm, lb, Lb, str
+% change to keyword (strong), comment (strong), label (strong) 
+% and string faces
+% Keywords
+/kw {
+  itf setfont
+  show
+} bind def
+/Kw {
+  bdf setfont
+  show
+} bind def
+
+% Comments
+/cm {
+  itf setfont
+  show
+} bind def
+/Cm {
+  bif setfont
+  show 
+} bind def
+
+% Labels/Declarations
+/lb {
+  itf setfont
+  show
+} bind def
+/Lb {
+  bif setfont
+  show 
+} bind def
+
+% Strings 
+/str{
+  tf setfont
+  show
+} bind def
+
+%%EndResource
+%%BeginResource: procset Latin1-PS-Encoding 1 0
+/encoding_vector ISOLatin1Encoding def
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Courier-Oblique
+%%IncludeResource: font Courier-BoldOblique
+%%IncludeResource: font Helvetica
+%%IncludeResource: font Helvetica-Bold
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Times-Bold
+%%IncludeResource: font Symbol
+% Initialize page description variables.
+/sh 595 def
+/sw 842 def
+/llx 24 def
+/urx 818 def
+/ury 571 def
+/lly 24 def
+/#copies 1 def
+/th 15.000000 def
+/fnfs 11 def
+/dfs fnfs 0.8 mul def
+/bfs 7.905 def
+
+/bf bfs /Courier		reencoded_backspace_font
+/bdf bfs /Courier-Bold		reencoded_font
+/itf bfs /Courier-Oblique 	reencoded_font
+/bif bfs /Courier-BoldOblique	reencoded_font
+/df dfs /Helvetica 		reencoded_font
+/sfnf fnfs  /Helvetica-Bold	reencoded_font
+/tf  bfs /Times-Roman		reencoded_font
+/wf  100 /Times-Bold		reencoded_font
+/sf  bfs /Symbol		deffont
+/hm fnfs 0.25 mul def
+/bm bfs 0.7 mul def
+/cw bf setfont (0) stringwidth pop def 
+/l 63 def
+/c 80 def
+/pw
+   cw c mul bm dup add add
+def
+/ph
+   bfs l mul bm dup add add th add
+def
+/pmw urx llx sub pw 2 mul sub 1 div def
+/pmh 0 def
+/v 0 def
+/x [
+  0
+  dup pmw add pw add
+] def
+/y [
+  pmh ph add 0 mul ph add
+  dup
+] def
+/scx sw 2 div def
+/scy sh 2 div def
+/snx urx def
+/sny lly 2 add def
+/dx llx def
+/dy sny def
+/fnx scx def
+/fny dy def
+/lx snx def
+/ly ury dfs sub def
+/sx 0 def
+/tab 8 def
+%%EndSetup
+
+%%Page: (1) 1
+%%BeginPageSetup
+/pagesave save def
+%%EndPageSetup
+sh 0 translate
+90 rotate
+gsave
+llx lly 12 add translate
+/v 0 def
+/x0 x v get bm add def
+/y0 y v get bm bfs add th add sub def
+x0 y0 moveto
+(\(*) st
+(************************************************************************) cm
+(*\)) st n
+(\(*) s
+(                     Calcul du plus long compl\351ment                     ) cm
+(*\)) st n
+(\(*) s
+(************************************************************************) cm
+(*\)) st n
+() N
+() N
+(type) Kw
+( etiquette = Mot     ) st
+(of) Kw
+( ) st
+(string) Kw
+() st n
+(               | Prefixe ) s
+(of) Kw
+( ) st
+(string) Kw
+() st n
+(;;) N
+() N
+(type) Kw
+( arbre = Noeud ) st
+(of) Kw
+( etiquette * \() st
+(char) Kw
+( * arbre\) ) st
+(list) Kw
+( ;;) st n
+() N
+() N
+(\(*) s
+( char_list_of_string : string -> char list ) cm
+(*\)) st n
+() N
+(let) Kw
+( char_list_of_string s =) st n
+(  ) s
+(let) Kw
+( ) st
+(rec) Kw
+( aux acc = ) st
+(function) Kw
+() st n
+(     -1 -> acc) N
+(   | i  -> aux \(\(nth_char s i\)::acc\) \(pred i\)) N
+(  ) s
+(in) Kw
+() st n
+(  aux [] \(string_length s - 1\)) N
+(;;) N
+() N
+() N
+(\(*) s
+( string_of_char_list : char list -> string ) cm
+(*\)) st n
+() N
+(let) Kw
+( string_of_char_list cl =) st n
+(  ) s
+(let) Kw
+( n = list_length cl ) st
+(in) Kw
+() st n
+(  ) s
+(let) Kw
+( s = create_string n ) st
+(in) Kw
+() st n
+(  ) s
+(let) Kw
+( ) st
+(rec) Kw
+( aux i = ) st
+(function) Kw
+() st n
+(     []    -> s) N
+(   | c::l  -> set_nth_char s i c ; aux \(succ i\) l) N
+(  ) s
+(in) Kw
+( aux 0 cl) st n
+(;;) N
+() N
+() N
+(\(*) s
+( change_assoc : \('a * 'b\) list -> 'a -> 'b -> \('a * 'b\) list ) cm
+(*\)) st n
+() N
+(let) Kw
+( change_assoc l a b =) st n
+(  ) s
+(let) Kw
+( ) st
+(rec) Kw
+( change_rec = ) st
+(function) Kw
+() st n
+(      []         -> []) N
+(    | \(a',b'\)::l -> ) s
+(if) Kw
+( a=a' ) st
+(then) Kw
+( \(a',b\)::l ) st
+(else) Kw
+( \(a',b'\)::\(change_rec l\)) st n
+(  ) s
+(in) Kw
+( ) st n
+(  ) s
+(if) Kw
+( mem_assoc a l ) st
+(then) Kw
+( change_rec l ) st
+(else) Kw
+( \(a,b\)::l) st n
+(;; ) N
+( ) N
+() N
+(\(*) s
+( insere_mot : arbre -> string -> arbre) cm n
+( * Ajoute un mot dans un arbre pour donner un nouvel arbre. ) s
+(*\)) st n
+() N
+(let) Kw
+( insere_mot arbre mot = ) st n
+(  ) s
+(let) Kw
+( ) st
+(rec) Kw
+( insere_rec chemin = ) st
+(fun) Kw
+() st n
+(     \(Noeud \(Prefixe _,b\)\) []     -> Noeud \(Mot mot,b\)) N
+(   | a                     []     -> a) N
+(   | \(Noeud \(e,b\)\)         \(c::l\) -> ) N
+(          ) s
+(if) Kw
+( mem_assoc c b ) st
+(then) Kw
+() st n
+(            ) s
+(let) Kw
+( fils = insere_rec \(c::chemin\) \(assoc c b\) l ) st
+(in) Kw
+() st n
+(            Noeud \(e, change_assoc b c fils\)) N
+(          ) s
+(else) Kw
+() st n
+(            ) s
+(let) Kw
+( prefixe = string_of_char_list \(rev \(c::chemin\)\) ) st
+(in) Kw
+() st n
+(            ) s
+(let) Kw
+( fils = Noeud \(Prefixe prefixe,[]\) ) st
+(in) Kw
+() st n
+(            Noeud \(e, \(c, insere_rec \(c::chemin\) fils l\)::b\)) N
+() N
+(  ) s
+(in) Kw
+( insere_rec [] arbre \(char_list_of_string mot\)) st n
+(prefixe.ml) (Page 1/3) (Oct 03, 96 8:59)  title
+border
+/v 1 def
+/x0 x v get bm add def
+/y0 y v get bm bfs add th add sub def
+x0 y0 moveto
+(;;) st n
+() N
+() N
+(\(*) s
+( construit : string list -> arbre) cm n
+( * Construit l'arbre correspondant \340 une liste de mots ) s
+(*\)) st n
+() N
+(let) Kw
+( ) st
+(rec) Kw
+( construit_arbre = ) st
+(function) Kw
+() st n
+(    []   -> Noeud \(Prefixe "",[]\)) N
+(  | m::l -> insere_mot \(construit_arbre l\) m) N
+(;;) N
+() N
+(\(*) s
+( Exemple : ) cm
+(*\) ) st n
+(let) Kw
+( a = construit_arbre [ ") st
+(caml) str
+(" ; ") st
+(cafe) str
+(" ; ") st
+(cafes) str
+(" ; ") st
+(java) str
+(" ];;) st n
+() N
+() N
+(\(*) s
+( descente  : arbre -> char list -> arbre) cm n
+( * Descend dans un arbre le long d'une liste de caract\350res) N
+( * et renvoie l'arbre o\371 l'on est arriv\351.) N
+( * L\350ve une exception Failure "ce n'est pas un prefixe" si la liste) N
+( * ne correspond pas \340 un chemin dans l'arbre. ) s
+(*\)) st n
+() N
+(let) Kw
+( ) st
+(rec) Kw
+( descente = ) st
+(fun) Kw
+() st n
+(   a             []     -> a) N
+( | \(Noeud \(e,b\)\) \(c::l\) -> ) s
+(if) Kw
+( mem_assoc c b ) st
+(then) Kw
+() st n
+(                             descente \(assoc c b\) l) N
+(                           ) s
+(else) Kw
+() st n
+(                             failwith ") s
+(ce n'est pas un prefixe) str
+(") st n
+(;;) N
+() N
+() N
+(\(*) s
+( complete : arbre -> string -> string) cm n
+( * Trouve le plus grand compl\351ment dans l'arbre d'un mot donn\351 ) s
+(*\)) st n
+() N
+(let) Kw
+( complete a mot = ) st n
+(  ) s
+(let) Kw
+( ) st
+(rec) Kw
+( cherche_complement p = ) st
+(fun) Kw
+() st n
+(     [c, Noeud \(Mot m,     b\)] -> m) N
+(   | [c, Noeud \(Prefixe _, b\)] -> cherche_complement \(c::p\) b) N
+(   | _                         -> string_of_char_list \(rev p\)) N
+(  ) s
+(in) Kw
+() st n
+(  ) s
+(match) Kw
+( descente a \(char_list_of_string mot\) ) st
+(with) Kw
+() st n
+(    \(Noeud \(Prefixe p,b\)\) -> cherche_complement \(rev \(char_list_of_string p\)\) b) N
+(  | \(Noeud \(Mot m,_\)\)     -> m) N
+(;;) N
+() N
+() N
+(\(*) s
+( trouve_mots : arbre -> string list) cm n
+( * Renvoie tous les mots contenus dans l'arbre ) s
+(*\)) st n
+() N
+(let) Kw
+( applati l = list_it \() st
+(prefix) Kw
+( @\) l [];;) st n
+() N
+(let) Kw
+( ) st
+(rec) Kw
+( trouve_mots = ) st
+(function) Kw
+() st n
+(    Noeud \(Mot m,    b\) -> m::\(applati \(map \() s
+(fun) Kw
+( \(c,a\) -> trouve_mots a\) b\)\)) st n
+(  | Noeud \(Prefixe _,b\) -> \(applati \(map \() s
+(fun) Kw
+( \(c,a\) -> trouve_mots a\) b\)\)) st n
+(;;) N
+() N
+() N
+(\(*) s
+( trouve_complements : arbre -> string -> string list) cm n
+( * Trouve tous les mots de l'arbre dont p est un pr\351fixe. ) s
+(*\)) st n
+() N
+(let) Kw
+( trouve_complements a mot =) st n
+(  ) s
+(let) Kw
+( a' = descente a \(char_list_of_string mot\) ) st
+(in) Kw
+() st n
+(  trouve_mots a') N
+(;;) N
+(prefixe.ml) (Page 2/3) (Oct 03, 96 8:59)  title
+border
+% End of virtual page
+grestore
+(Printed by Jean-Christophe Filliatre) rhead
+(prefixe.ml) (1/2) (Wednesday April 09, 97) footer
+pagesave restore
+showpage
+%%Page: (2) 2
+%%BeginPageSetup
+/pagesave save def
+%%EndPageSetup
+sh 0 translate
+90 rotate
+gsave
+llx lly 12 add translate
+/v 0 def
+/x0 x v get bm add def
+/y0 y v get bm bfs add th add sub def
+x0 y0 moveto
+() st n
+() N
+(\(*) s
+(************************************************************************) cm
+(*\)) st n
+(\(*) s
+(                              Optimisation                              ) cm
+(*\)) st n
+(\(*) s
+(************************************************************************) cm
+(*\)) st n
+() N
+(\(*) s
+( On optimise en notant sur chaque noeud le plus grand prefixe) cm n
+( * pour un mot aboutissant sur ce noeud-la, au lieu de noter seulement) N
+( * le mot sur lequel on est rendu. ) s
+(*\)) st n
+() N
+(let) Kw
+( ) st
+(rec) Kw
+( optimise a = ) st
+(match) Kw
+( a ) st
+(with) Kw
+() st n
+(    Noeud \(Prefixe p, b\) -> ) N
+(        ) s
+(let) Kw
+( p' = complete a "" ) st
+(in) Kw
+() st n
+(        Noeud\(Prefixe p', map \() s
+(fun) Kw
+( \(c,f\) -> c,optimise f\) b\)) st n
+(  | Noeud \(Mot m,     b\) -> ) N
+(        Noeud\(Mot m, map \() s
+(fun) Kw
+( \(c,f\) -> c,optimise f\) b\)) st n
+(;;) N
+() N
+(let) Kw
+( ) st
+(rec) Kw
+( complete_opt a mot = ) st n
+(  ) s
+(match) Kw
+( descente a \(char_list_of_string mot\) ) st
+(with) Kw
+() st n
+(     \(Noeud \(Prefixe m,_\)\) -> m) N
+(   | \(Noeud \(Mot m    ,_\)\) -> m) N
+(;;) N
+(prefixe.ml) (Page 3/3) (Oct 03, 96 8:59)  title
+border
+% End of virtual page
+grestore
+(Printed by Jean-Christophe Filliatre) rhead
+(prefixe.ml) (2/2) (Wednesday April 09, 97) footer
+pagesave restore
+showpage
+
+%%Trailer
+%%EOF

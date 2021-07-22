@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>TP1 Logique
+</TITLE>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<STYLE type="text/css">
+.li-itemize{margin:1ex 0ex;}
+.li-enumerate{margin:1ex 0ex;}
+.dd-description{margin:0ex 0ex 1ex 4ex;}
+.dt-description{margin:0ex;}
+.toc{list-style:none;}
+.thefootnotes{text-align:left;margin:0ex;}
+.dt-thefootnotes{margin:0em;}
+.dd-thefootnotes{margin:0em 0em 0em 2em;}
+.footnoterule{margin:1em auto 1em 0px;width:50%;}
+.caption{padding-left:2ex; padding-right:2ex; margin-left:auto; margin-right:auto}
+.title{margin:2ex auto;text-align:center}
+.center{text-align:center;margin-left:auto;margin-right:auto;}
+.flushleft{text-align:left;margin-left:0ex;margin-right:auto;}
+.flushright{text-align:right;margin-left:auto;margin-right:0ex;}
+DIV TABLE{margin-left:inherit;margin-right:inherit;}
+PRE{text-align:left;margin-left:0ex;margin-right:auto;}
+BLOCKQUOTE{margin-left:4ex;margin-right:4ex;text-align:left;}
+TD P{margin:0px;}
+.boxed{border:1px solid black}
+.textboxed{border:1px solid black}
+.vbar{border:none;width:2px;background-color:black;}
+.hbar{border:none;height:2px;width:100%;background-color:black;}
+.hfill{border:none;height:1px;width:200%;background-color:black;}
+.vdisplay{border-collapse:separate;border-spacing:2px;width:auto; empty-cells:show; border:2px solid red;}
+.vdcell{white-space:nowrap;padding:0px;width:auto; border:2px solid green;}
+.display{border-collapse:separate;border-spacing:2px;width:auto; border:none;}
+.dcell{white-space:nowrap;padding:0px;width:auto; border:none;}
+.dcenter{margin:0ex auto;}
+.vdcenter{border:solid #FF8000 2px; margin:0ex auto;}
+.minipage{text-align:left; margin-left:0em; margin-right:auto;}
+.marginpar{border:solid thin black; width:20%; text-align:left;}
+.marginparleft{float:left; margin-left:0ex; margin-right:1ex;}
+.marginparright{float:right; margin-left:1ex; margin-right:0ex;}
+.theorem{text-align:left;margin:1ex auto 1ex 0ex;}
+.part{margin:2ex auto;text-align:center}
+BODY{background:white;}
+.title{padding:1ex;background:#0076B2;}
+.titlemain{padding:1ex;background:#0076B2;}
+.titlerest{padding:1ex;background:#0076B2;}
+.part{padding:1ex;background:#0087CC;}
+.section{padding:.5ex;background:#2DA8E5;}
+.subsection{padding:0.3ex;background:#66CBFF;}
+.subsubsection{padding:0.5ex;background:#98DCFF;}
+.fmarginpar{border:solid thin #66CBFF; width:20%; text-align:left;}
+.ffootnoterule{border:none;margin:1em auto 1em 0px;width:50%;background:#0087CC;}
+.ftoc1{list-style:none;margin:0ex 1ex;padding:0ex 1ex;border-left:1ex solid #0087CC;}
+.ftoc2{list-style:none;margin:1ex 1ex;padding:0ex 1ex;border-left:1ex solid #2DA8E5;}
+.ftoc3{list-style:none;margin:0ex 1ex;padding:0ex 1ex;border-left:1ex solid #66CBFF;}
+.ftoc4{list-style:none;margin:0ex 1ex;padding:0ex 1ex;border-left:1ex solid #98DCFF;}
+.ftoc5{list-style:none;margin:0ex 1ex;padding:0ex 1ex;border-left:1ex solid #CCEEFF;}
+</STYLE>
+</HEAD>
+<BODY >
+<!--HEVEA command line is: hevea my.hva tp1.tex -->
+<!--CUT DEF section 1 --><TABLE CLASS="title"><TR><TD><H1 CLASS="titlemain">TP1 Logique</H1></TD></TR>
+</TABLE><P>Dans ce TP, nous allons développer un assistant interactif pour construire
+et manipuler des preuves en déduction naturelle.</P><!--TOC section Mise en place de l&#X2019;environnement de travail-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc1">1</A>  Mise en place de l&#X2019;environnement de travail</H2><!--SEC END --><P>Suivez les instructions suivantes :
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+récupérez ce fichier <A HREF="tp1.tar">tp1.tar</A> (en cliquant dessus),
+</LI><LI CLASS="li-enumerate">décompressez le (<FONT COLOR="#7F7F7F"><TT>tar -xf tp1.tar</TT></FONT>),
+</LI><LI CLASS="li-enumerate">placez vous dans le répertoire TP1 ainsi créé (<FONT COLOR="#7F7F7F"><TT>cd TP1</TT></FONT>),
+</LI><LI CLASS="li-enumerate">testez votre environnement en tapant <FONT COLOR="#7F7F7F"><TT>make</TT></FONT>,
+</LI><LI CLASS="li-enumerate">si aucune erreur se produit, lancer emacs et commencez le TP.
+</LI></OL><P>Pour pouvoir utiliser les fonctions créées durant le TP, en mode compilé, vous
+devrez exécuter <FONT COLOR="#7F7F7F"><TT>make</TT></FONT> après chaque modification de fichier.</P><P>Pour le mode interprété, au lancement d&#X2019;ocaml (avec le raccourci <FONT COLOR="#7F7F7F"><TT>C-c C-e</TT></FONT> sous emacs),
+ne choisissez pas l&#X2019;interpréteur par défaut (<FONT COLOR="#7F7F7F"><TT>ocaml</TT></FONT>), mais tapez
+plutôt <FONT COLOR="#7F7F7F"><TT>./mytop</TT></FONT> et validez. Vous disposerez ainsi des fonctions disponibles pour réaliser le TP.</P><!--TOC section Présentation des types utilisés-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc2">2</A>  Présentation des types utilisés</H2><!--SEC END --><!--TOC subsection Formules-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc3">2.1</A>  Formules</H3><!--SEC END --><P>Nous manipulerons les formules propositionnelles à l&#X2019;aide du type
+somme suivant :</P><PRE>
+<FONT COLOR="#379807">type</FONT> formule =
+  | Faux
+  | Var <FONT COLOR="#379807">of</FONT> string
+  | Et <FONT COLOR="#379807">of</FONT> formule*formule
+  | Ou <FONT COLOR="#379807">of</FONT> formule*formule
+  | Imp <FONT COLOR="#379807">of</FONT> formule*formule
+</PRE><P>Les fonctions
+<FONT COLOR="#7F7F7F"><TT>parse : string -&gt; formule </TT></FONT> et <FONT COLOR="#7F7F7F"><TT>print : formule -&gt; string</TT></FONT> vous permettrons
+de comprendre un peu mieux ce type.</P><PRE>
+#<FONT COLOR="blue">parse "a=&gt;b=&gt;c&amp;d";;</FONT>
+- : Lib.formule = Imp (Var "a", Imp (Var "b", Et (Var "c", Var "d")))
+</PRE><PRE>
+#<FONT COLOR="blue">print (Ou (Faux,Imp (Var "b",Et (Var "c",Var "d"))));;</FONT>
+- : string = "Faux|(b=&gt;(c&amp;d))"
+</PRE><P>Par convention, un formule de la forme <IMG SRC="tp1001.gif"> est affichée 
+<IMG SRC="tp1002.gif">. Constatez le avec un exemple.</P><P><B>Exercice :</B> Écrire une fonction qui teste si une formule
+est de la forme <IMG SRC="tp1003.gif">.</P><!--TOC subsection Ensembles-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc4">2.2</A>  Ensembles</H3><!--SEC END --><P>Nous utiliserons un type abstrait pour manipuler les ensembles de formules. Les
+différentes opérations disponibles sur ces ensembles sont détaillées 
+<A HREF="Lib.html#TYPEens">ici</A></P><P>De manière générale, toutes les fonctions à votre disposition dans ce TP sont
+listées sur <A HREF="Lib.html">cette page</A>.</P><!--TOC subsection Séquents-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc5">2.3</A>  Séquents</H3><!--SEC END --><P>Nous utiliserons un enregistrement pour représenter les séquents</P><PRE>
+<FONT COLOR="#379807">type</FONT> sequent = { contexte : formule ens; but : formule }
+</PRE><P>Pour exemple, voici une fonction qui construit un séquent avec un contexte vide à partir d&#X2019;une formule logique.</P><PRE>
+#<FONT COLOR="#379807">let</FONT><FONT COLOR="blue"> nouveau_sequent f = {contexte=vide; but=f};;</FONT>
+val nouveau_sequent : formule -&gt; sequent = &lt;fun&gt;
+</PRE><P>L&#X2019;accès à une composante se fait à l&#X2019;aide du point
+</P><PRE>
+#<FONT COLOR="#379807">let</FONT><FONT COLOR="blue"> seq = nouveau_sequent Faux </FONT><FONT COLOR="#379807">in</FONT><FONT COLOR="blue"> seq.but;;</FONT>
+- : formule = Faux
+</PRE><P><B>Exercice :</B> Écrire une fonction qui teste si un séquent
+est de la forme <IMG SRC="tp1004.gif"> avec <IMG SRC="tp1005.gif">.</P><!--TOC section Présentation de l&#X2019;assistant-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc6">3</A>  Présentation de l&#X2019;assistant</H2><!--SEC END --><P>Notre assistant de preuve permettra de construire de manière interactive une preuve en déduction naturelle. 
+<A HREF="regles.html">Cette page</A> récapitule les règles de la preuve
+par déduction naturelle en donnant pour chacune la commande associée 
+dans notre assistant.</P><P>Voici un exemple d&#X2019;utilisation :</P><PRE>
+#<FONT COLOR="blue">deduc genSousButs;;</FONT>                 <FONT COLOR="#379807">(* Lancement de l&#X2019;assistant dans l&#X2019;interpréteur Ocaml *)</FONT>
+
+<FONT COLOR="blue">But ?</FONT> a=&gt;(a=&gt;b)=&gt;b;;                 <FONT COLOR="#379807">(* On donne le tautologie à prouver  *)</FONT>
+
+<FONT COLOR="blue">Règle ?</FONT> IntroImp;;                   <FONT COLOR="#379807">(* Utilisation de la règle IntroImp *)</FONT>
+
+<FONT COLOR="blue">Règle ?</FONT> ii;;                         <FONT COLOR="#379807">(* Utilisation de la règle IntroImp avec son raccourci *)</FONT>
+
+<FONT COLOR="blue">Règle ?</FONT> ei a;;                       <FONT COLOR="#379807">(* Utilisation de la règle ElimImp avec la paramètre a *)</FONT>
+
+<FONT COLOR="blue">Règle ?</FONT> a;;                          <FONT COLOR="#379807">(* Utilisation de la règle Ax *)</FONT>
+
+<FONT COLOR="blue">Règle ?</FONT> a;;                          <FONT COLOR="#379807">(* Utilisation de la règle Ax *)</FONT>
+<FONT COLOR="blue">sauver cette preuve ?</FONT> (o/n) [o] : ;; <FONT COLOR="#379807">(* La preuve est finie, on peut la sauvegarder *)</FONT>
+<FONT COLOR="blue">donnez un nom :</FONT> exemple1;;           <FONT COLOR="#379807">(* Un fichier exemple1.prf est créé *)</FONT>
+- : unit = ()
+</PRE><P>La même manipulation est possible en mode compilé, en lancant <FONT COLOR="#7F7F7F"><TT>./deduc</TT></FONT> dans un terminal. Les doubles points virgules deviennent alors superflus.</P><P>La commande <FONT COLOR="#7F7F7F"><TT>Stop</TT></FONT> permet d&#X2019;interrompre la preuve en cours.
+<FONT COLOR="#7F7F7F"><TT>Centre</TT></FONT> permet de centrer le but courant dans la fenêtre graphique.</P><P>Pour visionner l&#X2019;arbre de preuve précédemment construit, il suffit de taper :
+</P><PRE>
+#<FONT COLOR="blue">affiche (charge "exemple1.prf");;</FONT>
+- : unit = ()
+</PRE><P>La fenêtre suivante apparaît alors.</P><DIV CLASS="center">
+<IMG SRC="tp1006.gif"> 
+</DIV><P>Pour fermer la fenêtre, tapez &#X2019;q&#X2019;. Pour effectuer la même manipulation en mode compilé, tapez <FONT COLOR="#7F7F7F"><TT>./affiche exemple1.prf</TT></FONT> dans un terminal.</P><P>Les différentes commandes possibles sont regroupées dans le type <A HREF="Lib.html#TYPEcommande"><FONT COLOR="#7F7F7F"><TT>commande</TT></FONT></A>.</P><!--TOC section Générateur de sous-buts-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc7">4</A>  Générateur de sous-buts</H2><!--SEC END --><P>Ouvrir le fichier <FONT COLOR="#7F7F7F"><TT>genSousButs.ml</TT></FONT>. Vous devez compléter la fonction
+<FONT COLOR="#7F7F7F"><TT>genSousButs : sequent -&gt; commande -&gt; sequent list * string</TT></FONT> de façon à
+ce que <FONT COLOR="#7F7F7F"><TT>(genSousButs seq com)</TT></FONT> renvoie un couple constitué de
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la liste des sous-buts générés
+par l&#X2019;utilisation de la commande <FONT COLOR="#7F7F7F"><TT>com</TT></FONT> sur le séquent <FONT COLOR="#7F7F7F"><TT>seq</TT></FONT>
+</LI><LI CLASS="li-itemize">du nom donné à la règle
+</LI></UL><P>Si la commande ne peut être appliquée, renvoyez le couple <FONT COLOR="#7F7F7F"><TT>([],"erreur")</TT></FONT>.</P><P><B>Exemple : </B> Appliquer la commande <FONT COLOR="#7F7F7F"><TT>IntroEt</TT></FONT> à un sequent <IMG SRC="tp1007.gif">
+doit produire le couple <FONT COLOR="#7F7F7F"><TT>([<IMG SRC="tp1008.gif">;<IMG SRC="tp1009.gif">],"IntroEt")</TT></FONT></P><P>Cette fonction <FONT COLOR="#7F7F7F"><TT>genSousButs</TT></FONT> peut être testée de la façon suivante
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+évaluer la fonction <FONT COLOR="#7F7F7F"><TT>genSousButs</TT></FONT> dans l&#X2019;interpréteur.
+</LI><LI CLASS="li-itemize">lancer le programme de preuve interactive avec <FONT COLOR="#7F7F7F"><TT>deduc genSousButs</TT></FONT>
+</LI></UL><P>
+Autre méthode :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+sauvegarder le fichier <FONT COLOR="#7F7F7F"><TT>genSousButs.ml</TT></FONT>
+</LI><LI CLASS="li-itemize">tapez <FONT COLOR="#7F7F7F"><TT>make</TT></FONT> dans un terminal
+</LI><LI CLASS="li-itemize">lancer le programme de preuve interactive ainsi créé avec <FONT COLOR="#7F7F7F"><TT>./deduc</TT></FONT>
+</LI></UL><P>Pour vérifier si un arbre respecte les règles de la déduction naturelle, vous pouvez utilisez la commande
+<FONT COLOR="#7F7F7F"><TT>valide (charge </TT></FONT><FONT COLOR="#7F7F7F"><TT><I>fichier</I></TT></FONT><FONT COLOR="#7F7F7F"><TT>)</TT></FONT> dans l&#X2019;interpréteur ou <FONT COLOR="#7F7F7F"><TT>./valide </TT></FONT><FONT COLOR="#7F7F7F"><TT><I>fichier</I></TT></FONT> dans un terminal.</P><P>Un arbre peut être sauvegardé avec la fonction <FONT COLOR="#7F7F7F"><TT>sauve : arbreDePreuve -&gt; string -&gt; unit</TT></FONT>
+(<FONT COLOR="#7F7F7F"><TT>(sauve p "f")</TT></FONT> sauve la preuve <FONT COLOR="#7F7F7F"><TT>p</TT></FONT> dans le fichier <FONT COLOR="#7F7F7F"><TT>"f.prf"</TT></FONT>).</P><!--TOC section Quelques preuve à réaliser-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc8">5</A>  Quelques preuve à réaliser</H2><!--SEC END --><P>Pour tester votre travail et vous exercer un peu aux preuves par déduction naturelle, prouvez les tautologies suivantes dans l&#X2019;assistant. Sauvegardez vos preuves et vérifier les avec la fonction <FONT COLOR="#7F7F7F"><TT>valide</TT></FONT>.</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+<IMG SRC="tp1010.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1011.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1012.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1013.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1014.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1015.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1016.gif"> 
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1017.gif"> </LI><LI CLASS="li-enumerate"><IMG SRC="tp1018.gif">
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1019.gif">
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1020.gif">
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1021.gif">
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1022.gif">
+</LI><LI CLASS="li-enumerate"><IMG SRC="tp1023.gif"></LI></OL><!--TOC section Premières transformations de preuve-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc9">6</A>  Premières transformations de preuve</H2><!--SEC END --><P>Nous représentons les preuves à l&#X2019;aide d&#X2019;arbres avec le type
+<A HREF="Lib.html#TYPEarbreDePreuve"><FONT COLOR="#7F7F7F"><TT>arbreDePreuve</TT></FONT></A>.</P><P>À titre d&#X2019;exemple, voici une fonction qui teste si un arbre de preuve ne contient que des règles
+du système NM.</P><PRE>
+#<FONT COLOR="#379807">let rec</FONT><FONT COLOR="blue"> rec testNM a = </FONT><FONT COLOR="#379807">match</FONT><FONT COLOR="blue"> a </FONT><FONT COLOR="#379807">with</FONT><FONT COLOR="blue"> 
+  | RegleAx s -&gt; true
+  | RegleIntroImp (s,a1) -&gt; testNM a1
+  | RegleElimImp (s,a1,a2) -&gt; testNM a1 &amp;&amp; testNM a2
+  | RegleIntroEt (s,a1,a2) -&gt; testNM a1 &amp;&amp; testNM a2
+  | RegleElimEt1 (s,a1) -&gt; testNM a1
+  | RegleElimEt2 (s,a1) -&gt; testNM a1
+  | RegleIntroOu1 (s,a1) -&gt; testNM a1
+  | RegleIntroOu2 (s,a1) -&gt; testNM a1
+  | RegleElimOu (s,a1,a2,a3) -&gt; testNM a1 &amp;&amp; testNM a2 &amp;&amp; testNM a3
+  | RegleElimFalse (s,a1) -&gt; false
+  | RegleIntroNon (s,a1,a2) -&gt; testNM a1 &amp;&amp; testNM a2
+  | RegleElimNon (s,a1,a2) -&gt; false
+  | RegleTiersExclu s -&gt; false
+  | RegleAbsurde (s,a1) -&gt; false
+  | RegleElimNonNon (s,a1) -&gt; false
+  | _ -&gt; false;;</FONT>
+val testNM : Lib.arbreDePreuve -&gt; bool = &lt;fun&gt;
+</PRE><!--TOC subsection Élimination des règles redondantes (facultatif)-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc10">6.1</A>  Élimination des règles redondantes (facultatif)</H3><!--SEC END --><P>Comme vous le savez, les règles IntroNon, ElimNon, Absurde et ElimNonNon sont redondantes. 
+Cela signifie qu&#X2019;un arbre de preuve (valide) peut toujours être transformé de façon à obtenir un preuve
+valide du même but, mais en utilisant aucune de ces règles.</P><P>Écrire une fonction <FONT COLOR="#7F7F7F"><TT>enleve_superflu : arbreDePreuve -&gt; arbreDePreuve </TT></FONT> qui réalise la transformation
+correspondante. Vous écrirez cette fonction dans le fichier <FONT COLOR="#7F7F7F"><TT>enleve_superflu.ml</TT></FONT>. Pour tester, vous pouvez
+utiliser le mode interprété ou le mode compilé.</P><!--TOC subsection Simplification de preuve : simplification des contextes (facultatif)-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc11">6.2</A>  Simplification de preuve : simplification des contextes (facultatif)</H3><!--SEC END --><P>Les arbres de preuves générés par l&#X2019;assistant <FONT COLOR="#7F7F7F"><TT>deduc</TT></FONT> possèdent des séquents dont les
+contextes son souvent inutilement grands. Écrire un fonction 
+<FONT COLOR="#7F7F7F"><TT>simplifie_contextes : arbreDePreuve -&gt; arbreDePreuve </TT></FONT>
+qui effectue une simplification
+des différents contextes d&#X2019;un arbre.
+Vous écrirez cette fonction dans le fichier <FONT COLOR="#7F7F7F"><TT>simplifie_contextes.ml</TT></FONT>. Pour tester, vous pouvez
+utiliser le mode interprété ou le mode compilé.</P><!--TOC section Utilisation de lemmes intermédiaires-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc12">7</A>  Utilisation de lemmes intermédiaires</H2><!--SEC END --><P>La commande <FONT COLOR="#7F7F7F"><TT>Lemme </TT></FONT><FONT COLOR="#7F7F7F"><TT><I>nom</I></TT></FONT> de l&#X2019;assistant permet de terminer le sous but courant en invoquant une preuve présente dans le fichier <I>nom</I>.prf.</P><P><B>Exemple :</B></P><P><IMG SRC="tp1024.gif"></P><P>avec dans le fichier <FONT COLOR="#7F7F7F"><TT>et1.prf</TT></FONT>, l&#X2019;arbre suivant</P><P><IMG SRC="tp1025.gif"></P><!--TOC subsection Ajout de la commande <FONT COLOR="#7F7F7F"><TT>Lemme</TT></FONT>-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc13">7.1</A>  Ajout de la commande <FONT COLOR="#7F7F7F"><TT>Lemme</TT></FONT></H3><!--SEC END --><P>Ajouter dans le fichier <FONT COLOR="#7F7F7F"><TT>genSousButs.ml</TT></FONT> le traitement de la commande <FONT COLOR="#7F7F7F"><TT>Lemme</TT></FONT>. </P><P>Quelques indications :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+l&#X2019;utilisation d&#X2019;un lemme inadapté au sous-but courant devra renvoyer une erreur
+</LI><LI CLASS="li-itemize">la fonction <FONT COLOR="#7F7F7F"><TT>fichier_existe</TT></FONT> permet de tester si un fichier existe dans le répertoire courant
+</LI><LI CLASS="li-itemize">le nom donné à la règle sera celui du fichier invoqué
+</LI></UL><P><U>I</U>ndications :</P><P>Une substitution sera représenté par une liste d&#X2019;association de type <FONT COLOR="#7F7F7F"><TT>(string*formule) list</TT></FONT>. Par exemple, la substitution <IMG SRC="tp1026.gif"> sera représentée par
+</P><PRE>
+# <FONT COLOR="blue">[("p",Et (Var "a",Var "b"));("q",Var "b")];;</FONT>
+- : (string * formule) list = [("p", Et (Var "a", Var "b")); ("q", Var "b")]
+</PRE><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Écrire une fonction qui teste si une substitution est valide, c&#X2019;est à dire si elle ne contient pas deux assignations différentes pour la même variable.<P>Exemple de substitution non valide : <IMG SRC="tp1027.gif">
+</P></LI><LI CLASS="li-enumerate">En déduire une fonction qui, étant données deux formules <FONT COLOR="#7F7F7F"><TT>f1</TT></FONT> et <FONT COLOR="#7F7F7F"><TT>f2</TT></FONT>, teste si 
+il existe une substitution qui permet d&#X2019;instancier <FONT COLOR="#7F7F7F"><TT>f1</TT></FONT> pour obtenir <FONT COLOR="#7F7F7F"><TT>f2</TT></FONT>.<P>Exemple :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<IMG SRC="tp1028.gif"> peut être instancié pour obtenir <IMG SRC="tp1029.gif">
+</LI><LI CLASS="li-itemize"><IMG SRC="tp1030.gif"> ne peut pas être instancié pour obtenir <IMG SRC="tp1031.gif">
+</LI></UL></LI></OL><P>Attention à ne pas confondre avec de l&#X2019;unification !</P><!--TOC subsection Complétion d&#X2019;arbre de preuve (facultatif)-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc14">7.2</A>  Complétion d&#X2019;arbre de preuve (facultatif)</H3><!--SEC END --><P>L&#X2019;ajout de cette nouvelle commande a pour conséquence que les arbres sauvegardés ne sont plus valides selon
+les règles strictes de la déduction naturelle (le noeud <TT>RegleLemme (s,f)</TT> indique qu&#X2019;une preuve a été interrompu en utilisant le lemme du fichier <TT>f</TT>).</P><P>Écrire une fonction <FONT COLOR="#7F7F7F"><TT>complete_arbre : arbreDePreuve -&gt; arbreDePreuve </TT></FONT> qui permet de compléter
+un arbre (dans le mode interactif d&#X2019;Ocaml). </P><!--TOC section Mise en place d&#X2019;une aide-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc15">8</A>  Mise en place d&#X2019;une aide</H2><!--SEC END --><P>Une commande <FONT COLOR="#7F7F7F"><TT>Aide</TT></FONT> a été ajoutée. Cette commande affiche dans le terminal la liste des règles applicables à un moment donné de la preuve. Pour en disposer, vous devez mettre à jour les fichiers suivants :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<A HREF="TP1/lib.ml">lib.ml</A>
+</LI><LI CLASS="li-itemize"><A HREF="TP1/lib.mli">lib.mli</A>
+</LI></UL><P>Dans <FONT COLOR="#7F7F7F"><TT>lib.ml</TT></FONT> se trouvent les squelettes des fonctions <FONT COLOR="#7F7F7F"><TT>&lt;Règle&gt;Applicable : sequent -&gt; bool</TT></FONT> qui renvoient <FONT COLOR="#7F7F7F"><TT>true</TT></FONT> si la règle <FONT COLOR="#7F7F7F"><TT>&lt;Règle&gt;</TT></FONT> est applicable au séquent donné en paramètre. Compléter ces squelettes. Que constatez-vous ? </P><P>Vous pouvez reprendre les preuves précédentes avec cette aide supplémentaire. </P><!--CUT END -->
+<!--HTMLFOOT-->
+<!--ENDHTML-->
+<!--FOOTER-->
+<HR SIZE=2><BLOCKQUOTE CLASS="quote"><EM>This document was translated from L<sup>A</sup>T<sub>E</sub>X by
+</EM><A HREF="http://hevea.inria.fr/index.html"><EM>H</EM><EM><FONT SIZE=2><sup>E</sup></FONT></EM><EM>V</EM><EM><FONT SIZE=2><sup>E</sup></FONT></EM><EM>A</EM></A><EM>.</EM></BLOCKQUOTE></BODY>
+</HTML>

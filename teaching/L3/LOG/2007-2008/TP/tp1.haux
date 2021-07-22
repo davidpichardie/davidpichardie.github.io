@@ -1,0 +1,15 @@
+\@addtocsec{htoc}{1}{0}{\@print{1}\quad{}Mise en place de l'environnement de travail{}}
+\@addtocsec{htoc}{2}{0}{\@print{2}\quad{}Présentation des types utilisés{}}
+\@addtocsec{htoc}{3}{1}{\@print{2.1}\quad{}Formules{}}
+\@addtocsec{htoc}{4}{1}{\@print{2.2}\quad{}Ensembles{}}
+\@addtocsec{htoc}{5}{1}{\@print{2.3}\quad{}Séquents{}}
+\@addtocsec{htoc}{6}{0}{\@print{3}\quad{}Présentation de l'assistant{}}
+\@addtocsec{htoc}{7}{0}{\@print{4}\quad{}Générateur de sous-buts{}}
+\@addtocsec{htoc}{8}{0}{\@print{5}\quad{}Quelques preuve à réaliser{}}
+\@addtocsec{htoc}{9}{0}{\@print{6}\quad{}Premières transformations de preuve{}}
+\@addtocsec{htoc}{10}{1}{\@print{6.1}\quad{}Élimination des règles redondantes (facultatif){}}
+\@addtocsec{htoc}{11}{1}{\@print{6.2}\quad{}Simplification de preuve : simplification des contextes (facultatif){}}
+\@addtocsec{htoc}{12}{0}{\@print{7}\quad{}Utilisation de lemmes intermédiaires{}}
+\@addtocsec{htoc}{13}{1}{\@print{7.1}\quad{}Ajout de la commande {\mtt Lemme}{}}
+\@addtocsec{htoc}{14}{1}{\@print{7.2}\quad{}Complétion d'arbre de preuve (facultatif){}}
+\@addtocsec{htoc}{15}{0}{\@print{8}\quad{}Mise en place d'une aide{}}

@@ -1,0 +1,30 @@
+
+type binop = Et | Ou | Oubien | Impl | Equiv;;
+
+type formule =
+  | Vrai 
+  | Faux
+  | Var  of string
+  | Non  of formule
+  | Bin  of binop * formule * formule
+;;
+
+let rec affiche par f = match f with
+  | Vrai   -> print_string "Vrai"
+  | Faux   -> print_string "Faux"
+  | Var(x) -> print_string x
+  | Non(g) -> print_string "Non("; affiche false g; print_string ")"
+  | Bin(op,g,h) ->
+      if par then print_string "(";
+      affiche true g;
+      print_string(match op with
+		     | Et     -> " . "
+		     | Ou     -> " + "
+		     | Oubien -> " ++ "
+		     |Impl    -> " => " 
+		     |Equiv   -> " <=> ");
+      affiche true h;
+      if par then print_string ")"
+;;
+let print_formule f = affiche false f; print_newline();;
+

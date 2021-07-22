@@ -1,0 +1,534 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage{maple2e}
+\usepackage[frenchb]{babel}
+ 
+
+
+\title{corrigé TP5 {\sc Maple} : Interpolation}
+\author{}
+\date{}
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP5 {\sc Maple}}
+\rhead{Interpolation}
+
+
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\pgcd}{\operatorname{pgcd}}
+
+
+\begin{document}
+\section{Polynômes interpolateurs de Lagrange}
+
+\begin{question}
+Pour $i\in\{1,\ldots,n\}$
+$$P_i(X)=\frac{\prod\limits_{1\leq j \leq n \atop j\not= i } 
+     \left(X-x_j\right)}{\prod\limits_{1\leq j \leq n \atop j\not= i } 
+     \left(x_i-x_j\right)}$$
+\begin{verbatim}
+list_pol:=proc(X)
+  local L,t,n,i;
+  n:=nops(X);
+  t:=product(x-X[i],i=1..n);
+  L:=[seq(t/(x-X[i]),i=1..n)];
+  seq(L[i]/subs(x=X[i],L[i]),i=1..n);
+end:
+\end{verbatim}
+\end{question}
+
+\begin{question}
+$$P(X)=\sum_{i=1}^n y_i P_i(X)$$
+\begin{verbatim}
+interpol:=proc(X,Y)
+  local L,n;
+  n:=nops(X);
+  L:=list_pol(X);
+  sum(Y[i]*L[i],i=1..n);
+end:
+\end{verbatim}
+\end{question}
+
+\begin{question}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{X:=[1,2,4,5];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+X := [1, \,2, \,4, \,5]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Y:=[1,2,4,3];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+Y := [1, \,2, \,4, \,3]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Z:=expand(interpol(X,Y));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+Z :=  - {\displaystyle \frac {1}{6}} \,x^{3} + {\displaystyle 
+\frac {7}{6}} \,x^{2} - {\displaystyle \frac {4}{3}} \,x + 
+{\displaystyle \frac {4}{3}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{L:=[seq([X[i],Y[i]],i=1..nops(X))];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+L := [[1, \,1], \,[2, \,2], \,[4, \,4], \,[5, \,3]]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P1:=plot(L,style=point,symbol=circle):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P2:=plot(Z,x=-0..6):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plots[display](P1,P2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp501.eps}
+\end{center}
+
+\end{maplegroup}
+\end{question}
+
+\begin{question}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f:=x->1/(1+8*x^2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := x\rightarrow {\displaystyle \frac {1}{1 + 8\,x^{2}}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+\begin{verbatim}
+   >  runge:=proc(n)
+        local X,Y,Z,i,P1,P2,P3;
+        X:=[seq(-1+2*i/(n-1),i=0..n-1)];
+        Y:=[seq(f(X[i]),i=1..n)];
+        Z:=interpol(X,Y);
+        P1:=plot(f(x),x=-1..1,color=yellow):
+        P2:=plot([seq([X[i],Y[i]],i=1..n)],style=point,symbol=circle,color=black):
+        P3:=plot(Z,x=-1..1,color=blue):
+        plots[display](P1,P2,P3);
+      end:
+\end{verbatim}
+\newpage
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{runge(8);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp502.eps}
+\end{center}
+
+\end{maplegroup}
+
+\end{question}
+
+\begin{question} (Phénomène de Runge)\\
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plots[display](seq(runge(j),j=3..20),insequen
+ce=true);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+D'après l'animation, il n'y a pas convergence uniforme sur $[-1,1]$, de
+la suite des polynômes interpolateurs vers $f$ (revoir le TP sur les
+suites de fonction).
+\end{question}
+
+\begin{question}
+Si $t\in[-1,1]$,
+\begin{eqnarray*}
+  \cos(n\arccos(t))=0 & \iff & n\arccos(t)=\frac{\pi}{2} \mod \pi \\
+  & \iff & \arccos(t)=\frac{\pi}{2n} \mod \frac{\pi}{n} \\
+  & \iff & \arccos(t)=\frac{\pi}{2n}+k \frac{\pi}{n} \\
+  \lefteqn{\quad\quad\quad\quad\quad 
+       k=0,\ldots,n-1\quad\text{car } \arccos(t)\in [-\pi,\pi]} \\
+  & \iff & t = \cos\left(\frac{\pi(1+2k)}{2n}  \right) \quad k=0,\ldots,n-1\quad
+\end{eqnarray*}
+\begin{verbatim}
+   >  rungeTcheb:=proc(n)
+        local X,Y,Z,i,P1,P2,P3;
+        X:=[seq(cos((2*i+1)*Pi/(2*n)),i=0..n-1)];
+        Y:=[seq(f(X[i]),i=1..n)];
+        Z:=interpol(X,Y);
+        P1:=plot(f(x),x=-1..1,color=yellow):
+        P2:=plot([seq([X[i],Y[i]],i=1..n)],style=point,symbol=circle,color=black):
+        P3:=plot(Z,x=-1..1,color=blue):
+        plots[display](P1,P2,P3);
+      end:
+\end{verbatim}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{rungeTcheb(8);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp504.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plots[display](seq(rungeTcheb(j),j=3..12),ins
+equence=true);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\end{question}
+
+\section{Splines cubiques}
+
+\begin{question} \\
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{X:=[0,2,3,4];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+X := [0, \,2, \,3, \,4]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Y:=[2,0,3,1];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+Y := [2, \,0, \,3, \,1]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{n:=nops(X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+n := 4
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf 7.1}
+\begin{verbatim}
+   >  for k from 1 to n-1 do
+        P[k]:=a[k]*x^3+b[k]*x^2+c[k]*x+d[k];
+        DP[k]:=diff(P[k],x);
+        DDP[k]:=diff(DP[k],x);
+      od;
+\end{verbatim}
+
+{\bf 7.2}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{cond1:=seq(subs(x=X[k],P[k])=Y[k],k=1..n-1);}
+{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{cond2:=seq(subs(x=X[k+1],P[k])=Y[k+1],k=1..n-
+1);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{cond3:=seq(subs(x=X[k],DP[k-1]=DP[k]),k=2..n-
+1);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{cond4:=seq(subs(x=X[k],DDP[k-1]=DDP[k]),k=2..
+n-1);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{cond5:=subs(x=X[1],DP[1])=0,subs(x=X[n],DP[n-
+1])=0;}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+{\bf 7.3}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(\{cond1,cond2,cond3,cond4,cond5\});}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+{\bf 7.4}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(");}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+{\bf 7.5}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot1:=plot([seq([X[i],Y[i]],i=1..n)],style=p
+oint,symbol=circle,color=black):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plots[display](plot1,seq(plot(P[k],x=X[k]..X[
+k+1],color=blue),k=1..n-1));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp506.eps}
+\end{center}
+\end{maplegroup}
+\end{question}
+
+\begin{question}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f:=x->sin(x^2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := x\rightarrow {\rm sin}(x^{2})
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{verbatim}
+   >  list_pol:=proc(X,Y)
+        local L,t,n,i;
+        n:=nops(X);
+        t:=product(x-X[i],i=1..n);
+        L:=[seq(t/(x-X[i]),i=1..n)];
+      end:
+\end{verbatim}
+
+On reprend les fonctions d'interpolation de Lagrange en considérant cette fois
+l'intervalle $[0,4]$~:
+\begin{verbatim}
+   >  interpol:=proc(X,Y)
+        local L,n;
+        n:=nops(X);
+        L:=list_pol(X,Y);
+        sum(Y[i]*L[i]/subs(x=X[i],L[i]),i=1..n);
+      end:
+\end{verbatim}
+
+\begin{verbatim}
+   >  plot_interpol:=proc(n)
+        local X,Y,Z,i,P1,P2,P3;
+        X:=[seq(4*i/(n-1),i=0..n-1)];
+        Y:=[seq(f(X[i]),i=1..n)];
+        Z:=interpol(X,Y);
+        P1:=plot(f(x),x=0..4,color=yellow):
+        P2:=plot([seq([X[i],Y[i]],i=1..n)],style=point,symbol=circle,color=black):
+        P3:=plot(Z,x=0..4,color=blue):
+        plots[display](P1,P2,P3);
+      end:
+\end{verbatim}
+
+\begin{verbatim}
+   >  spline:=proc(X,Y)
+        local n,k,P,Df,DP,DDP,cond1,cond2,cond3,cond4,cond5;
+        n:=nops(X);
+        Df:=diff(f(x),x);
+        unassign(a,b,c,d);
+        for k from 1 to n-1 do
+          P[k]:=a[k]*x^3+b[k]*x^2+c[k]*x+d[k];
+          DP[k]:=diff(P[k],x);
+          DDP[k]:=diff(DP[k],x);
+        od;
+        cond1:=seq(subs(x=X[k],P[k])=Y[k],k=1..n-1);
+        cond2:=seq(subs(x=X[k+1],P[k])=Y[k+1],k=1..n-1);
+        cond3:=seq(subs(x=X[k],DP[k-1]=DP[k]),k=2..n-1);
+        cond4:=seq(subs(x=X[k],DDP[k-1]=DDP[k]),k=2..n-1);
+        cond5:=subs(x=X[1],DP[1]=Df),subs(x=X[n],DP[n-1]=Df);
+        solve(\{cond1,cond2,cond3,cond4,cond5\});
+        assign(");
+        P;
+      end:
+\end{verbatim}
+\newpage
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot_spline(6);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp507.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot_interpol(6);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp508.eps}
+\end{center}
+
+\end{maplegroup}
+
+Avec $6$ points, l'amélioration n'est pas flagrante !
+
+\newpage
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot_spline(12);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp509.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot_interpol(12);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp510.eps}
+\end{center}
+
+\end{maplegroup}
+
+Avec $12$ points, la spline réalise une bien meilleure interpolation
+que le polynôme de Lagrange.
+\end{question}
+
+\end{document}
+

@@ -1,0 +1,810 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage{maple2e}
+ 
+
+
+\title{TP2 {\sc Maple} : Polynômes}
+\author{}
+\date{}
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP2 {\sc Maple}}
+\rhead{Polynômes}
+
+
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\pgcd}{\operatorname{pgcd}}
+
+
+\begin{document}
+
+{\bf\Large Exercice 1}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=x^5-x^4-4*x^3+4*x^2-5*x+5;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := x^{5} - x^{4} - 4\,x^{3} + 4\,x^{2} - 5\,x + 5
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(P);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(x - 1)\,(x^{2} - 5)\,(x^{2} + 1)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Par défaut, {\sc Maple} factorise dans $\Q$. Pour pousser plus loin la
+factorisation, il faut indiquer dans quelle {\it extension} de $\Q$
+{\sc Maple} doit travailler. Concrétement, on fournit à {\sc Maple}
+une liste $\{a_1,\ldots,a_n\}$ de nombres complexes tels que
+les zéros du polynôme à factoriser s'écrivent comme des produits et
+des sommes des $a_i$ et de rationelles. On travaille ainsi dans 
+l'extension $\Q(a_1,\ldots,a_n)$ {\it i.e.} le plus petit corps
+contenant $\Q$ et les $a_i$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(P);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+1, \,\sqrt{5}, \, - \sqrt{5}, \,I, \, - I
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(P,sqrt(5));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(x^{2} + 1)\,(x - \sqrt{5})\,(x + \sqrt{5})\,(x - 1)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(P,\{sqrt(5),I\});}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(x - I)\,(x + I)\,(x - \sqrt{5})\,(x + \sqrt{5})\,(x - 1)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{F := 1/(X^7 + 27*X^4 - X^3 - 27);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+F := {\displaystyle \frac {1}{X^{7} + 27\,X^{4} - X^{3} - 27}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{convert(F,parfrac,X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{112}} \,{\displaystyle \frac {1}{X - 1}
+}  + {\displaystyle \frac {1}{2160}} \,{\displaystyle \frac {1}{X
+ + 3}}  - {\displaystyle \frac {1}{104}} \,{\displaystyle \frac {
+1}{X + 1}}  - {\displaystyle \frac {1}{1460}} \,{\displaystyle 
+\frac {27 + X}{X^{2} + 1}}  + {\displaystyle \frac {1}{179361}} 
+\,{\displaystyle \frac { - 249 + 163\,X}{X^{2} - 3\,X + 9}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(denom(F));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+1, \,-3, \,-1, \,I, \, - I, \,{\displaystyle \frac {3}{2}}  - 
+{\displaystyle \frac {3}{2}} \,I\,\sqrt{3}, \,{\displaystyle 
+\frac {3}{2}}  + {\displaystyle \frac {3}{2}} \,I\,\sqrt{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{convert(F,parfrac,X,\{I,sqrt(3)\});}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\displaystyle \frac {1}{179361}} \,{\displaystyle 
+\frac {163 + I\,\sqrt{3}}{2\,X - 3 - 3\,I\,\sqrt{3}}}  - 
+{\displaystyle \frac {1}{179361}} \,{\displaystyle \frac {I\,
+\sqrt{3} - 163}{2\,X - 3 + 3\,I\,\sqrt{3}}}  + {\displaystyle 
+\frac { - {\displaystyle \frac {1}{2920}}  - {\displaystyle 
+\frac {27}{2920}} \,I}{X + I}}  + {\displaystyle \frac { - 
+{\displaystyle \frac {1}{2920}}  + {\displaystyle \frac {27}{2920
+}} \,I}{X - I}} } \\
+ & & \mbox{} - {\displaystyle \frac {1}{104}} \,{\displaystyle 
+\frac {1}{X + 1}}  + {\displaystyle \frac {1}{112}} \,
+{\displaystyle \frac {1}{X - 1}}  + {\displaystyle \frac {1}{2160
+}} \,{\displaystyle \frac {1}{X + 3}} \mbox{\hspace{237pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+
+\medskip{\bf\Large Exercice 2}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P := X^(2*n) - n^2*X^(n+1) + 2*(n^2-1)*X^n -
+n^2*X^(n-1) + 1;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := X^{(2\,n)} - n^{2}\,X^{(n + 1)} + 2\,(n^{2} - 1)\,X^{n} - n
+^{2}\,X^{(n - 1)} + 1
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{subs(X=1,A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P1:=diff(A,X):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{subs(X=1,P1);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+2\,n - n^{2}\,(n + 1) + 2\,(n^{2} - 1)\,n - n^{2}\,(n - 1)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{simplify(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P2:=diff(P1,X):simplify(subs(X=1,P2));
+}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P3:=diff(P2,X):simplify(subs(X=1,P3));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P4:=diff(P3,X):simplify(subs(X=1,P4));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ - 2\,n^{2} + 2\,n^{4}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+1, \,-1, \,0, \,0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Donc $1$ est un zéro d'ordre $4$ pour $P_n$ si $n\geq 2$. On traite
+les cas $n=0$ et $n=1$ à part~:
+ 
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{n:=0: P;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{n:=1: P;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf\Large Exercice 3}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(linalg):}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[1]:=P->subs(\{x=1\},P);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{1}} := P\rightarrow {\rm subs}(\{x=1\}, \,P)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[2]:=P->subs(\{x=2\},P);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{2}} := P\rightarrow {\rm subs}(\{x=2\}, \,P)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[3]:=P -> subs(\{x=1\},diff(P,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{3}} := P\rightarrow {\rm subs}(\{x=1\}, \,{\frac {\partial }{
+\partial x}}\,P)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[4]:=P -> int(P,x=0..1);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{4}} := P\rightarrow {\displaystyle \int _{0}^{1}} P\,dx
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Si on note $(e_1,e_2,e_3,e_4)=(1,X,X^2,X^3)$ la base usuelle de $E$ et  
+$(e^*_1,e^*_2,e^*_3,e^*_4)$ sa base duale, chaque $\varphi_i$ peut
+s'écrire dans cette base~:
+$$\varphi_i = a_{i1}e^*_1+a_{i2}e^*_2+a_{i3}e^*_3+a_{i4}e^*_4$$
+
+On calcule les $a_{ij}$ grâce à la formule
+$$a_{ij}=\varphi_i(e_j)$$
+
+On place ces coefficients dans une matrice où chaque ligne représente
+une des forme $\varphi_i$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix(4,4,(i,j)->f[i](x^(j-1)));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{rccc}
+1 & 1 & 1 & 1 \\
+1 & 2 & 4 & 8 \\
+0 & 1 & 2 & 3 \\
+1 & {\displaystyle \frac {1}{2}}  & {\displaystyle \frac {1}{3}} 
+ & {\displaystyle \frac {1}{4}} 
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{det(A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {7}{12}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+La famille $(\varphi_1,\varphi_2,\varphi_3,\varphi_4)$ forme donc une
+base de $E^*$. 
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{X:=vector([1,x,x^2,x^3]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+X := [1, \,x, \,x^{2}, \,x^{3}]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Si $P\in E$ admet comme décomposition $P=ae_1+be_2+ce_3+de_4$, alors
+$$A\cdot \left(\begin{array}{c} a \\ b \\ c \\ d \end{array}\right)
+  = \left(\begin{array}{c} \varphi_1(P) \\ 
+                           \varphi_2(P) \\ 
+                           \varphi_3(P) \\ 
+                           \varphi_4(P) \end{array}\right)$$
+On a donc $4$ systèmes linéaires à résoudre pour trouver la base
+duale~:
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{linsolve(A,[1,0,0,0]);P[1]:=evalm(" &* X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! {\displaystyle \frac {-16}{7}} , \,{\displaystyle 
+\frac {54}{7}} , \,{\displaystyle \frac {-39}{7}} , \,
+{\displaystyle \frac {8}{7}}  \!  \right] 
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+{P_{1}} :=  - {\displaystyle \frac {16}{7}}  + {\displaystyle 
+\frac {54}{7}} \,x - {\displaystyle \frac {39}{7}} \,x^{2} + 
+{\displaystyle \frac {8}{7}} \,x^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{linsolve(A,[0,1,0,0]);P[2]:=evalm(" &* X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! {\displaystyle \frac {-1}{7}} , \,{\displaystyle 
+\frac {6}{7}} , \,{\displaystyle \frac {-9}{7}} , \,
+{\displaystyle \frac {4}{7}}  \!  \right] 
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+{P_{2}} :=  - {\displaystyle \frac {1}{7}}  + {\displaystyle 
+\frac {6}{7}} \,x - {\displaystyle \frac {9}{7}} \,x^{2} + 
+{\displaystyle \frac {4}{7}} \,x^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{linsolve(A,[0,0,1,0]);P[3]:=evalm(" &* X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! {\displaystyle \frac {6}{7}} , \,{\displaystyle 
+\frac {-29}{7}} , \,{\displaystyle \frac {33}{7}} , \,
+{\displaystyle \frac {-10}{7}}  \!  \right] 
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+{P_{3}} := {\displaystyle \frac {6}{7}}  - {\displaystyle \frac {
+29}{7}} \,x + {\displaystyle \frac {33}{7}} \,x^{2} - 
+{\displaystyle \frac {10}{7}} \,x^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{linsolve(A,[0,0,0,1]);P[4]:=evalm(" &* X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! {\displaystyle \frac {24}{7}} , \,{\displaystyle 
+\frac {-60}{7}} , \,{\displaystyle \frac {48}{7}} , \,
+{\displaystyle \frac {-12}{7}}  \!  \right] 
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+{P_{4}} := {\displaystyle \frac {24}{7}}  - {\displaystyle 
+\frac {60}{7}} \,x + {\displaystyle \frac {48}{7}} \,x^{2} - 
+{\displaystyle \frac {12}{7}} \,x^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Vérification~:
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{matrix(4,4,(i,j)->f[j](P[i]));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf\Large Exercice 4}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{euclide:=proc(P,Q)}{}
+\vspace{-.3cm}
+\begin{verbatim}
+       local i,A,B,C,R;
+       A:=P;
+       B:=Q;
+       R:=A,B;
+       while degree(B)<>0 do
+         C:=rem(A,B,x);
+         R:=R,C;
+         A:=B;     
+         B:=C;
+       od;
+       [R];
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{chg_signe:=proc(L)}{}
+\vspace{-.3cm}
+\begin{verbatim}
+       local i,y,R,nb;
+       R:=remove(x->(x=0),L);
+       nb:=0;
+       for i from 2 to nops(R) do
+         if R[i-1]*R[i]<0 then nb:=nb+1 fi;
+       od;
+       nb;
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+
+\newpage
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{sturm:=proc(P)}{}
+\vspace{-.3cm}
+\begin{verbatim}
+       local i,A,B,C,R;
+       A:=P;
+       B:=-diff(P,x);
+       R:=A,B;
+       while degree(B)<>0 do
+         C:=-rem(A,B,x);
+         R:=R,C;
+         A:=B;     
+         B:=C;
+       od;
+       [R];
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eval_sturm:=proc(P,a)}{}
+\vspace{-.38cm}
+\begin{verbatim}
+       chg_signe(subs(\{x=a\},sturm(P)));
+      end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=expand((x-1)*(x+2)*(x-3));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := x^{3} - 2\,x^{2} - 5\,x + 6
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\mapleresult
+\begin{maplettyout}
+\end{maplettyout}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(v->eval_sturm(P,v),-4..4);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP201.eps}
+\end{center}
+
+\end{maplegroup}
+
+On constate que {\tt eval\_sturm} augmente de $1$ à chaque zéro de $P$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eval_sturm(P,4)-eval_sturm(P,-4);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+3
+\]
+\end{maplelatex}
+\end{maplegroup}
+
+$\text{\tt eval\_sturm}(P,b)-\text{\tt eval\_sturm}(P,a)$ représente
+le nombre de zéros du polynôme $P$ dans l'intervalle $[a,b[$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{zero_simple:=proc(P)}{}
+\vspace{-.26cm}
+\begin{verbatim}
+        quo(P,gcd(P,diff(P,x)),x) 
+       end:
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+
+Il faut en effet calculer $$\frac{P}{\pgcd(P,P')}$$
+Pour le vérifier on écrie $P$ sous la forme
+$$P(X)=\alpha\prod_{i=1}^n \left(X-a_i\right)^{r_i}\quad a_i\in\C$$
+On sait alors que chaque $a_i$ est un zéro d'ordre $r_i-1$ pour
+$P'$. Par conséquent, en notant
+$$\Pi(X)=\prod_{i=1}^n \left(X-a_i\right)^{r_i-1}$$
+on a
+$$\Pi | P'\text{ et donc }
+\Pi | \pgcd(P,P')$$
+Si $\deg(\Pi)<\deg(\pgcd(P,P'))$, il existe $a\in\C-\{a_i | r_i>1\}$
+tel que $X-a | \pgcd(P,P')$ et par suite $P(a)=P'(a)=0$. Or ceci est
+impossible si $a\not\in\{a_i | r_i>1\}$ donc $\Pi=\pgcd(P,P')$. On a
+ainsi
+$$\frac{P}{\pgcd(P,P')}=\alpha\prod_{i=1}^n \left(X-a_i\right)$$
+ 
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=(x-1)^3*(x-2)^2*(x-3);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := (x - 1)^{3}\,(x - 2)^{2}\,(x - 3)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(zero_simple(P));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(x - 1)\,(x - 2)\,(x - 3)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\end{document}

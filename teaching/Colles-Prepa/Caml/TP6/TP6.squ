@@ -1,0 +1,163 @@
+let list_num = ["Pierre",4131;
+                "Paul",2134;
+                "Jacques",7697;
+                "Arthur",2964;
+                "Michel",9871];;
+
+type etiquette = Mot of string
+               | Prefixe of string ;;
+
+type arbre = Noeud of etiquette * (char * arbre) list ;;
+
+
+let arbre1 =
+ Noeud
+  (Prefixe "",
+   [`c`,
+    Noeud
+     (Prefixe "c",
+      [`a`,
+       Noeud
+        (Prefixe "ca",
+         [`m`, Noeud (Prefixe "cam", [`l`, Noeud (Mot "caml", [])]);
+          `f`,
+          Noeud
+           (Prefixe "caf",
+            [`\233`, Noeud (Mot "caf\233", [`s`, Noeud (Mot "caf\233s", [])])]);
+          `r`,
+          Noeud
+           (Prefixe "car",
+            [`t`, Noeud (Prefixe "cart", [`e`, Noeud (Mot "carte", [])])])])]);
+    `j`,
+    Noeud
+     (Prefixe "j",
+      [`a`,
+       Noeud
+        (Prefixe "ja",
+         [`v`, Noeud (Prefixe "jav", [`a`, Noeud (Mot "java", [])])])])]);;
+
+let arbre2 =
+Noeud
+  (Prefixe "",
+   [`c`,
+    Noeud
+     (Prefixe "c",
+      [`a`,
+       Noeud
+        (Prefixe "ca",
+         [`n`,
+          Noeud
+           (Prefixe "can",
+            [`t`,
+             Noeud
+              (Prefixe "cant",
+               [`i`,
+                Noeud
+                 (Prefixe "canti",
+                  [`n`,
+                   Noeud (Prefixe "cantin", [`e`, Noeud (Mot "cantine", [])])])]);
+             `a`,
+             Noeud
+              (Prefixe "cana",
+               [`r`,
+                Noeud
+                 (Prefixe "canar",
+                  [`d`, Noeud (Mot "canard", []);
+                   `i`, Noeud (Mot "canari", [])])]);
+             `d`,
+             Noeud
+              (Prefixe "cand",
+               [`i`,
+                Noeud
+                 (Prefixe "candi",
+                  [`d`,
+                   Noeud (Prefixe "candid", [`e`, Noeud (Mot "candide", [])])])])])])])]);;
+
+let arbre3=
+ Noeud
+  (Prefixe "",
+   [`a`,
+    Noeud
+     (Prefixe "a",
+      [`b`,
+       Noeud
+        (Prefixe "ab",
+         [`r`,
+          Noeud
+           (Prefixe "abr",
+            [`i`,
+             Noeud
+              (Prefixe "abri",
+               [`c`,
+                Noeud
+                 (Prefixe "abric",
+                  [`o`,
+                   Noeud (Prefixe "abrico", [`t`, Noeud (Mot "abricot", [])])])])])]);
+       `l`,
+       Noeud
+        (Prefixe "al",
+         [`l`,
+          Noeud
+           (Prefixe "all",
+            [`u`,
+             Noeud
+              (Prefixe "allu",
+               [`m`,
+                Noeud
+                 (Prefixe "allum",
+                  [`e`,
+                   Noeud
+                    (Prefixe "allume",
+                     [`t`, Noeud (Prefixe "allumet", [`t`, 
+                             Noeud (Prefixe "allumett", [`e`, 
+                              Noeud (Mot "allumette", [])])]);
+                      `r`, Noeud (Mot "allumer", [])])])])])])]);
+    `j`,
+    Noeud
+     (Prefixe "j",
+      [`a`,
+       Noeud
+        (Prefixe "ja",
+         [`v`, Noeud (Prefixe "jav", [`a`, Noeud (Mot "java", [])])])]);
+    `c`,
+    Noeud
+     (Prefixe "c",
+      [`a`,
+       Noeud
+        (Prefixe "ca",
+         [`m`, Noeud (Prefixe "cam", [`l`, Noeud (Mot "caml", [])]);
+          `f`,
+          Noeud
+           (Prefixe "caf",
+            [`\233`, Noeud (Mot "caf\233", [`s`, Noeud (Mot "caf\233s", [])])]);
+          `r`,
+          Noeud
+           (Prefixe "car",
+            [`t`, Noeud (Prefixe "cart", [`e`, Noeud (Mot "carte", [])])]);
+          `n`,
+          Noeud
+           (Prefixe "can",
+            [`t`,
+             Noeud
+              (Prefixe "cant",
+               [`i`,
+                Noeud
+                 (Prefixe "canti",
+                  [`n`,
+                   Noeud (Prefixe "cantin", [`e`, Noeud (Mot "cantine", [])])])]);
+             `a`,
+             Noeud
+              (Prefixe "cana",
+               [`r`,
+                Noeud
+                 (Prefixe "canar",
+                  [`d`, Noeud (Mot "canard", []);
+                   `i`, Noeud (Mot "canari", [])])]);
+             `d`,
+             Noeud
+              (Prefixe "cand",
+               [`i`,
+                Noeud
+                 (Prefixe "candi",
+                  [`d`,
+                   Noeud (Prefixe "candid", [`e`, Noeud (Mot "candide", [])])])])])])])]);;

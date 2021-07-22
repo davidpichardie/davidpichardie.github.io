@@ -1,0 +1,4 @@
+\input{article.hva}
+\input{fancysection.hva}
+\colorsections{200}
+

@@ -1,0 +1,143 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+
+\title{TP2 {\sc Maple} : Polynômes}
+\author{}
+\date{}
+
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+
+\pagestyle{fancy}
+\lhead{TP2 {\sc Maple}}
+\rhead{Polynômes}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+ 
+\newcounter{numsubquestion}
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\setcounter{numsubquestion}{1}\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newenvironment{subquestion}{\smallskip\noindent{\bf \thenumquestion.\thenumsubquestion}}%
+{\stepcounter{numsubquestion}\smallskip}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{question}
+
+\begin{subquestion}
+Factoriser le polynôme suivant sur $\R$ puis sur $\C$.
+$$P=x^5-x^4-4x^3+4x^2-5x+5$$    
+\end{subquestion}
+\vspace{-5ex}
+
+\begin{subquestion}
+Décomposer la fraction rationelle suivante en élément simple dans $\R$
+puis dans $\C$.
+$$F=\frac{1}{X^7 + 27 X^4 - X^3 - 27}$$
+\end{subquestion}
+Commandes {\sc Maple} : {\tt parfrac, factor, solve, denom}
+\end{question}
+
+\begin{question}
+Quelle est la multiplicité de $1$ dans le polynôme suivant, $n\in\N$ ?
+$$P_n=X^{2n} - n^2 X^{n+1} + 2 (n^2-1) X^n - n^2 X^{n-1} + 1$$
+
+Commandes {\sc Maple} : {\tt subs, simplify, diff}
+\end{question}
+
+\begin{question}
+Soient $E$ l'espace vectoriel des polynômes de $\R [X]$ de degré
+inférieur ou égale à $3$, $\varphi_1$, $\varphi_2$, $\varphi_3$,
+$\varphi_4$ les éléments de $E^*$ définis par~: 
+$$\forall P\in E\quad
+   \varphi_1(P)=P(1),\ 
+   \varphi_2(P)=P(2),\ 
+   \varphi_3(P)=P'(1),\ 
+   \varphi_4(P)=\int_0^1 P(x)\,dx
+$$
+Montrer que $\varphi_1$, $\varphi_2$, $\varphi_3$,
+$\varphi_4$ forment une base de $E^*$ et en donner la base duale. 
+Vérifier vos résultats.
+
+Indication : Ecrire les $\varphi_i$ dans la base duale usuelle de $E$.
+
+Commandes {\sc Maple} : {\tt matrix(4,4,(i,j)->...), linsolve}
+\end{question}
+
+\begin{question} {\bf (Suite de Sturm)}
+
+\begin{subquestion}
+Ecrire une fonction qui renvoie la liste des restes obtenus lors du
+calcul du pgcd de deux polynômes par l'algorithme d'Euclide.
+
+Test : {\tt euclide}$(x^5+1,x^3+3)=[x^5+1,x^3+3,1-3x^2,3+\frac{1}{3}x,-242]$
+
+Commandes {\sc Maple} : {\tt rem, degree}
+\end{subquestion}
+
+\begin{subquestion}
+Ecrire une fonction qui calcule le nombre de changements de signes
+dans une liste, sans tenir compte des valeurs nulles.
+
+Indication : Pour enlever les zéros d'une liste {\tt L}, utiliser la commande
+{\tt remove(x->(x=0),L)}.
+
+Test : {\tt chg\_signe}$([-2,0,3,0,-4,-2,1,0])=3$
+\end{subquestion}
+
+\begin{subquestion}
+Ecrire une fonction qui calcule pour un polynôme $P$ donné, les $s$
+premiers termes de la suite 
+$P_0,P_1,\ldots,P_{s+1}$ définie par~:
+$$P_0=P,\ P_1=-P',\ P_2=-P_0 \mod P_1,\ldots,
+            P_{i+1}=-P_{i-1} \mod P_i,\ldots,P_{s+1}=0$$
+
+C'est une {\it suite de Sturm} du polynôme $P$.
+
+Test : {\tt sturm}$(x^4-20x^2+9x-8)=
+[x^3-2x^2-5x+6, -3x^2+4x+5, -\frac{44}{9}+\frac{38}{9}x, -\frac{2025}{361}]$
+\end{subquestion}
+
+\begin{subquestion}
+Ecrire une fonction qui donne le nombre de changements de signes dans
+une suite de Sturm évaluée en un point $x$ donné. 
+
+Test : {\tt eval\_sturm}$(x^3-2x^2-5x+6,0)$=1
+\end{subquestion}
+
+\begin{subquestion}
+Grâce à un représentation graphique, proposer une interprétation de
+l'entier
+$$\text{\tt eval\_sturm}(P,b)-\text{\tt eval\_sturm}(P,a)$$
+où $P$ est le polynôme $x^3-2x^2-5x+6$ et $a<b$. 
+
+Cette propriété se généralise au polynômes de $\R[X]$ à zéros
+simples. Tester-le avec d'autres exemples.
+\end{subquestion}
+
+\begin{subquestion}
+Ecrire une fonction qui pour un polynôme $P$ de $\R[X]$, renvoie un polynôme 
+possédant les même zéros, mais tous simples.
+
+Commandes {\sc Maple} : {\tt quo, gcd, diff}
+\end{subquestion}
+\end{question}
+
+\end{document}
+

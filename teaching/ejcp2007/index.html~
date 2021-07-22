@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>David Pichardie - Home page</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<a name="top" id="top"></a>
+<center>
+
+<div id="header">
+<h1>David Pichardie</h1>
+<h2>Teaching</h2>
+</div>
+		
+<div id="content">
+
+<div id="sidebar">
+<div class="submenu">
+  <h1>Menu</h1>
+  <a href="index.html">Home</a>
+  <a href="research.html">Research</a>
+  <a href="publi.html">Publications</a>
+  <a href="teaching.html">Teaching</a>
+</div>
+</div>
+
+<div id="mainbar">
+
+<h1>Semantics and program analysis</h1>
+
+<img class=articleimg src=img/fr.gif>
+<p>
+Course given in the Research Master of Rennes on
+dataflow analysis and abstract interpretation.
+<a href="M2/SAP">[More...]</a>
+</p>
+
+<h1>Deductive Verification Methods</h1>
+
+<img class=articleimg src=img/fr.gif>
+<p>
+Course given in the Research Master of Rennes about the Coq proof
+assistant and some fundamental notion is deductive techniques.
+<a href="M2/MDV">[More...]</a>
+</p>
+
+</div>
+</div>
+
+<div id="footer">
+Page designed by <a href="http://www.jameskoster.co.uk">James Koster</a>
+via <a href="http://www.oswd.org/">OSWD</a> and shamefully stolen on <a href="http://pauillac.inria.fr/~xleroy/">Xavier Leroy's homepage</a>.
+</div>
+</center>
+</body>
+</html>

@@ -1,0 +1,1099 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage{maple2e}
+\usepackage[frenchb]{babel}
+ 
+
+
+\title{corrigé TP4 {\sc Maple} : Suites et séries de fonctions}
+\author{}
+\date{}
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP4 {\sc Maple}}
+\rhead{Suites et séries de fonctions}
+
+
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\pgcd}{\operatorname{pgcd}}
+
+
+\begin{document}
+
+{\bf\Large Exercice 1}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f := (x,n)->x^n;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := (x, \,n)\rightarrow x^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq(f(x,n),n=1..20)], x=0..1,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP401.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{animate(f(x,n), x=0..1, n=1..40,
+frames=40);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+La suite $\left(f_n\right)_{n\in\N}$ converge simplement sur $[0,1]$
+vers la fonction $f$ définie sur $[0,1]$ par~:
+$$
+f(x)=\left\{\begin{array}{ll}
+0 & \text{si }x\in[0,1[ \\
+1 & \text{si }x=1
+\end{array}\right.
+$$
+
+Chaque $f_n$ est continue alors que $f$ ne l'est pas en $1$, donc il
+n'y a pas convergence uniforme sur $[0,1]$.
+
+Il y a convergence uniforme sur tous les compacts de $[0,1[$ puisque
+pour tout $[a,b]\subset[0,1[$,
+$$\sup_{x\in[a,b]} |f_n(x)-f(x)|= \sup_{x\in[a,b]} x^n = b^n
+  \xrightarrow[n\to + \infty]{} 0\quad \text{car }0<b<1$$
+
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g := (x,n)->n*x*exp(-n*x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+g := (x, \,n)\rightarrow n\,x\,e^{( - n\,x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq(g(x,n),n=1..20)], x=0..1,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP403.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{animate(g(x,n), x=0..1, n=1..40, color=black,
+frames=40, numpoints=100);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+C'est une \guillemotleft bosse glissante\guillemotright . Il y a convergence simple sur $[0,1]$ vers
+la fonction $g\equiv 0$.
+
+Bien que $g$ soit continue, il n'y a pas convergence uniforme sur
+$[0,1]$ puisque si on pose
+$$x_n=\frac{1}{n}\quad\forall n\in\N^*$$
+on a
+$$  x_n \xrightarrow[n\to +\infty]{}0 \text{ et } g_n(x_n)=\frac{1}{e}\quad\forall
+  n\in \N^*$$
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{limit(g(1/n,n),n=infinity);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e^{(-1)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Par contre, il y a convergence uniforme sur les compacts de
+$]0,1]$. Pour tout compact $[a,b]\subset]0,1]$ une étude de fonction
+montre que chaque $g_n$ atteint son maximum en $\frac{1}{n}$ et
+décroit sur $]\frac{1}{n},1]$. Donc pour $n$ assez grand on a
+$$\sup_{x\in[a,b]}|g_n(x)-g(x)|=
+  \sup_{x\in[a,b]} g_n(x)=g_n(a)\xrightarrow[n\to +\infty]{}0$$
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h := (x,n)->(1+x/n)^n;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+h := (x, \,n)\rightarrow (1 + {\displaystyle \frac {x}{n}} )^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{limit(h(x,n),n=infinity);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e^{x}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq(h(x,n),n=1..20)], x=-5..5,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP405.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{animate(exp(x)-h(x,n), x=-5..1, n=1..40,
+color=black, frames=40);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+Il y a convergence simple sur $\R$ vers la fonction exponentielle
+(faire un développement limité).
+
+La fonction limite $h$ est continue mais il n'y a pas convergence
+uniforme sur $\R$ car si on considère la suite
+$$x_n=n\quad\forall n\in\N$$
+on a
+$$\lim_{n\to +\infty}|h_n(x_n)-h(x_n)|=
+  \lim_{n\to +\infty}|2^n-e^n|=+\infty$$
+
+Par contre, il y a convergence uniforme sur les compacts de $\R$, mais
+le résultat est un peu technique à prouver.
+
+{\bf\Large Exercice 2}
+
+{\bf 2.1}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f := x->(-1)^floor(x/Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := x\rightarrow (-1)^{{\rm floor}(\frac {x}{\pi })}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(f(x),x=-4*Pi..4*Pi, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP407.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g := x->arctan(tan(x/2));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+g := x\rightarrow {\rm arctan}({\rm tan}({\displaystyle \frac {1
+}{2}} \,x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(g(x),x=-4*Pi..4*Pi, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP408.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h := x->arccos(cos(x));}{%
+}
+\end{mapleinput}
+
+\begin{Maple Output}
+\end{Maple Output}
+
+\mapleresult
+\begin{maplelatex}
+\[
+h := x\rightarrow {\rm arccos}({\rm cos}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(h(x),x=-4*Pi..4*Pi, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP409.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+{\bf 2.2}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{c := proc(f,n)}{}
+\vspace{-.32cm}
+\begin{verbatim}
+         1/(2*Pi) * int(f(t) * exp(-I*n*t), t=-Pi..Pi);
+      end: 
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{a := proc(f,n)}{}
+\vspace{-.32cm}
+\begin{verbatim}
+         1/Pi * int(f(t) * cos(n*t), t=-Pi..Pi);
+      end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{b := proc(f,n)}{}
+\vspace{-.32cm}
+\begin{verbatim}
+         1/Pi * int(f(t) * sin(n*t), t=-Pi..Pi);
+      end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+
+On teste ces fonctions en utilisant leur linéarité et les calculs
+suivants~:
+\begin{eqnarray*}
+    \frac{1}{\pi}\int_{-\pi}^{\pi} \cos(mt) \cos(nt) dt&=&\delta_{n,m} 
+    \quad \forall
+    n,m\in\N,\ (n,m)\not=(0,0)  \\
+    \frac{1}{\pi}\int_{-\pi}^{\pi} \cos(mt) \cos(nt) dt&=&\delta_{n,m} 
+    \quad \forall
+    n,m\in\N,\ (n,m)\not=(0,0)  \\
+    \frac{1}{\pi}\int_{-\pi}^{\pi} \cos(mt) \sin(nt) dt &=& 0
+    \quad \forall n,m\in\N \\
+    \frac{1}{2\pi}\int_{-\pi}^{\pi} e^{i mt}e^{-i nt} dt &=& 
+    \delta_{n,m}\quad\forall n,m\in\Z
+\end{eqnarray*}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[1]:=x->2;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{1}} := 2
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(a(f[1],i),i=0..10);
+seq(b(f[1],i),i=0..10);
+seq(c(f[1],i),i=-10..10);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+4, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,2, \,0, \,0, \,
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[2]:=x->exp(I*3*x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{2}} := x\rightarrow e^{(3\,I\,x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(a(f[2],i),i=0..10);
+seq(b(f[2],i),i=0..10);
+seq(c(f[2],i),i=-10..10);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,1, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,I, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,
+1, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[3]:=x->cos(x)^3;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{3}} := x\rightarrow {\rm cos}(x)^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{combine(f[3](x),trig);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{4}} \,{\rm cos}(3\,x) + {\displaystyle 
+\frac {3}{4}} \,{\rm cos}(x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(a(f[3],i),i=0..10);
+seq(b(f[3],i),i=0..10);
+seq(c(f[3],i),i=-10..10);;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0, \,{\displaystyle \frac {3}{4}} , \,0, \,{\displaystyle \frac {
+1}{4}} , \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,{\displaystyle \frac {1}{8}} 
+, \,0, \,{\displaystyle \frac {3}{8}} , \,0, \,{\displaystyle 
+\frac {3}{8}} , \,0, \,{\displaystyle \frac {1}{8}} , \,0, \,0, 
+\,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f[4]:=x->sin(x)^5;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{f_{4}} := x\rightarrow {\rm sin}(x)^{5}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{combine(f[4](x),trig);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{16}} \,{\rm sin}(5\,x) - {\displaystyle 
+\frac {5}{16}} \,{\rm sin}(3\,x) + {\displaystyle \frac {5}{8}} 
+\,{\rm sin}(x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(a(f[4],i),i=0..10);
+seq(b(f[4],i),i=0..10);
+seq(c(f[4],i),i=-10..10);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,{\displaystyle \frac {5}{8}} , \,0, \,{\displaystyle \frac {
+-5}{16}} , \,0, \,{\displaystyle \frac {1}{16}} , \,0, \,0, \,0, 
+\,0, \,0
+\]
+\end{maplelatex}
+
+\begin{maplelatex}
+\[
+0, \,0, \,0, \,0, \,0, \,{\displaystyle \frac {1}{32}} \,I, \,0, 
+\, - {\displaystyle \frac {5}{32}} \,I, \,0, \,{\displaystyle 
+\frac {5}{16}} \,I, \,0, \, - {\displaystyle \frac {5}{16}} \,I, 
+\,0, \,{\displaystyle \frac {5}{32}} \,I, \,0, \, - 
+{\displaystyle \frac {1}{32}} \,I, \,0, \,0, \,0, \,0, \,0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf 2.3}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{FourierC := proc(f,n)}{}
+\vspace{-.2cm}
+\begin{verbatim}
+        local S,k;
+        S := 0;
+        for k from -n to n do
+          S := S + c(f,k) * exp(I*k*x);
+        od;
+        S;
+     end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(FourierC(f[i],5),i=1..4);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{2, \,e^{(3\,I\,x)}, \,{\displaystyle \frac {1}{8}} \,e^{
+( - 3\,I\,x)} + {\displaystyle \frac {3}{8}} \,e^{( - I\,x)} + 
+{\displaystyle \frac {3}{8}} \,e^{(I\,x)} + {\displaystyle 
+\frac {1}{8}} \,e^{(3\,I\,x)}, } \\
+ & & {\displaystyle \frac {1}{32}} \,I\,e^{( - 5\,I\,x)} - 
+{\displaystyle \frac {5}{32}} \,I\,e^{( - 3\,I\,x)} + 
+{\displaystyle \frac {5}{16}} \,I\,e^{( - I\,x)} - 
+{\displaystyle \frac {5}{16}} \,I\,e^{(I\,x)} + {\displaystyle 
+\frac {5}{32}} \,I\,e^{(3\,I\,x)} - {\displaystyle \frac {1}{32}
+} \,I\,e^{(5\,I\,x)}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{FourierR := proc(f,n)}{}
+\vspace{-.2cm}
+\begin{verbatim}
+          local S,k;
+          S := a(f,0)/2;
+          for k from 1 to n do
+            S := S + a(f,k)*cos(k*x) + b(f,k)*sin(k*x);
+          od;
+          S;
+       end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{seq(FourierR(f[i],5),i=1..4);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+2, \,{\rm cos}(3\,x) + I\,{\rm sin}(3\,x), \,{\displaystyle 
+\frac {3}{4}} \,{\rm cos}(x) + {\displaystyle \frac {1}{4}} \,
+{\rm cos}(3\,x), \,{\displaystyle \frac {5}{8}} \,{\rm sin}(x) - 
+{\displaystyle \frac {5}{16}} \,{\rm sin}(3\,x) + {\displaystyle 
+\frac {1}{16}} \,{\rm sin}(5\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+En prenant $n$ assez grand la série de fourier correspond avec la
+fonction (ce n'est pas une règle générale !).
+
+{\bf 2.4}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{FejerC := proc(f,n)}{}
+\vspace{-.2cm}
+\begin{verbatim}
+         local S,k;
+         S := FourierC(f,0);
+         for k from 1 to n do
+           S := S + FourierC(f,k)
+         od;
+         S/(n+1);
+      end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{FejerR := proc(f,n)}{}
+\vspace{-.2cm}
+\begin{verbatim}
+         local S,k;
+         S := FourierR(f,0);
+         for k from 1 to n do
+         S := S + FourierC(f,k)
+         od;
+         S/(n+1);
+      end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+
+{\bf 2.5}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=n->evalc(FourierC(f,n));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+S := n\rightarrow {\rm evalc}({\rm FourierC}(f, \,n))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{F:=n->evalc(FejerC(f,n));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+F := n\rightarrow {\rm evalc}({\rm FejerC}(f, \,n))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+La commande {\tt evalc} permet de simplifier des réultats à valeur
+complexe.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{for i from 1 to 20 do}{}
+\vspace{-.32cm}
+\begin{verbatim}
+         P[i]:=plot([f(x),S(i),F(i)], x=-Pi..Pi,
+                 color=[black,green,blue],discont=true);
+      od:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=[seq(P[i],i=1..20)]:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):
+display(P, insequence=true);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+
+On utilise ici une autre méthode pour réaliser des animations : on
+mémorise différents tracés et on les affiche ensuite.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),S(20),F(20)], x=-Pi..Pi,
+color=[black,green,blue], discont=true);
+}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP411.eps}
+\end{center}
+
+\end{maplegroup}
+
+On constate que la série de Fourier converge simplement vers $f$ sauf
+au point de discontinuité de la fonction. Il n'y a pas de convergence
+uniforme sur $\R$ puisque $f$ n'est pas continue sur $\R$. 
+
+La série de Fourier oscille
+de plus en plus au voisinage des discontinuités : c'est le {\bf
+  phénomène de Gibbs}. 
+
+La somme de Féjer converge elle aussi vers $f$
+mais sans oscillations.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g := x->arctan(tan(x/2));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+g := x\rightarrow {\rm arctan}({\rm tan}({\displaystyle \frac {1
+}{2}} \,x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=n->evalc(FourierC(g,n));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+S := n\rightarrow {\rm evalc}({\rm FourierC}(g, \,n))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{F:=n->evalc(FejerC(g,n));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+F := n\rightarrow {\rm evalc}({\rm FejerC}(g, \,n))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{for i from 1 to 20 do}{}
+\vspace{-.3cm}
+\begin{verbatim}
+         P[i]:=plot([h(x),S(i),F(i)], x=-Pi..Pi,color=[black,green,blue],
+                  discont=true);
+       od:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=[seq(P[i],i=1..20)]:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):
+display(P, insequence=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),S(20),F(20)], x=-Pi..Pi,
+color=[black,green,blue], discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP413.eps}
+\end{center}
+
+\end{maplegroup}
+
+On peut tirer les même conclusions que pour la fonction précédente.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h := x->arccos(cos(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+h := x\rightarrow {\rm arccos}({\rm cos}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=n->evalf(FourierR(h,n));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+S := n\rightarrow {\rm evalf}({\rm FourierR}(h, \,n))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{F:=n->evalf(FejerR(h,n));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+F := n\rightarrow {\rm evalf}({\rm FejerR}(h, \,n))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\sc Maple} n'est pas capable de calculer les intégrales demandées de
+manière exacte. Il faut lui faire appliquer des algorithmes de calcul
+approché grâce à la commande {\tt evalf}.
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{for i from 1 to 10 do}{}
+\vspace{-.3cm}
+\begin{verbatim}
+         P[i]:=plot([h(x),S(i)], x=-Pi..Pi,color=[black,green],
+            discont=true);
+       od:  
+\end{verbatim}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=[seq(P[i],i=1..10)]:}{%
+}
+\end{mapleinput}
+
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):
+display(P, insequence=true);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([h(x),S(4),F(4)], x=-Pi..Pi,
+color=[black,green,blue], discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP415.eps}
+\end{center}
+
+\end{maplegroup}
+
+Cette fois, il y a convergence uniforme sur $\R$. La somme de Féjer
+approche $h$ moins rapidement que la série de Fourier au niveau de la
+discontinuité de la dérivé.
+
+A la lumière du cours sur les séries de Fourier on peut justifier les
+différentes convergences observées ici. Les fonctions $f$ et $g$ sont
+$\mathcal{C}^1$ par morceaux mais pas continue donc on ne peut
+appliquer que le premier théorème de Dirichlet qui dit que la série de Fourier
+converge simplement en les points de continuité. 
+
+La fonction $h$ est
+$\mathcal{C}^1$ par morceaux et continue donc le deuxième théorème de
+Dirichlet s'applique : la série de Fourier converge normalement sur $\R$.
+
+La somme de Féjer n'est pas à votre programme : elle permet d'énoncer
+des résultats de convergence pour les fonctions seulement continues.
+
+\vspace{.5cm}
+{\bf\Large Exercice 3}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{u:=n->(-1)^(n+1)/n;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+u := n\rightarrow {\displaystyle \frac {(-1)^{(n + 1)}}{n}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=n->sum(u(k),k=1..n);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A := n\rightarrow {\displaystyle \sum _{k=1}^{n}} \,{\rm u}(k)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B:=n->sum(u(2*k-1)+u(4*k-2)+u(4*k),k=1..n);}{
+%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+B := n\rightarrow {\displaystyle \sum _{k=1}^{n}} \,({\rm u}(2\,k
+ - 1) + {\rm u}(4\,k - 2) + {\rm u}(4\,k))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalf(A(3000)),evalf(ln(2));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+.6926474306, \,.6931471806
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalf(B(1000)),evalf(ln(2)/2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+.3464486213, \,.3465735903
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+La série $\sum u_n$ converge par le critère des séries alternées. On
+peut montrer que~:
+$$\sum_{n=1}^{+\infty} u_n = \ln 2$$
+
+Un simple calcul donne~:
+$$u_{2n-1}+u_{4n-2}+u_{4n} = \frac{u_{2n-1}+u_{2n}}{2}$$
+
+Ainsi pour tout $N\in\N^*$
+$$
+\sum_{n=1}^N u_{2n-1}+u_{4n-2}+u_{4n} =
+   \frac{1}{2} \sum_{n=1}^N u_{2n-1}+u_{2n}  =
+   \frac{1}{2} \sum_{k=1}^{2N} u_{k}
+$$
+Par conséquent 
+$$\sum_{n=1}^{+\infty} u_{2n-1}+u_{4n-2}+u_{4n} =
+  \frac{1}{2} \sum_{n=1}^{+\infty} u_n$$
+
+Cet exemple montre qu'on ne peut pas toujours permuter l'ordre de
+sommation d'une série. Si la série converge absolument l'ordre de
+sommation est indifférent (c'est un théorème de votre cours je
+pense). Par contre c'est faux si la série est seulement
+semi-convergente ({\it i.e.} convergente mais pas absolument
+convergente). Il existe même un résultat assez frappant : pour toute
+série $\sum u_n$ réelle semi-convergente et tout
+$a\in\R\cup\{+\infty\}\cup\{-\infty\}$, il existe une permutation
+$\sigma:\N\to\N$ telle que
+$$\sum_{n=1}^{+\infty} u_{\sigma(n)}=a$$ 
+
+\end{document}
+%% End of Maple V Output

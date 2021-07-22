@@ -1,0 +1,224 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstcol}
+\usepackage{amsmath,theorem}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+%\usepackage[francais]{layout}
+
+
+\title{TP6 {\sc Caml} : Plus grand préfixe commun}
+\author{}
+\date{}
+
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\theoremstyle{break}
+\newtheorem{definition}{Définition}
+\newtheorem{proposition}{Proposition}
+ 
+\pagestyle{fancy}
+\lhead{Corrigé TP6 {\sc Caml}}
+\rhead{Plus grand préfixe commun}
+ 
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\section{Liste d'association}
+
+\begin{question}
+\begin{verbatim}
+let rec appartient a = function
+  [] -> false 
+| (x,_)::q -> x=a || appartient a q
+;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec recherche a = function
+  [] -> failwith "objet absent" 
+| (x,b)::q -> if x=a then b
+              else recherche a q
+;;  
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec change a b l = function
+     [] -> [(a,b)]
+   | (x,c)::q -> if x=a then (a,b)::q
+                        else (x,c)::(change_rec q)
+;; 
+\end{verbatim}
+\end{question}
+
+\section{Recherche du plus grand préfixe commun}
+
+\subsection{Conversion chaîne de caractères $\leftrightarrow$ liste de
+  caractères}
+
+\begin{question}
+On construit la liste dans l'ordre inverse des lettres du mot. Si on
+parcoure le mot de gauche à droite, il faut utiliser la concaténation
+de liste qui est plus coûteuse qu'un simple ajout en tête. 
+\begin{verbatim}
+let char_list_of_string s=
+  let n = string_length s in
+  let l = ref [] in
+  for i=1 to n do
+    l:= s.[n-i] :: !l;
+  done;
+  !l
+;;  
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Cette solution n'est sûrement pas la moins coûteuse à cause de la
+concaténation, mais elle est simple à écrire.
+\begin{verbatim}
+let rec string_of_char_list = function
+    [] -> ""
+  | c::q -> (string_of_char c)^(string_of_char_list q)
+;;  
+\end{verbatim}
+\end{question}
+
+\subsection{Utilisation d'un arbre $n-$aire}
+
+\subsubsection{Recherche dans l'arbre}
+
+\begin{question}
+\begin{verbatim}
+let rec plus_grand_prefixe = function
+    Noeud (Mot m,_) -> m
+  | Noeud (Prefixe _,[c,a]) -> plus_grand_prefixe a
+  | Noeud (Prefixe m,_) -> m
+;;  
+\end{verbatim}
+On part de la racine de l'arbre et on descent tant qu'il n'y a qu'un
+seul fils. On s'arrête quand on rencontre un mot, ou bien quand il n'y
+a plus de fils (une feuille), ou qu'il y en a au moins deux (un
+embranchement). 
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec arbre_prefixe_liste = fun
+ | [] a -> a
+ | (c::l) (Noeud (e,fils)) -> if (appartient c fils) then 
+                                 arbre_prefixe_liste l (recherche c fils)
+                              else failwith "ce n'est pas un préfixe"
+;; 
+let arbre_prefixe s a = arbre_prefixe_liste (char_list_of_string s) a;; 
+\end{verbatim}
+On lit le mot lettre par lettre et on recherche à chaque étape le fils
+correspondant à la lettre lue. On renvoie l'arbre courant lorsqu'il
+n'y a plus de lettre à lire.
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let complete a p= plus_grand_prefixe (arbre_prefixe s p;;  
+\end{verbatim}
+On se place d'abord sur l'arbre des mots qui commence par le préfixe
+{\tt p}, puis on recherche le plus grand préfixe commun de ce
+sous-arbre. 
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec concat_list = function
+   [] -> []
+  |l::q -> l@(concat_list q)
+;;
+
+let rec liste_noms = function
+   Noeud (Prefixe _,l) -> concat_list (map (fun (c,a) -> liste_noms a) l)
+ | Noeud (Mot m,l) -> m::(concat_list (map (fun (c,a) -> liste_noms a) l))
+;;
+
+let trouve_complements a p = liste_noms (arbre_prefixe s p);;
+\end{verbatim}
+La fonction {\tt liste\_noms} renvoie la liste des noms présents dans
+un arbre. La fonction {\tt map} de {\sc Caml} applique une fonction à
+tous les éléments d'une liste et renvoie la liste image.
+
+Pour la fonction {\tt trouve\_complements}, on se place dans le
+sous-arbre des mots qui commencent par {\tt p} et on appelle {\tt liste\_noms}.
+\end{question}
+
+\subsubsection{Construction de l'arbre}
+
+\begin{question}
+Pour alléger le programme, on utilise cette petite fonction qui
+renvoie la chaîne de caractères d'une étiquette~:
+\begin{verbatim}
+let nom_etiquette = function
+    Mot s -> s
+  | Prefixe s -> s
+;;
+\end{verbatim}
+
+Lorsque qu'il n'y a plus de lettres à lire, on transforme l'étiquette
+courante en un mot~: le mot à insérer existait déjà dans l'arbre ou
+était un préfixe de certains mots de l'arbre.
+
+Sinon, pour chaque lettre du mot à insérer, on regarde si le n\oe ud
+courant possède déjà une branche étiquettée par cette lettre~:
+\begin{itemize}
+\item si oui, on continue l'insertion sur le fils correspondant en
+  modifiant ce fils à l'aide de la fonction {\tt change} et d'un appel
+  récursif,
+\item si non, on rajoute un nouveau fils au n\oe ud courant avec un
+  appel récursif. 
+\end{itemize}
+
+\begin{verbatim}
+let rec insere_mot_liste = fun
+  | (Noeud (e,fils)) []   -> Noeud (Mot (nom_etiquette e),fils)
+  | (Noeud (e,fils)) (c::l) -> 
+         if (appartient c fils) then 
+               let arbre_c = recherche c fils in
+               let nouveau_arbre_c = (insere_mot_liste arbre_c l) in
+               (Noeud (e,change c nouveau_arbre_c fils))
+         else
+               let prefixe = (nom_etiquette e)^(string_of_char c) in
+               let arbre_c = Noeud (Prefixe prefixe,[]) in
+               Noeud  (e,(c,insere_mot_liste arbre_c l)::fils)
+;;
+
+let insere_mot a s = insere_mot_liste a (char_list_of_string s);;  
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec construit_arbre = function
+    [] -> Noeud (Prefixe "",[])
+  | s::l -> insere_mot (construit_arbre l) s
+;;
+\end{verbatim}
+\end{question}
+
+\end{document}

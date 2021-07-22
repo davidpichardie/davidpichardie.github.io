@@ -1,0 +1,311 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{pstcol}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+%\usepackage[francais]{layout}
+
+
+\title{TP2 {\sc Caml} : Arbres blancs et noirs}
+\author{}
+\date{}
+
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\pagestyle{fancy}
+\lhead{TP2 {\sc Caml}}
+\rhead{Arbres blancs et noirs}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\noir}[1]{%
+  \Tcircle*[fillstyle=solid,fillcolor=black]{\textcolor{white}{\tt #1}}}
+\newcommand{\blanc}[1]{%
+  \Tcircle{\tt #1}}
+\newcommand{\fin}[1]{%
+  \pstree{#1}{\noir{}\noir{}}}
+\newcommand{\T}[1]{%
+{\Tcircle[linecolor=white]{\small #1}}}
+
+\setlength{\parindent}{0cm}
+ 
+\renewcommand{\O}{\mathcal{O}}
+ 
+\begin{document}
+%\layout
+\maketitle
+ 
+Lors du dernier TP nous avons vu que les opérations de base sur les
+arbres binaires de recherche (insérer, supprimer, rechercher) se
+faisait dans un temp $\O(h)$ avec $h$ la hauteur de l'arbre. Vous avez
+vu en cours que si $n$ est le nombre de noeuds de l'arbre
+$$\log_2(n+1) \leq h \leq n$$
+Pour que les opérations évoquées précédemment soit efficaces (par
+rapport à une simple structure de liste), la hauteur $h$ doit rester
+petite. Nous allons nous intéresser ici à des arbres binaires de
+recherche particuliers, les {\it arbres blancs et noirs}. Ces arbres
+possèdent la propriété suivante
+$$\log_2(n+1) \leq h \leq 2\log_2(n+1)$$
+On peut ainsi effectuer des mises à jours et des recherches en 
+$\O\left(\log_2(n)\right)$.
+
+\section{Définition et structure de donnée}
+
+Un arbre blanc et noir et un arbre binaire de recherche dont chaque
+n\oe ud ou feuille possède une couleur. Il doit vérifier les
+contraintes suivantes~: 
+\begin{enumerate}
+\item un n\oe ud est soit blanc, soit noir,
+\item une feuille est noire,
+\item la racine est noire,
+\item le père d'un n\oe ud blanc est noir,
+\item tous les chemins partant d'un n\oe ud donné et se terminant à
+  une feuille contiennent le même nombre de n\oe uds noirs.
+\end{enumerate}
+
+Pour représenter ces arbres en {\sc Caml} on utilise le type suivant~:
+\begin{verbatim}
+  type Couleur = Blanc | Noir ;;
+  type ArbreRN =
+     Vide
+   | Noeud of enreg_Noeud
+  and enreg_Noeud = 
+    { mutable val     : int;
+      mutable couleur : Couleur;
+      mutable gauche  : ArbreRN;
+      mutable droit   : ArbreRN;
+      mutable pere    : ArbreRN; } ;;
+\end{verbatim}
+
+Pour pouvoir parcourir l'arbre en montant et en descendant, on a
+rajouté un champ {\tt pere} qui pointe vers le père du n\oe ud
+courant. Si un n\oe ud n'a pas de père , on met son champ {\tt pere}
+à {\tt vide} (c'est le cas de la racine d'un arbre).
+
+
+Afin de tester les fonctions écrites dans la suite de ce TP, on
+considérera cet exemple~:
+\begin{verbatim}
+  let rec a11 = Noeud {val=11; couleur=Noir; gauche=a2; droit=a14; pere=Vide}
+  and a2 = Noeud {val=2; couleur=Blanc; gauche=a1; droit=a7; pere=a11}
+  and a1 = Noeud {val=1; couleur=Noir; gauche=Vide; droit=Vide; pere=a2}
+  and a7 = Noeud {val=7; couleur=Noir; gauche=a5; droit=a8; pere=a2}
+  and a5 = Noeud {val=5; couleur=Blanc; gauche=Vide; droit=Vide; pere=a7}
+  and a8 = Noeud {val=8; couleur=Blanc; gauche=Vide; droit=Vide; pere=a7}
+  and a14 = Noeud {val=14; couleur=Noir; gauche=Vide; droit=a15; pere=a11}
+  and a15 = Noeud {val=15; couleur=Blanc; gauche=Vide; droit=Vide; pere=a14} ;;
+\end{verbatim}
+Il correspond à cet arbre~:
+\begin{center}
+\pstree[levelsep=1cm]{\noir{\scriptsize11}}{
+  \pstree{\blanc{2}}{\fin{\noir{1}}
+                     \pstree{\noir{7}}{\fin{\blanc{5}}\fin{\blanc{8}}}}
+  \pstree{\noir{\scriptsize14}}{\noir{}\fin{\blanc{\scriptsize 15}}}
+}
+\end{center}
+
+\section{Lecture d'information}
+
+Toutes les fonctions de cette partie devront renvoyer un message
+d'erreur si l'arbre passé en argument n'a pas la structure requise.
+
+\begin{question}
+Ecrire une fonction {\tt pere : arbreRN -> arbreRN} qui renvoie le
+père  du n\oe ud racine d'un arbre.  Définir de la même manière les
+fonctions {\tt fils\_gauche}, {\tt fils\_droit}, {\tt valeur} et {\tt
+  couleur}. 
+\end{question}
+
+\begin{question}
+En déduire la fonction {\tt est\_fils\_gauche : arbreRN -> bool} qui
+test si le n\oe ud racine d'un arbre est le fils gauche de son père. 
+Définir de la même manière les fonctions {\tt est\_fils\_droit} 
+\end{question}
+
+\begin{question}
+En déduire les fonctions {\tt frere} et {\tt oncle : arbreRN -> arbreRN}.
+\end{question}
+
+\section{Tests}
+
+\begin{question}
+  Pour pouvoir afficher ces arbres, écrire une fonction {\tt
+  transforme} qui convertit un arbre de type {\tt arbreRN} en arbre de
+  type {\tt ArbreClassique} où ce dernier type est défini par~:
+\begin{verbatim}
+  type ArbreClassique =
+     V
+   | N of int*Couleur*ArbreClassique*ArbreClassique ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt test\_pere : arbreRN -> bool} qui vérifie que
+tous les champs {\tt pere} d'un arbre sont valides. On utilisera une
+fonction auxiliaire {\tt test\_pere\_aux : arbreRN -> arbreRN -> bool} 
+telle que {\tt test\_pere\_aux p a} test l'arbre {\tt a} en imposant
+que {\tt p} soit le père de la racine de {\tt a}.
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt test\_prop4 : arbreRN -> bool} qui teste si
+un arbre de type {\tt arbreRN} vérifie la contrainte $4$ des arbres
+blancs et noirs.
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt nb\_noirs : arbreRN -> int} qui renvoie le
+nombre de n\oe uds noirs que contient n'importe quel chemin reliant la
+racine d'un arbre à une de ses feuilles. Si au cours du calcul, la
+contraintes $5$ des arbres blancs et noirs n'est pas vérifié la
+fonction renvoie une erreur de ce type~:
+\begin{verbatim}
+exception StopProp5 ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt test\_prop5 : arbreRN -> bool} qui teste si
+un arbre de type {\tt arbreRN} vérifie la contrainte $5$ des arbres
+blancs et noirs (en utilisant {\tt try...}).
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt testRN : arbreRN -> bool} qui teste si un
+arbre de type {\tt arbreRN} est un arbre blanc et noir. 
+\end{question}
+
+\section{Modifications}
+
+\begin{question}
+Ecrire une fonction {\tt inverse\_couleur : arbreRN -> unit} qui
+inverse la couleur du n\oe ud racine d'un arbre.
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt adopte\_gauche} de type {\tt arbreRN -> arbreRN -> unit}
+telle que {{\tt adopte\_gauche f p}} donne à la racine de {\tt p} l'arbre
+{\tt f} comme fils gauche et modifie en conséquence {\tt
+  f}. Définir de manière symétrique la fonction {\tt adopte\_droit}.
+\end{question}
+
+\begin{question}
+En déduire les fonctions {\tt rotation\_droite} et {\tt
+  rotation\_gauche : arbreRN -> unit} qui réalisent les modifications
+  suivantes sur un arbre~:
+$$
+\parbox[c]{2.3cm}{%
+  \pstree[levelsep=1cm]{\T{p}}{\pstree{\Tcircle{a}}{\pstree{\Tcircle{b}}{\T{x}\T{y}}\T{z}}}
+}
+\begin{array}{c}
+\underrightarrow{\quad\text{\tt rotation\_droite}\quad}\\ \quad \\
+\overleftarrow{\quad\text{\tt rotation\_gauche}\quad}
+\end{array}
+\parbox[c]{2cm}{%
+  \pstree[levelsep=1cm]{\T{p}}{\pstree{\Tcircle{b}}{\T{x}\pstree{\Tcircle{a}}{\T{y}\T{z}}}}
+}
+$$
+Vérifier que ces deux transformations conservent les propriétés d'un
+arbre binaire de recherche.
+\end{question}
+
+\begin{question}
+En déduire les fonctions {\tt rotation\_gauche\_droite} et {\tt
+  rotation\_droite\_gauche} suivantes~:
+$$
+\parbox[c]{2.5cm}{%
+  \pstree[levelsep=1cm]{\T{p}}{\pstree{\Tcircle{a}}{\pstree{\Tcircle{b}}{\T{t}\pstree{\Tcircle{c}}{\T{x}\T{y}}}\T{z}}}
+}
+\xrightarrow[\text{\tt gauche\_droite}]{\text{\tt rotation}}
+\parbox[c]{4.4cm}{%
+  \pstree[levelsep=1cm]{\T{p}}{\pstree{\Tcircle{c}}{\pstree{\Tcircle{b}}{\T{t}\T{x}}\pstree{\Tcircle{a}}{\T{y}\T{z}}}}
+}
+\xleftarrow[\text{\tt droite\_gauche}]{\text{\tt rotation}}
+\parbox[c]{2cm}{%
+  \pstree[levelsep=1cm]{\T{p}}{\pstree{\Tcircle{b}}{\T{t}\pstree{\Tcircle{a}}{\pstree{\Tcircle{c}}{\T{x}\T{y}}\T{z}}}}
+}
+$$
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt insere\_blanc: int -> arbreRN -> arbreRN}
+qui insere une valeur dans un arbre blanc et noir au niveau des
+feuilles et en lui donnant une couleur blanche. La fonction doit
+renvoyer le sous-arbre dont le nouveau n\oe ud est la racine. Cette
+insertion doit seulement maintenir la structure d'arbre binaire de
+recherche. Si la valeur à insérer est déja présente dans l'arbre la
+fonction déclenche l'exception suivante~:
+\begin{verbatim}
+exception FinInsertion ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt mauvais\_blanc : arbreRN -> unit} qui prend
+un sous-arbre {\tt x} en argument dont la racine est blanche et qui
+appartient à un arbre \guillemotleft quasiment\guillemotright  blanc
+et noir : cet arbre vérifie toutes les contraintes énoncées sauf
+éventuellement au niveau de {\tt x} dont le père peut être
+blanc. Cette fonction doit alors modifier l'arbre pour qu'il respecte
+toutes les propriétés des arbres blancs et noirs. Utiliser pour cela
+le squelette fourni dans le fichier {\tt TP2.squ} et les schémas
+suivants qui donnent la solution pour deux cas particuliers~:
+$$
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{g}}{
+   \pstree{\blanc{p}}{\pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}\T{$f$}}
+   \pstree{\blanc{o}}{\T{$c_g$}\T{$c_d$}}
+  }
+}
+\underrightarrow{\quad\text{cas $1$}\quad}
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\blanc{g}}{
+   \pstree{\noir{p}}{\pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}\T{$f$}}
+   \pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}
+  }
+}
+$$
+
+$$
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{g}}{
+   \pstree{\blanc{p}}{\pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}\T{$f$}}
+   \pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}
+  }
+}
+\underrightarrow{\quad\text{cas $2.1$}\quad}
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{p}}{
+   \pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}
+   \pstree{\blanc{g}}{\T{$f$}\pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}}
+  }
+}
+$$
+\end{question}
+
+\begin{question}
+En déduire la fonction {\tt insere : int -> arbreRN -> unit} qui
+insere une valeur dans un arbre blanc et noir en conservant ses
+propriétés. 
+\end{question}
+
+\begin{question}
+Modifier les fonctions précedentes de façon à connaître la racine de
+l'arbre modifiée.
+\end{question}
+\end{document}

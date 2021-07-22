@@ -1,0 +1,21 @@
+\begin{picture}(0,0)%
+\includegraphics{solution.pstex}%
+\end{picture}%
+\setlength{\unitlength}{3522sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(7302,2622)(2611,-5371)
+\put(7471,-5371){\makebox(0,0)[b]{\smash{\SetFigFont{11}{13.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$0$}%
+}}}
+\put(8191,-3571){\makebox(0,0)[b]{\smash{\SetFigFont{11}{13.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}\Large $w_{n+1}$}%
+}}}
+\put(2611,-3931){\makebox(0,0)[rb]{\smash{\SetFigFont{11}{13.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$w_n$}%
+}}}
+\put(5221,-3031){\makebox(0,0)[lb]{\smash{\SetFigFont{11}{13.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$w_n$}%
+}}}
+\end{picture}

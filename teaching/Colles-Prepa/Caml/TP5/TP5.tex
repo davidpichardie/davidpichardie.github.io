@@ -1,0 +1,220 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{graphicx,color}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{gastex}
+
+\title{TP5 {\sc Caml} : Automates et fractales}
+\author{}
+\date{}
+    
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\pagestyle{fancy}
+\lhead{TP5 {\sc Caml}}
+\rhead{Automates et fractales}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\setlength{\parindent}{0cm}
+ 
+\renewcommand{\O}{\mathcal{O}}
+ 
+\begin{document}
+\maketitle
+
+Dans ce TP, nous allons étudier plusieurs méthodes permettant de
+tracer la courbe fractale {\it du dragon}.
+
+\section{Simulation d'automates}
+
+Un automate déterministe est défini par son état (une valeur entière
+dans notre cas) initial, une fonction de transition et une
+valuation. La fonction de transition donne, pour l'état courant de
+l'automate et une transition possible, le nouvel état. La fonction de
+valuation donne, pour un état de l'automate, une valeur entière. Cette
+valeur est calculée par l'automate pour une entrée (chaîne de
+caractères) donnée. 
+
+\begin{verbatim}
+type Etat==int;;
+type automate= { initial : Etat;
+                 arcs    : Etat-> char->Etat;
+                 vals    : Etat->int;
+               };;
+\end{verbatim}
+
+\begin{question}
+  Ecrire une fonction {\tt execute : automate -> string -> int} qui
+  simule le comportement de l'automate passé en argument sur un
+  mot. La valeur rendue est la valuation de l'état final dans lequel
+  se trouve l'automate, après qu'il ait parcouru son entrée.
+\end{question}
+
+
+\begin{question}
+  Simuler le comportement d'un automate reconnaissant le langage des
+  mots terminant pas un $a$ (pour l'alphabet $\{a,b\}$). L'état
+  accepteur prendra la valeur $1$, les autres la valeur $0$. Tester cette
+  simulation sur quelques mots.
+\end{question}
+
+\begin{question}
+  Simuler le comportement de l'automate {\tt auto\_dragon} suivant~:
+ \begin{center}
+ \begin{picture}(80,50)%(-20,-28)
+
+   \node[Nmarks=i](n0)(10,18){0}
+   \node(n1)(40,18){1}
+   \node(n2)(70,5){2}
+   \node(n3)(70,31){3}
+
+   \drawloop(n0){$0$}
+   \drawedge(n0,n1){$1$}
+   \drawedge(n1,n2){$0$}
+   \drawedge(n1,n3){$1$}
+   \drawloop(n2){$0,1$}
+   \drawloop(n3){$0,1$}
+
+ \end{picture}
+ \end{center}
+\end{question}
+
+En prenant pour fonction de valuation~:
+\begin{tabular}[c]{|c|cccc|}
+\hline 
+état & 0 & 1 & 2 & 3 \\
+\hline 
+valuation & 0 & 0 & 0 & 1 \\
+\hline
+\end{tabular}
+
+\begin{question}
+  Ecrire une fonction {\tt base2 : int -> string} qui renvoie la
+  représentation binaire {\bf inverse} d'un entier.
+
+  Exemple~:
+\begin{verbatim}
+#base2 4;;
+- : string = "001"
+\end{verbatim}
+\end{question}
+
+On appelle $P_n$ la valeur renvoyée par la simulation de l'automate
+{\tt auto\_dragon} sur la représentation binaire inverse de $n$.
+
+\begin{question}
+  Ecrire une fonction {\tt nieme\_dragon : int -> int} qui calcule
+  $P_n$ pour un argument $n$ donné.
+\end{question}
+
+\begin{question}
+  On associe une courbe à la suite $\left(P_n\right)_{n\geq 1}$~: en
+  partant du centre de 
+  l'écran (le point $(300,300)$), avancer d'un pas de $4$ puis tourner
+  d'un angle de $\frac{\pi}{2}$ si $P_0=0$ ou $-\frac{\pi}{2}$ si
+  $P_0=1$. Continuer avec les angles associés à
+  $P_2,\ldots,P_n,\ldots$.
+
+  Ecrire la fonction {\tt dragon : int -> unit} qui trace la courbe
+  associée aux $n$ premières valeures de la suite 
+  $\left(P_n\right)_{n\geq 1}$. 
+
+  Exemple~: {\tt \# dragon 31;;}
+\begin{center}
+  \includegraphics{dragon31.eps}
+\end{center}
+
+  Pour effectuer le dessin, utiliser des références pour représenter
+  le point courant et la direction courante~:
+\begin{verbatim}
+  let dx = ref 0
+  and dy = ref 1
+  and x = ref 300
+  and y = ref 300 in ...
+\end{verbatim}
+ainsi que les commandes {\sc Caml} suivantes~:
+\begin{itemize}
+\item {\tt clear\_graph()} qui efface l'écran,
+\item {\tt moveto x1 y1} qui positionne le crayon sur le point de
+      coordonnées $(${\tt x1}$,${\tt y1}$)$,
+\item {\tt lineto x1 y1} qui positionne le crayon sur le point de
+      coordonnées $(${\tt x1}$,${\tt y1}$)$ en traçant un trait entre
+      l'ancienne et la nouvelle position.
+\end{itemize}
+\end{question}
+
+\section{Pliage d'une feuille de papier}
+
+On se donne une bande de papier comme ci-dessous~:
+
+\begin{center}
+\resizebox{12cm}{!}{\includegraphics{bande.eps}}
+\end{center}
+
+On la plie en ramenant le bord droit sur le bord gauche, obtenant une 
+nouvelle bande de papier, sur laquelle on applique le même procédé. 
+On effectue ainsi $n$ plis, puis on déplie. On obtient ainsi une 
+suite de plis en creux ou en bosse. En parcourant cette suite de 
+plis de gauche à droite, on peut construire un mot, qu'on notera
+$w_n$, en associant à un creux le caractère $0$ et à une bosse le 
+caractère $1$. On a ainsi $w_1 = 0$ et $w_2 = 001$. $w_0$ est le mot
+vide. 
+
+Voici la bande de papier après deux pliages~: (en tirets, les plis
+en creux, en traits pleins, les plis en bosse)
+
+\begin{center}
+\resizebox{12cm}{!}{\includegraphics{bande3.eps}}
+\end{center}
+
+\begin{question}
+  Calculer $w_4$.
+\end{question}
+
+\begin{question}
+  Comment obtient-on $w_{n+1}$ à l'aide de $w_n$~? En déduire une
+ fonction {\tt mot\_dragon} de type {\tt int -> string} qui calcule $w_n$.
+\end{question}
+
+On admet que $w_n=P_1 P_2 \cdots P_{2^n-1}$. La courbe associée à $w_n$
+est appellée {\it la courbe du dragon d'ordre $n$}. Elle représente la vue de
+coté de la feuille dont les angles pliés valent $90$ degrés.
+
+\begin{question}
+  Utiliser la fonction {\tt mot\_dragon} pour tracer la courbe du dragon.
+\end{question}
+
+\section{Fonctions récursives}
+
+La courbe du dragon peut être tracée avec une fonction récursive de
+type {\tt int*int -> int*int -> int -> unit} qui trace la courbe du
+dragon de degré $n$ entre deux points donnés.
+
+\begin{center}
+  \input{dragon.pstex_t}
+\end{center}
+
+\begin{question}
+  Ecrire cette fonction.
+\end{question}
+
+\begin{question}
+  Comment tracer la courbe sans lever le crayon ? Programmer cette méthode.
+\end{question}
+\end{document}

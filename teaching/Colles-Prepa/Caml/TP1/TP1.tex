@@ -1,0 +1,186 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+%\usepackage[francais]{layout}
+
+
+\title{TP1 {\sc Caml} : Arbres}
+\author{}
+\date{}
+
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\pagestyle{fancy}
+\lhead{TP1 {\sc Caml}}
+\rhead{Arbres}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\setlength{\parindent}{0cm}
+
+\begin{document}
+%\layout
+\maketitle
+
+\section{Opérations de base sur les arbres binaires}
+
+On considère des arbres binaires décrits par le type {\sc Caml} suivant~:
+\begin{verbatim}
+  type ('f,'n) arbre =
+    Feuille of 'f
+  | Noeud of 'n * ('f,'n) arbre * ('f,'n) arbre ;;
+\end{verbatim}
+
+\begin{question}
+Ecrire une fonction {\tt hauteur} qui calcule la
+hauteur d'un arbre.  
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt nombre\_feuille} qui
+calcule le nombre de  feuilles d'un arbre.   
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt nombre\_noeud} qui calcule
+le nombre de n\oe uds d'un arbre.  
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt miroir} qui calcule l'image
+miroir d'un arbre.  
+\end{question}
+
+\section{Arbres binaires de recherche}
+
+Un arbre binaire de recherche est un arbre binaire tel qu'en chaque
+n\oe ud, la valeur apparaissant est plus grande que toutes
+les valeurs apparaissant dans le fils gauche et plus petite que toutes
+les valeurs apparaissant dans le fils droit, pour une relation d'ordre
+donné. Seuls les n\oe uds possèdent une information, donc il n'y a pas
+besoin d'étiquette sur les feuilles. On prend ainsi comme type~:
+\begin{verbatim}
+  type 'n arbre_r =
+    Vide
+  | Noeud of 'n * 'n arbre_r * 'n arbre_r ;;
+\end{verbatim}
+
+On prendra comme convention que tous les éléments d'un arbre binaire de
+recherche sont distincts.
+
+\begin{question}
+Ecrire une fonction {\tt insere} telle que {\tt
+insere comp x arbre} insère l'élément {\tt x} de type {\tt a} dans
+l'arbre binaire de recherche  {\tt arbre}, pour la relation de
+comparaison {\tt comp} de type \mbox{\tt a -> a -> bool} (on
+insère, lorsque c'est nécessaire, aux niveaux des feuilles de l'arbre). 
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt retire\_plus\_grand} qui, appliquée à un
+arbre binaire de recherche, renvoie une paire formée de son
+plus grand élément et de l'arbre de départ privé de cet élément (sans
+connaître la relation de comparaison utilisée). 
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt retire\_racine} qui, appliquée à un arbre
+binaire de recherche {\tt arbre}, retourne cet arbre privé de sa racine.
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt retire} telle que {\tt retire comp x arbre}
+retourne l'arbre binaire de recherche {\tt arbre} privé de l'élément
+{\tt x} (s'il appartient à l'arbre).
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt separe} telle que {\tt separe comp x arbre}
+retourne un couple {\tt (arbre1, arbre2)} d'arbres binaires de
+recherche où {\tt arbre1} (resp. {\tt arbre2}) contient tous
+les éléments de l'arbre binaire de recherche {\tt arbre} 
+inférieurs  (resp. supérieurs) à {\tt x} pour 
+l'ordre {\tt comp}, au sens strict. Par exemple~:
+$$
+\parbox[c]{5cm}{\pstree[levelsep=1cm]{\Tcircle{6}}{
+  \pstree{\Tcircle{2}}{\Tcircle{1}
+                       \pstree{\Tcircle{4}}{\Tcircle{3}\Tcircle{5}}
+}
+  \pstree{\Tcircle{8}}{\Tcircle{7}\Tcircle{9}}
+}}
+\underrightarrow{\quad\text{\tt separe (prefix <) 4}\quad}\
+\left(\parbox[c]{2cm}
+{\pstree[levelsep=1cm]{\Tcircle{2}}{\Tcircle{1}\Tcircle{3}}}
+\ ,\
+\parbox[c]{3cm}{
+\pstree[levelsep=1cm]{\Tcircle{6}}{ 
+  \Tcircle{5}
+  \pstree{\Tcircle{8}}{\Tcircle{7}\Tcircle{9}}
+}}\right)
+$$
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt insere\_racine} qui ajoute un élément à
+un arbre binaire de recherche en l'insérant à la racine. 
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt test} telle que {\tt test comp a b arbre} vérifie
+si l'arbre {\tt arbre} est un arbre binaire de recherche dont tous les
+éléments sont supérieurs à {\tt a} et inférieurs à {\tt b} pour l'ordre
+{\tt comp}.
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt test\_int} qui vérifie si un arbre est un
+arbre binaire de recherche sur les entiers (pour l'ordre {\tt prefix
+  <}).
+\end{question}
+
+\section{Représentation avec des pointeurs}
+
+Dans certains sujets de concours, les arbres manipulés ne sont
+pas représentés par le type précédent. Nous allons étudier ici un
+autre type de représentation.~:
+\begin{verbatim}
+  type 'n arbre_p =
+    Vide_p
+  | Noeud of 'n enreg_Noeud
+  and 'n enreg_Noeud =
+    { mutable val : 'n;
+      mutable gauche : 'n arbre_p;
+      mutable droit  : 'n arbre_p };;
+\end{verbatim}
+
+On utilise ici les champs mutables des enregistrements pour définir
+les arbres. Grâce à cette mise en \oe uvre, on peut modifier un arbre
+sans le recopier. 
+
+\begin{question}
+Réécrire la fonction {\tt miroir} et la fonction {\tt insere} (pour un
+arbre non vide) avec ce
+nouveau type de représentation. Dans la mesure du possible on
+modifiera les champs de l'arbre donné en paramètre, plutôt que d'un
+recréer un.
+\end{question}
+
+
+
+
+\end{document}

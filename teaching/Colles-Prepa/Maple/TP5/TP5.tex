@@ -1,0 +1,204 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage[frenchb]{babel}
+
+\title{TP5 {\sc Maple} : Interpolation}
+\author{}
+\date{}
+
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+
+\pagestyle{fancy}
+\lhead{TP5 {\sc Maple}}
+\rhead{Interpolation}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\N}{\mathbf{N}}
+ 
+\newcounter{numsubquestion}
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\setcounter{numsubquestion}{1}\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newenvironment{subquestion}{\smallskip\noindent{\bf \thenumquestion.\thenumsubquestion}}%
+{\stepcounter{numsubquestion}\smallskip}
+
+\begin{document}
+\maketitle
+
+\section{Polynômes interpolateurs de Lagrange}
+
+  Soit  $x_1,\ldots,x_n\in\R$
+  distincts, pour tout $i\in\{1,\ldots,n\}$ il existe un unique
+  polynôme $P_i\in\R[X]$ de degré inférieur ou égal à $n-1$ tel que
+  $P_i(x_j)=\delta_{ij}$. 
+
+\begin{question}
+Ecrire une fonction {\tt list\_pol} qui
+  prend une liste {\tt X} d'éléments distincts et qui renvoie la liste des
+  $P_i$ associée.
+
+  Commandes {\sc Maple}~: {\tt nops},{\tt product},{\tt seq}.
+
+  Test : {\tt list\_pol([1,2,3,4]);}
+\begin{eqnarray*}
+\left[ - {\frac {1}{6}} \,(x - 2)\,(x - 3)\,(x
+ - 4), \,{\frac {1}{2}} \,(x - 1)\,(x - 3)\,(x - 4)
+, \, - { \frac {1}{2}} \,(x - 1)\,(x - 2)\,(x - 4),\right.\\ 
+\left.{ \frac {1}{6}} \,(x - 1)\,(x - 2)\,(x - 3)\right]
+\mbox{\hspace{249pt}}
+\end{eqnarray*}
+
+\end{question}
+
+  Soit  $x_1,\ldots,x_n,y_1,\ldots,y_n\in\R$ avec $x_1,\ldots,x_n$
+  distincts, il existe un unique polynôme $P\in\R[X]$ de degré
+  inférieur ou égal à $n-1$ tel que $P(x_i)=y_i\ \forall i\in
+  \{1,\ldots,n\}$. $P$ est appelé {\it polynôme interpolateur de
+  Lagrange}.
+
+\begin{question}
+  Ecrire une fonction {\tt interpol} qui prend deux listes {\tt X} et
+  {\tt Y} et qui renvoie le polynôme $P$ correspondant.
+
+  Commandes {\sc Maple}~: {\tt sum,nops}.
+
+  Test : {\tt expand(interpol([1,2,4,5],[1,2,4,3]));}  
+  $$- {\displaystyle \frac {1}{6}} \,x^{3} + {\displaystyle 
+\frac {7}{6}} \,x^{2} - {\displaystyle \frac {4}{3}} \,x + 
+{\displaystyle \frac {4}{3}} $$
+\end{question}
+
+\begin{question}
+  Représenter sur un même graphique les points d'interpolation et le
+  polynôme de Lagrange correspondant.
+
+  Commandes {\sc Maple}~: 
+
+  \quad{\tt
+  P1:=plot(seq([X[i],Y[i]],i=1..nops(X)),style=point,symbol=circle):}
+
+  \quad{\tt plots[display](P1,plot(...));}      
+\end{question}
+
+Soit $f$ une fonction à valeurs réelles définie sur le segment
+$[a,b]$ et $x_1,\ldots,x_n$ une subdivision de $[a,b]$. Le {\it
+  polynôme de Lagrange} de $f$ pour la subdivision $x_1,\ldots,x_n$
+est le polynôme de Lagrange associé à
+$x_1,\ldots,x_n,y_1=f(x_1),\ldots,y_n=f(x_n)$. 
+
+\begin{question}
+  On considère la fonction $f$ définie par $f(x)=\frac{1}{1-8x^2}$ pour
+  $x\in[-1,1]$. Ecrire une procédure {\tt runge} qui prend un
+  paramètre entier {\tt n} et trace sur un même graphique la fonction
+  $f$, le polynôme d'interpolation de Lagrange associé à $f$ pour une
+  subdivision $x_1,\ldots,x_n$ uniforme, ainsi que les points
+  d'interpolation associés.
+\end{question}
+
+\begin{question} (Phénomène de Runge)\\
+  Réaliser une animation en faisant varier {\tt n} avec la commande~:
+  \begin{verbatim}
+    plots[display](seq(runge(j),j=3..20),insequence=true);
+  \end{verbatim}
+
+  Pensez-vous qu'il y a convergence uniforme sur $[-1,1]$ ?
+\end{question}
+
+Le {\it polynôme de Tchebychev d'indice $n$} est définie par
+$$T_n(t)=\cos(n\arccos(t))\quad t\in[-1,1]$$
+
+\begin{question}
+  Montrer que $T_n$ a $n$ zéros distincts sur $[-1,1]$ et reprendre
+  les questions $4$ et $5$ en interpolant en ces $n$ valeurs.
+\end{question}
+
+\section{Splines cubiques}
+
+Soit $f$ une fonction à valeurs réelles définie sur le segment
+$[a,b]$ et $a=x_1,\ldots,x_n=b$ une subdivision de $[a,b]$. La {\it
+  spline cubique} associée à  $f$ pour la subdivision $x_1,\ldots,x_n$
+est l'unique fonction $s$ de classe $\C^2$ sur $[-1,1]$ telle que~:
+\begin{itemize}
+\item $s$ est polynômiale de degré
+inférieur ou égal à $3$ sur chaque intervalle $[x_i,x_{i=1}]$ 
+\item $s'(a)=f'(a)$
+\item $s'(b)=f'(b)$
+\end{itemize}
+
+\begin{question}
+  Nous allons construire pas-à-pas la spline cubique $s$ associé à une
+  suite de points $(x_1,y_1),\ldots,(x_n,y_n)$ avec $x_1<\ldots
+  <x_n$. $s$ doit être de classe $\C^2$ sur $[x_1,x_n]$ et~:
+\begin{itemize}
+\item $s$ est polynômiale de degré
+inférieur ou égal à $3$ sur chaque intervalle $[x_i,x_{i=1}]$ 
+\item $s'(x_1)=0$
+\item $s'(x_n)=0$
+\end{itemize}
+
+\begin{subquestion}
+  Construire à l'aide d'une boucle, $n$ polynômes {\tt
+  P[1]},$\ldots$,{\tt P[n]} inconnus
+  de degré $3$ de la forme $a_k x^3+b_k x^2+c_k x+d_k$ ainsi que leurs
+  dérivés premières et secondes {\tt DP[k]} et {\tt DDP[k]}.
+\end{subquestion}
+
+\begin{subquestion}
+  Construire la liste des égalités que doivent vérifier
+  $a_1,\ldots,a_n,b_1,\ldots,b_n,c_1,\ldots,c_n,d_1,\ldots,d_n$ avec
+  {\tt seq} et {\tt subs}.  
+\end{subquestion}
+
+\begin{subquestion}
+  Résoudre le système correspondant avec {\tt solve}. Pour {\tt
+  X=[0,2,3,4]} et {\tt Y=[2,0,3,1]}, vous devez obtenir~:
+\begin{eqnarray*}
+\lefteqn{\left\{{c_{1}}=0, \,{a_{1}}={\displaystyle \frac {49}{44}} , 
+\,{d_{3}}={\displaystyle \frac {-1821}{11}} , \,{a_{3}}=
+{\displaystyle \frac {91}{22}} , \,{b_{3}}={\displaystyle \frac {
+-87}{2}} , \,{a_{2}}={\displaystyle \frac {-75}{22}} , \,{d_{2}}=
+{\displaystyle \frac {420}{11}} , \,{c_{2}}={\displaystyle 
+\frac {-597}{11}} ,  \right.}
+ \\
+ & &\left. {\,{b_{2}}={\displaystyle \frac {537}{22}} , c_{3}}={\displaystyle \frac {1644}{11}} , \,{b_{1}}=
+{\displaystyle \frac {-30}{11}} , \,{d_{1}}=2\right\}
+\mbox{\hspace{275pt}}
+\end{eqnarray*}
+
+\end{subquestion}
+
+\begin{subquestion}
+  En déduire la valeur des polynômes {\tt P[k]} à l'aide de la
+  commande {\tt assign}.
+\end{subquestion}
+
+\begin{subquestion}
+  En utilisant {\tt plots[display]} tracer chaque {\tt P[k]} sur
+  l'intervalle $[x_k,x_{k+1}]$ pour obtenir le tracé de $s$ sur 
+  $[x_1,x_{n}]$. Ajouter les points d'interpolation sur le graphique. 
+\end{subquestion}
+\end{question}
+
+\begin{question}
+  Reprendre les étapes précédentes dans une procédure pour représenter
+  la spline cubique associé à $x\mapsto\sin(x^2)$ sur $[0,4]$ avec une
+  subdivision uniforme $x_1,\ldots,x_n$. Le graphique devra comporter
+  la fonction $f$, la spline $s$ et les $n$ points
+  d'interpolations. Observer le résultat pour $6$ puis $12$
+  points. Comparer avec l'interpolation de Lagrange.
+\end{question}
+\end{document}
+

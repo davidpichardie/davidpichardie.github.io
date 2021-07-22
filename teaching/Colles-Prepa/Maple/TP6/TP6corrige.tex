@@ -1,0 +1,433 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage{maple2e}
+\usepackage[frenchb]{babel}
+ 
+
+
+\title{corrigé TP6 {\sc Maple} : Introduction aux équations différentielles}
+\author{}
+\date{}
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP6 {\sc Maple}}
+\rhead{Introduction aux équations différentielles}
+
+
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\pgcd}{\operatorname{pgcd}}
+
+
+\begin{document}
+
+\section{Etude qualitative}
+
+\begin{question}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(DEtools);}{%
+}
+\end{mapleinput}
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{E1:=diff(y(x),x)=y(x)^2;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it E1} := {\frac {\partial }{\partial x}}\,{\rm y}(x)={\rm y}(x
+)^{2}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{dsolve(E1,y(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{{\rm y}(x)}} = - x + {\it \_C1}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\sc Maple} a oublié la solution nulle !
+
+\end{question}
+
+\begin{question}
+  
+Le champ des tangente est donné par $\phi$.
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{dfieldplot(E1,y(x),x=-5..5,y=-2..2,colour=blue);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp601.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{DEplot(E1,y(x),x=-5..5,[[y(0)=0],[y(0)=1],[y(
+0)=-1]],y=-2..2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp603.eps}
+\end{center}
+
+\end{maplegroup}
+Pour construire une solution \guillemotleft\ à la main
+\guillemotright\, , il faut trouver un chemin qui est tangent à toutes
+les flèches qu'il rencontre.
+
+\end{question}
+
+\begin{question}
+Si on se restreint au solution qui ne s'annulent jamai,s $(1)$
+est équivalent à 
+$$\frac{y'}{y^2}=1$$
+ce qui s'intègre pour donner
+$$y(x)=\frac{-1}{x-C}\quad x\in]-\infty,C[\cup ]C,+\infty[$$
+
+La fonction nulle est une solution maximale su $\R$ de l'équation
+$(1)$. Une autre solution maximale ne peut donc jamais s'annuler ({\it
+  cf} introduction du TP), elle
+dont forcément, d'après  ce qui précède de la forme $x\mapsto
+\frac{-1}{x-C}$ sur $]-\infty,C[$ ou $x\mapsto
+\frac{-1}{x-C}$ sur $]C,+\infty[$. De telles solutions sont maximales
+car elles ne peuvent pas être prolongées en $C$.
+\end{question}
+
+\begin{question}
+  
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{E2:=diff(y(x),x)=y(x)^2-1;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it E2} := {\frac {\partial }{\partial x}}\,{\rm y}(x)={\rm y}(x
+)^{2} - 1
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{dsolve(E2,y(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm arctanh}({\rm y}(x)) + x={\it \_C1}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\sc Maple} donne le résultat sous forme implicite.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(",y(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ - {\rm tanh}(x - {\it \_C1})
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{dfieldplot(E2,y(x),x=-5..5,y=-3..3,colour=blue);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp604.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\mapleresult
+\begin{maplettyout}
+\end{maplettyout}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{DEplot(E2,y(x),x=-5..5,[[y(0)=0],[y(0)=1],[y(0)=-1],[y(0)=1.5]],y=-2..2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp605.eps}
+\end{center}
+
+\end{maplegroup}
+
+On distingue deux solutions constantes~: la solution constante à $1$
+et la solution constante à $-1$. Elles sont toutes les deux maximales
+sur $\R$. Soit $y$ une autre solution maximale définie sur un
+intervalle $I$. $y$ ne prend jamais les valeurs $1$ et $-1$ donc
+l'équation $(2)$ est équivalente à
+$\displaystyle\frac{y'}{y^2+1}=1$, soit $\displaystyle\frac{1}{2}
+\frac{y'}{y-1}-\frac{1}{2}\frac{y'}{y+1}=1$.
+En primitivant, on obtient
+$\frac{1}{2}\ln |y-1|-\frac{1}{2}\ln |y+1|=x+C$, soit
+$\displaystyle \left|\frac{y-1}{y+1}\right|=e^{2x+2C}$.
+
+$y$ est continue donc d'après la théorème des valeurs intermédiaires, on est
+dans l'un des trois cas suivants~:
+\begin{itemize}
+\item $y(x)<-1\ \forall x\in I$~: 
+
+$\displaystyle \frac{y-1}{y+1}=e^{2x+2C}$ donc $y(x)=\displaystyle 
+\frac{1+e^{2x+2C}}{1-e^{2x+2C}}$. $y$ est définie sur 
+$]-\infty,-C[\cup]-C,+\infty[$. $I$ doit être un intervalle maximal,
+donc il faut choisir entre $]-\infty,-C[$ et $]-C,+\infty[$. $y$ est
+positif sur $]-\infty,-C[$ et doit vérifier $y(x) < -1$, donc on
+choisit $]-C,+\infty[$.
+
+\item $|y(x)| < 1\ \forall x\in I$~:
+
+$\displaystyle \frac{y-1}{y+1}=-e^{2x+2C}$ donc $y(x)=\displaystyle 
+\frac{1-e^{2x+2C}}{1+e^{2x+2C}}$. $y$ est définie sur $\R$ donc c'est
+bien une solution maximale.
+
+\item $y(x)>1\ \forall x\in I$~:
+
+$\displaystyle \frac{y-1}{y+1}=e^{2x+2C}$ donc $y(x)=\displaystyle 
+\frac{1+e^{2x+2C}}{1-e^{2x+2C}}$. $y$ doit vérifier $y(x)>1$, donc on 
+choisit $]-\infty,-C[$ cette fois.
+
+\end{itemize}
+\end{question}
+
+\begin{question}
+  
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{E4:=diff(y(x),x)=abs(y(x))^(2/3);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it E4} := {\frac {\partial }{\partial x}}\,{\rm y}(x)= \left| 
+ \! \,{\rm y}(x)\, \!  \right| ^{2/3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{DEplot(E4,y(x),x=-5..5,[[y(0)=0],[y(0)=1],[y(
+0)=-1]],y=-2..2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp607.eps}
+\end{center}
+
+\end{maplegroup}
+
+Cet exemple montre qu'il n'y pas unicité des solutions pour des
+conditions intiales prises sur l'axe des abscisses.
+
+\end{question}
+
+\section{Résolution approchée : méthode d'Euler}
+ 
+\begin{question}
+La tangente issue de $(x_i,y_i)$ a pour équation
+$y=\phi(x_i,y_i)(x-x_i)+y_i$, d'où
+$y_{i+1}=\phi(x_i,y_i)(x_{i+1}-x_i)+y_i=\phi(x_i,y_i)h+y_i$. 
+\end{question}
+
+\begin{question}
+  
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Euler:=proc(phi,n,x0,y0,xn)}{}
+\vspace{-0.4cm}
+\begin{verbatim}
+       local Y,i,h,x,y;
+       h:=(xn-x0)/n;
+       x:=x0;
+       y:=y0;
+       Y:=[x,y];
+       for i from 1 to n do
+         y:=y+h*phi(x,y);
+         x:=x+h;
+         Y:=Y,[x,y];
+       od;
+       [Y];
+       end:
+\end{verbatim}
+\end{mapleinput}
+
+\end{maplegroup}
+\end{question}
+
+\begin{question}
+  
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{dsolve(\{diff(y(x),x)=y(x)+x,y(0)=1\},y(x));}
+{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm y}(x)= - x - 1 + 2\,e^{x}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{e:=rhs(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e :=  - x - 1 + 2\,e^{x}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plots[display](plot(e,x=0..3,color=blue),plot(Euler((x,y)->x+y,50,0,1,3)));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp608.eps}
+\end{center}
+
+\end{maplegroup}
+
+L'approximation est assez bonne.
+
+\end{question}
+
+\begin{question}
+  
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{dsolve(\{E1,y(0)=1\},y(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm y}(x)= - {\displaystyle \frac {1}{x - 1}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{e:=rhs(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e :=  - {\displaystyle \frac {1}{x - 1}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plots[display](plot(e,x=0..2,y=-5..10,color=blue),}{}
+\vspace{-0.4cm}
+\begin{verbatim}
+                     plot(Euler((x,y)->y^2,10,0,1,2),x=0..2));
+\end{verbatim}
+
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{tp609.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+L'asymptote $x=1$ est ignorée par la solution
+approchée. 
+\end{question}
+
+\end{document}
+

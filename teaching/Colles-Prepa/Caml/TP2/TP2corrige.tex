@@ -1,0 +1,397 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{pstcol}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+%\usepackage[francais]{layout}
+
+
+\title{TP2 {\sc Caml} : Arbres rouges et noirs}
+\author{}
+\date{}
+
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP2 {\sc Caml}}
+\rhead{Arbres blancs et noirs}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newcommand{\noir}[1]{%
+  \Tcircle*[fillstyle=solid,fillcolor=black]{\textcolor{white}{\tt #1}}}
+\newcommand{\blanc}[1]{%
+  \Tcircle{\tt #1}}
+\newcommand{\fin}[1]{%
+  \pstree{#1}{\noir{}\noir{}}}
+\newcommand{\T}[1]{%
+{\Tcircle[linecolor=white]{\small #1}}}
+
+\setlength{\parindent}{0cm}
+
+\renewcommand{\O}{\mathcal{O}}
+
+\begin{document}
+%\layout
+%\maketitle
+ 
+\begin{question}
+\begin{verbatim}
+let pere = function
+  Vide -> failwith "pere inconnu"
+ |Noeud n -> n.pere ;;
+
+let fils_gauche = function
+  Vide -> failwith "fils inconnu"
+ |Noeud n -> n.gauche ;;
+
+let fils_droit = function
+  Vide -> failwith "fils inconnu"
+ |Noeud n -> n.droit ;;
+
+let valeur = function
+  Vide -> failwith "arbre vide"
+ |Noeud n -> n.val ;;
+
+let couleur = function
+  Vide -> Noir
+ |Noeud n -> n.couleur ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let est_fils_gauche a = fils_gauche (pere a)=a ;;
+
+let est_fils_droit a = fils_droit (pere a)=a ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let frere a = 
+  if est_fils_gauche a then  fils_droit (pere a)
+  else fils_gauche (pere a) ;;
+
+let oncle a = (frere (pere a)) ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec transforme = function
+   Vide -> V
+ | Noeud n -> N (n.val,n.couleur,transforme n.gauche,transforme n.droit) ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec test_pere_aux p = function
+   Vide -> true
+ | Noeud n -> n.pere=p && test_pere_aux (Noeud n) n.gauche 
+                       && test_pere_aux (Noeud n) n.droit;;
+
+let test_pere = test_pere_aux Vide ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec test_prop4 = function
+  Vide -> true
+ |Noeud n -> match n.couleur with
+      Blanc -> (couleur n.pere)=Noir && test_prop4 n.gauche 
+                                     && test_prop4 n.droit
+     |Noir  -> test_prop4 n.gauche && test_prop4 n.droit ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+exception StopProp5;;
+
+let rec nb_noirs = function
+  Vide -> 1
+ |Noeud n -> let g = nb_noirs n.gauche and d= nb_noirs n.droit in
+             if g=d then match n.couleur with
+                   Blanc -> g
+                  |Noir  -> g+1
+             else raise StopProp5 ;;
+\end{verbatim}
+Le déclenchement d'une exception avec la commande {\tt raise} permet
+d'arrêter le calcul si à un n\oe ud donné, la contrainte $5$ n'est pas
+vérifiée. 
+\end{question}
+
+\begin{question}
+La fonction {\tt test\_prop5} lance le calcul de {\tt nb\_noirs} et
+regarde si aucune exception n'est déclenchée. Si c'est le cas, la
+contrainte est vérifiée : le résultat est {\tt true}. Dans le cas
+contraire l'exception {\tt StopProp5} est détectée est le résultat est
+{\tt false}.
+\begin{verbatim}
+let test_prop5 a =
+  try 
+    nb_noirs a;
+    true
+  with
+    StopProp5 -> false ;;
+\end{verbatim}
+Pour se passer des exceptions il faudrait modifier la fonction {\tt
+  nb\_noirs} pour qu'elle renvoie un couple formé d'un booléen qui
+  indique si une violation de la contrainte $5$ a été détectée et un
+  entier qui renvoie la valeur calculée dans l'ancienne version.
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let testRN a =
+  (couleur a)=Noir && test_prop4 a && test_prop5 a ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let inverse_couleur = function
+  Vide -> ()
+ |Noeud n -> match n.couleur with 
+    Blanc -> n.couleur <- Noir
+   |Noir  -> n.couleur <- Blanc ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let adopte_gauche = fun
+   Vide Vide -> failwith "arbres vides"
+ | Vide (Noeud p) -> p.gauche <- Vide
+ | (Noeud f) Vide -> f.pere <- Vide
+ | (Noeud f) (Noeud p) -> ( p.gauche <- Noeud f; 
+                            f.pere <- Noeud p ) ;;
+
+let adopte_droit f = fun
+   Vide Vide -> failwith "arbres vides"
+ | Vide (Noeud p) -> p.droit <- Vide
+ | (Noeud f) Vide -> f.pere <- Vide
+ | (Noeud f) (Noeud p) -> ( p.droit <- Noeud f; 
+                            f.pere <- Noeud p ) ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rotation_droite a =
+  let b=fils_gauche a in
+  let y=fils_droit b
+  and p=pere a in
+  if p=Vide || (est_fils_gauche a) then adopte_gauche b p
+  else adopte_droit b p;
+  adopte_gauche y a;
+  adopte_droit a b ;;
+
+let rotation_gauche b = 
+  let a=fils_droit b in
+  let y=fils_gauche a
+  and p=pere b in
+  if p=Vide || (est_fils_gauche b) then adopte_gauche a p
+  else adopte_droit a p;
+  adopte_droit y b;
+  adopte_gauche b a ;;
+\end{verbatim}
+Ces deux fonctions sont beaucoups plus simple à écrire si on ne
+se soucie plus du champ {\tt pere} des n\oe uds. C'est d'ailleurs le
+choix qui avait été fait dans l'épreuve d'informatique $2000$ de
+Central dont est inspiré ce TP.
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rotation_gauche_droite a =
+  let b=fils_gauche a in
+  rotation_gauche b;
+  rotation_droite a ;;
+
+let rotation_droite_gauche b =
+  let a=fils_droit b in
+  rotation_droite a;
+  rotation_gauche b ;;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+exception FinInsertion ;;
+
+let rec insere_blanc x = function
+   Vide -> Noeud {val=x; couleur=Blanc; gauche=Vide; droit=Vide; pere=Vide}
+ | Noeud n -> if n.val=x then raise FinInsertion
+              else if x<n.val then match n.gauche with
+                 Vide -> let new = Noeud {val=x; couleur=Blanc; gauche=Vide;
+                                               droit=Vide; pere=Noeud n } in
+                         (n.gauche <- new; new)
+               | _ -> insere_blanc x n.gauche
+              else match n.droit with
+                 Vide -> let new = Noeud {val=x; couleur=Blanc; gauche=Vide;
+                                               droit=Vide; pere=Noeud n } in
+                         (n.droit <- new; new)
+               | _ -> insere_blanc x n.droit
+;;
+\end{verbatim}
+On peut là encore se passer de l'utilisation des exceptions avec un
+booléen qui indique si la valeur {\tt x} est déjà présente dans
+l'arbre.
+\end{question}
+
+\begin{question}
+\begin{verbatim}
+let rec mauvais_blanc x =
+   let p=pere x in 
+   match p with
+     Vide     -> inverse_couleur x; (* x est la racine de l'arbre *)
+   | Noeud np -> match np.couleur with
+         Noir  -> ()
+       | Blanc -> let o=frere p and g=pere p in
+                  match couleur o with
+                   Blanc -> ( inverse_couleur p;             (*  cas 1  *)
+                              inverse_couleur o;
+                              inverse_couleur g;
+                              mauvais_blanc g  )
+                 | Noir  -> if est_fils_gauche p then
+                              if est_fils_gauche x then
+                                ( rotation_droite g;         (* cas 2.1 *)
+                                  inverse_couleur g;
+                                  inverse_couleur p  )
+                              else
+                                ( rotation_gauche_droite g;  (* cas 2.2 *)
+                                  inverse_couleur g;
+                                  inverse_couleur x  )
+                            else
+                              if est_fils_gauche x then
+                                ( rotation_droite_gauche g;  (* cas 2.3 *)
+                                  inverse_couleur g;
+                                  inverse_couleur x  )
+                              else
+                                ( rotation_gauche g;         (* cas 2.4 *)
+                                  inverse_couleur g;
+                                  inverse_couleur p ) ;;
+\end{verbatim}
+Les trois cas manquants sont~:
+$$
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{g}}{
+   \pstree{\blanc{p}}{\T{$f$}\pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}}
+   \pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}
+  }
+}
+\underrightarrow{\quad\text{cas $2.2$}\quad}
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{x}}{
+   \pstree{\blanc{p}}{\T{$f$}\T{$f_g$}}
+   \pstree{\blanc{g}}{\T{$f_d$}\pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}}
+  }
+}
+$$
+
+$$
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{g}}{
+   \pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}
+   \pstree{\blanc{p}}{\pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}\T{$f$}}
+  }
+}
+\underrightarrow{\quad\text{cas $2.3$}\quad}
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{x}}{
+   \pstree{\blanc{g}}{\pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}\T{$f_g$}}
+   \pstree{\blanc{p}}{\T{$f_d$}\T{$f$}}
+  }
+}
+$$
+
+$$
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{g}}{
+   \pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}
+   \pstree{\blanc{p}}{\T{$f$}\pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}}
+  }
+}
+\underrightarrow{\quad\text{cas $2.4$}\quad}
+\parbox[c]{6cm}{%
+\pstree[levelsep=1cm]{\noir{p}}{
+   \pstree{\blanc{g}}{\pstree{\noir{o}}{\T{$c_g$}\T{$c_d$}}\T{$f$}}
+   \pstree{\blanc{x}}{\T{$f_g$}\T{$f_d$}}
+  }
+}
+$$
+\end{question}
+
+\begin{question}
+L'insertion d'une nouvelle valeur peut provoquer un changement de
+racine dans l'arbre. On modifie donc les fonctions précédentes pour
+envoyer la valeur de la racine~:
+\begin{verbatim}
+let est_racine a = (pere a)=Vide ;;
+
+let rec mauvais_blanc val_racine x =
+   let p=pere x in 
+   match p with
+     Vide     -> ( inverse_couleur x;  (* x est la racine de l'arbre *)
+                   valeur x )
+   | Noeud np -> match np.couleur with
+        Noir  -> val_racine
+      | Blanc -> let o=frere p and g=pere p in
+                 match couleur o with
+                  Blanc -> ( inverse_couleur p;            (*  cas 1  *) 
+                             inverse_couleur o;
+                             inverse_couleur g; 
+                             mauvais_blanc val_racine g   )
+                | Noir  -> if est_fils_gauche p then
+                             if est_fils_gauche x then
+                               ( rotation_droite g;         (* cas 2.1 *)
+                                 inverse_couleur g;
+                                 inverse_couleur p;
+                                 if (est_racine p) then valeur p 
+                                                   else val_racine )
+                             else
+                               ( rotation_gauche_droite g;  (* cas 2.2 *)
+                                 inverse_couleur g;
+                                 inverse_couleur x;
+                                 if (est_racine x) then valeur x 
+                                                   else val_racine )
+                           else
+                             if est_fils_gauche x then
+                               ( rotation_droite_gauche g;  (* cas 2.3 *)
+                                 inverse_couleur g;
+                                 inverse_couleur x;
+                                 if (est_racine x) then valeur x
+                                                   else val_racine )
+                             else
+                               ( rotation_gauche g;         (* cas 2.4 *)
+                                 inverse_couleur g;
+                                 inverse_couleur p;
+                                 if (est_racine p) then valeur p 
+                                                   else val_racine ) ;;
+
+
+let insere x a=
+  try (mauvais_blanc (valeur a) (insere_blanc x a))
+  with FinInsertion -> (valeur a) ;;
+\end{verbatim}
+\end{question}
+\end{document}

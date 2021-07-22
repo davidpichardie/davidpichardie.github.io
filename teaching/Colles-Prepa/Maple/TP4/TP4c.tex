@@ -1,0 +1,2097 @@
+%% Created by Maple V Release 4 (IBM INTEL NT)
+%% Source Worksheet: cor_fourier.mws
+%% Generated: Mon Nov 26 20:59:46 2001
+\documentclass{article}
+\usepackage{maple2e}
+\DefineParaStyle{Bullet Item}
+\DefineParaStyle{Error}
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Maple Plot}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+\begin{document}
+
+\section{Exercice 1}
+
+\begin{maplegroup}
+\begin{center}
+\textbf{Première suite de fonctions}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{norminf:=proc(f,n,a,b)
+  maximize(abs(f(x,n)),x,\{x=a..b\})
+end:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f := (x,n)->x^n;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := (x, \,n)\rightarrow x^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{norminf(f,5,0,0.9);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+.59049
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq([n,norminf(f,n,0,1)],n=1..20)],
+x=0..20);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP401.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq(f(x,n),n=1..20)], x=0..1,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP402.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{animate(f(x,n), x=0..1, n=1..40,
+frames=40);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{Bullet Item}
+Il y a convergence simple sur [0,1] vers la fonction f(x)=0 si
+x\TEXTsymbol{<}\TEXTsymbol{>}1 et f(1)=1.
+\end{Bullet Item}
+
+\begin{Bullet Item}
+La fonction limite f est discontinue et il n'y a pas convergence
+uniforme sur [0,1].
+\end{Bullet Item}
+
+\begin{Bullet Item}
+Il y a convergence uniforme sur les compacts de [0,1[.
+\end{Bullet Item}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{maximize(f(x,5),x,\{x=0..0.9\});}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+.59049
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{center}
+\textbf{Deuxième suite de fonctions}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g := (x,n)->n*x*exp(-n*x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+g := (x, \,n)\rightarrow n\,x\,e^{( - n\,x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq(g(x,n),n=1..20)], x=0..1,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP404.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{animate(g(x,n), x=0..1, n=1..40, color=black,
+frames=40, numpoints=100);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+C'est une "bosse glissante".
+
+\begin{Bullet Item}
+Il y a convergence simple sur [0,1] vers la fonction f(x)=0.
+\end{Bullet Item}
+
+\begin{Bullet Item}
+La fonction limite f est continue mais il n'y a pas convergence
+uniforme sur [0,1].
+\end{Bullet Item}
+
+\begin{Bullet Item}
+Il y a convergence uniforme sur les compacts de ]0,1].
+\end{Bullet Item}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{center}
+\textbf{Troisième suite de fonctions}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{with(plots):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h := (x,n)->(1+x/n)^n;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+h := (x, \,n)\rightarrow (1 + {\displaystyle \frac {x}{n}} )^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([seq(h(x,n),n=1..20)], x=-5..5,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP406.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{animate(exp(x)-h(x,n), x=-5..5, n=1..40,
+color=black, frames=40);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{Bullet Item}
+Il y a convergence simple sur \textbf{R} vers la fonction
+exponentielle.
+\end{Bullet Item}
+
+\begin{Bullet Item}
+La fonction limite f est continue mais il n'y a pas convergence
+uniforme sur \textbf{R} (on considère la suite de points 
+\mapleinline{inert}{2d}{x[n]=n}{%
+${x_{n}}=n$%
+}).
+\end{Bullet Item}
+
+\begin{Bullet Item}
+Il y a convergence uniforme sur les compacts de \textbf{R}.
+\end{Bullet Item}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+\section{Exercice 2}
+
+Quelques exemples de tracés de fonctions périodiques.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f := x->(-1)^floor(x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := x\rightarrow (-1)^{{\rm floor}(x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(f(x),x=-4..4, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP408.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+Pour une période de 4 :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(f(x/2),x=-4..4, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP409.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g := x->arctan(tan(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+g := x\rightarrow {\rm arctan}({\rm tan}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(g(x),x=-2*Pi..2*Pi, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP410.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h := x->arccos(cos(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+h := x\rightarrow {\rm arccos}({\rm cos}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(h(x),x=-4*Pi..4*Pi, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP411.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{i := x->arcsin(sin(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+i := x\rightarrow {\rm arcsin}({\rm sin}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(i(x),x=-4*Pi..4*Pi, discont=true,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP412.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+\section{Exercice 3}
+
+Coefficients et séries de Fourier (en réels et complexes).
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{Heading 1}
+En complexes
+\end{Heading 1}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{c := (f,n,a,b) -> 1/(b-a) * int(f(t) *
+exp(-I*n*t*2*Pi/(b-a)), t=a..b);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+c := (f, \,n, \,a, \,b)\rightarrow {\displaystyle \frac {
+{\displaystyle \int _{a}^{b}} f(t)\,e^{( - 2\,\frac {I\,n\,t\,\pi
+ }{b - a})}\,dt}{b - a}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{e:=x->exp(I*x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e := x\rightarrow e^{(I\,x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{c(e,0,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{c(e,1,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+1
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{c(e,2,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+ok
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC := (f,n,a,b,x) -> sum(c(f,k,a,b) *
+exp(I*k*x*2*Pi/(b-a)), k=-n..n);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it fourierC} := (f, \,n, \,a, \,b, \,x)\rightarrow 
+{\displaystyle \sum _{k= - n}^{n}} \,{\rm c}(f, \,k, \,a, \,b)\,e
+^{(2\,\frac {I\,k\,x\,\pi }{b - a})}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC(e,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplettyout}
+Error, (in sum) division by zero
+\end{maplettyout}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{normal(c(e,k,0,2*Pi));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{2}} \,{\displaystyle \frac {I\,(e^{( - 2
+\,I\,\pi \,k)} - 1)}{\pi \,( - 1 + k)}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+Maple donne une formule générale pour c(f,k,0,2*Pi) qui est fausse
+pour k=1 (on ne pouvait pas prendre une primitive...).
+
+Voici comment remédier à ce problème :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC2 := proc(f,n,a,b,x)
+local S,k;
+S := 0;
+for k from -n to n do
+    S := S + c(f,k,a,b) * exp(I*k*x*2*Pi/(b-a));
+od;
+S;
+end:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC2(e,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e^{(I\,x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{e(x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+e^{(I\,x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+ok
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{Heading 1}
+En réels
+\end{Heading 1}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A := (f,n,a,b) -> 1/(b-a) * int(f(t) *
+cos(n*t*2*Pi/(b-a)), t=a..b);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A := (f, \,n, \,a, \,b)\rightarrow {\displaystyle \frac {
+{\displaystyle \int _{a}^{b}} f(t)\,{\rm cos}(2\,{\displaystyle 
+\frac {n\,t\,\pi }{b - a}} )\,dt}{b - a}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B := (f,n,a,b) -> 1/(b-a) * int(f(t) *
+sin(n*t*2*Pi/(b-a)), t=a..b);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+B := (f, \,n, \,a, \,b)\rightarrow {\displaystyle \frac {
+{\displaystyle \int _{a}^{b}} f(t)\,{\rm sin}(2\,{\displaystyle 
+\frac {n\,t\,\pi }{b - a}} )\,dt}{b - a}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(cos,0,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(cos,1,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{2}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(cos,2,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B(cos,0,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+ok
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR := (f,n,a,b,x) -> A(f,0,a,b) +
+2*sum(A(f,k,a,b) * cos(k*x*2*Pi/(b-a)) + B(f,k,a,b) *
+sin(k*x*2*Pi/(b-a)), k=1..n);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it fourierR} := (f, \,n, \,a, \,b, \,x)\rightarrow }
+ \\
+ & & {\rm A}(f, \,0, \,a, \,b) + 2\, \left(  \! {\displaystyle 
+\sum _{k=1}^{n}} \,({\rm A}(f, \,k, \,a, \,b)\,{\rm cos}(2\,
+{\displaystyle \frac {k\,x\,\pi }{b - a}} ) + {\rm B}(f, \,k, \,a
+, \,b)\,{\rm sin}(2\,{\displaystyle \frac {k\,x\,\pi }{b - a}} ))
+ \!  \right) 
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR(cos,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplettyout}
+Error, (in sum) division by zero
+\end{maplettyout}
+
+\end{maplegroup}
+\begin{maplegroup}
+même problème qu'en complexes :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{normal(A(cos,k,0,2*Pi));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {k\,{\rm sin}(\pi \,k)\,{\rm cos}(\pi \,k)}{
+\pi \,( - 1 + k)\,(1 + k)}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2 := proc(f,n,a,b,x)
+local S,k;
+S := A(f,0,a,b);
+for k from 1 to n do
+    S := S + 2*(A(f,k,a,b) * cos(k*x*2*Pi/(b-a)) + B(f,k,a,b) *
+sin(k*x*2*Pi/(b-a)));
+od;
+S;
+end:}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2(cos,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm cos}(x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2(sin,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm sin}(x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2(x->cos(2*x),5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm cos}(2\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2(x->cos(x)^2,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{2}}  + {\displaystyle \frac {1}{2}} \,
+{\rm cos}(2\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2(x->cos(x)^5,5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {5}{8}} \,{\rm cos}(x) + {\displaystyle 
+\frac {5}{16}} \,{\rm cos}(3\,x) + {\displaystyle \frac {1}{16}} 
+\,{\rm cos}(5\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierR2(x->cos(7*x),5,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+Hé oui !
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+\section{Exercice 4}
+
+Calculs et tracés de séries de Fourier de fonction périodiques
+
+\begin{maplegroup}
+\begin{Heading 1}
+Fonction f
+\end{Heading 1}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f := x->(-1)^floor(x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+f := x\rightarrow (-1)^{{\rm floor}(x)}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC(f,1,0,2,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplettyout}
+Error, (in sum) division by zero
+\end{maplettyout}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC2(f,1,0,2,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+2\,{\displaystyle \frac {I\,e^{( - I\,x\,\pi )}}{\pi }}  - 2\,
+{\displaystyle \frac {I\,e^{(I\,x\,\pi )}}{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f1C := evalc(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it f1C} := 4\,{\displaystyle \frac {{\rm sin}(x\,\pi )}{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),f1C], x=-2..2, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP413.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f3C := evalc(fourierC2(f,3,0,2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it f3C} := {\displaystyle \frac {4}{3}} \,{\displaystyle 
+\frac {{\rm sin}(3\,x\,\pi )}{\pi }}  + 4\,{\displaystyle \frac {
+{\rm sin}(x\,\pi )}{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),f3C], x=-2..2, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP414.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f5C := evalc(fourierC2(f,5,0,2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it f5C} := {\displaystyle \frac {4}{5}} \,{\displaystyle 
+\frac {{\rm sin}(5\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4}{
+3}} \,{\displaystyle \frac {{\rm sin}(3\,x\,\pi )}{\pi }}  + 4\,
+{\displaystyle \frac {{\rm sin}(x\,\pi )}{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),f5C], x=-2..2, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP415.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f7C := evalc(fourierC2(f,7,0,2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it f7C} := {\displaystyle \frac {4}{7}} \,{\displaystyle 
+\frac {{\rm sin}(7\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4}{
+5}} \,{\displaystyle \frac {{\rm sin}(5\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{3}} \,{\displaystyle \frac {{\rm sin}(3
+\,x\,\pi )}{\pi }}  + 4\,{\displaystyle \frac {{\rm sin}(x\,\pi )
+}{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),f7C], x=-2..2, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP416.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f13C := evalc(fourierC2(f,13,0,2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it f13C} := {\displaystyle \frac {4}{13}} \,
+{\displaystyle \frac {{\rm sin}(13\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{11}} \,{\displaystyle \frac {{\rm sin}(
+11\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4}{9}} \,
+{\displaystyle \frac {{\rm sin}(9\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{7}} \,{\displaystyle \frac {{\rm sin}(7
+\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4}{5}} \,
+{\displaystyle \frac {{\rm sin}(5\,x\,\pi )}{\pi }} } \\
+ & & \mbox{} + {\displaystyle \frac {4}{3}} \,{\displaystyle 
+\frac {{\rm sin}(3\,x\,\pi )}{\pi }}  + 4\,{\displaystyle \frac {
+{\rm sin}(x\,\pi )}{\pi }} \mbox{\hspace{271pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),f13C], x=-2..2, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP417.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f21C := evalc(fourierC2(f,21,0,2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it f21C} := {\displaystyle \frac {4}{21}} \,
+{\displaystyle \frac {{\rm sin}(21\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{19}} \,{\displaystyle \frac {{\rm sin}(
+19\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4}{17}} \,
+{\displaystyle \frac {{\rm sin}(17\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{15}} \,{\displaystyle \frac {{\rm sin}(
+15\,x\,\pi )}{\pi }} } \\
+ & & \mbox{} + {\displaystyle \frac {4}{13}} \,{\displaystyle 
+\frac {{\rm sin}(13\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4
+}{11}} \,{\displaystyle \frac {{\rm sin}(11\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{9}} \,{\displaystyle \frac {{\rm sin}(9
+\,x\,\pi )}{\pi }}  + {\displaystyle \frac {4}{7}} \,
+{\displaystyle \frac {{\rm sin}(7\,x\,\pi )}{\pi }}  + 
+{\displaystyle \frac {4}{5}} \,{\displaystyle \frac {{\rm sin}(5
+\,x\,\pi )}{\pi }}  \\
+ & & \mbox{} + {\displaystyle \frac {4}{3}} \,{\displaystyle 
+\frac {{\rm sin}(3\,x\,\pi )}{\pi }}  + 4\,{\displaystyle \frac {
+{\rm sin}(x\,\pi )}{\pi }} 
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([f(x),f21C], x=-2..2, color=black,
+discont=true, numpoints=300);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP418.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{center}
+\textbf{On observe le célèbre phénomène de Gibbs.}
+\end{center}
+
+Il n'y a pas convergence uniforme sur \textbf{R}.
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{Heading 1}
+Fonction g
+\end{Heading 1}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g := x->arctan(tan(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+g := x\rightarrow {\rm arctan}({\rm tan}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+g coïncide avec l'identité sur  
+\mapleinline{inert}{2d}{[-Pi/2,Pi/2]}{%
+$[ - \frac {\pi }{2}, \,\frac {\pi }{2}]$%
+} :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{i := x->x;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+i := x\rightarrow x
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g1C := evalc(fourierC2(i,1,-Pi/2,Pi/2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it g1C} := {\rm sin}(2\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),g1C], x=-Pi..Pi, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP419.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g2C := evalc(fourierC2(i,2,-Pi/2,Pi/2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it g2C} :=  - {\displaystyle \frac {1}{2}} \,{\rm sin}(4\,x) + 
+{\rm sin}(2\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),g2C], x=-Pi..Pi, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP420.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g3C := evalc(fourierC2(i,3,-Pi/2,Pi/2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it g3C} := {\displaystyle \frac {1}{3}} \,{\rm sin}(6\,x) - 
+{\displaystyle \frac {1}{2}} \,{\rm sin}(4\,x) + {\rm sin}(2\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),g3C], x=-Pi..Pi, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP421.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g4C := evalc(fourierC2(i,4,-Pi/2,Pi/2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it g4C} :=  - {\displaystyle \frac {1}{4}} \,{\rm sin}(8\,x) + 
+{\displaystyle \frac {1}{3}} \,{\rm sin}(6\,x) - {\displaystyle 
+\frac {1}{2}} \,{\rm sin}(4\,x) + {\rm sin}(2\,x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),g4C], x=-Pi..Pi, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP422.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g10C :=
+evalc(fourierC2(i,10,-Pi/2,Pi/2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it g10C} :=  - {\displaystyle \frac {1}{10}} \,{\rm 
+sin}(20\,x) + {\displaystyle \frac {1}{9}} \,{\rm sin}(18\,x) - 
+{\displaystyle \frac {1}{8}} \,{\rm sin}(16\,x) + {\displaystyle 
+\frac {1}{7}} \,{\rm sin}(14\,x) - {\displaystyle \frac {1}{6}} 
+\,{\rm sin}(12\,x) + {\displaystyle \frac {1}{5}} \,{\rm sin}(10
+\,x)} \\
+ & & \mbox{} - {\displaystyle \frac {1}{4}} \,{\rm sin}(8\,x) + 
+{\displaystyle \frac {1}{3}} \,{\rm sin}(6\,x) - {\displaystyle 
+\frac {1}{2}} \,{\rm sin}(4\,x) + {\rm sin}(2\,x)
+\mbox{\hspace{200pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),g10C], x=-Pi..Pi, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP423.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{g20C :=
+evalc(fourierC2(i,20,-Pi/2,Pi/2,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it g20C} :=  - {\displaystyle \frac {1}{16}} \,{\rm 
+sin}(32\,x) - {\displaystyle \frac {1}{12}} \,{\rm sin}(24\,x) + 
+{\displaystyle \frac {1}{3}} \,{\rm sin}(6\,x) - {\displaystyle 
+\frac {1}{4}} \,{\rm sin}(8\,x) - {\displaystyle \frac {1}{2}} \,
+{\rm sin}(4\,x) - {\displaystyle \frac {1}{10}} \,{\rm sin}(20\,x
+)} \\
+ & & \mbox{} + {\displaystyle \frac {1}{17}} \,{\rm sin}(34\,x)
+ + {\rm sin}(2\,x) + {\displaystyle \frac {1}{19}} \,{\rm sin}(38
+\,x) + {\displaystyle \frac {1}{11}} \,{\rm sin}(22\,x) - 
+{\displaystyle \frac {1}{18}} \,{\rm sin}(36\,x) - 
+{\displaystyle \frac {1}{20}} \,{\rm sin}(40\,x) \\
+ & & \mbox{} - {\displaystyle \frac {1}{14}} \,{\rm sin}(28\,x)
+ + {\displaystyle \frac {1}{15}} \,{\rm sin}(30\,x) + 
+{\displaystyle \frac {1}{5}} \,{\rm sin}(10\,x) + {\displaystyle 
+\frac {1}{13}} \,{\rm sin}(26\,x) - {\displaystyle \frac {1}{8}} 
+\,{\rm sin}(16\,x) + {\displaystyle \frac {1}{7}} \,{\rm sin}(14
+\,x) \\
+ & & \mbox{} - {\displaystyle \frac {1}{6}} \,{\rm sin}(12\,x) + 
+{\displaystyle \frac {1}{9}} \,{\rm sin}(18\,x)
+\mbox{\hspace{289pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([g(x),g20C], x=-Pi..Pi, color=black,
+discont=true);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP424.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{center}
+\textbf{Ici aussi, on observe le phénomène de Gibbs.}
+\end{center}
+
+Il n'y a pas convergence uniforme sur \textbf{R}.
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{Heading 1}
+Fonction h
+\end{Heading 1}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h := x->arccos(cos(x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+h := x\rightarrow {\rm arccos}({\rm cos}(x))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{fourierC2(h,0,0,2*Pi,x);}{%
+}
+\end{mapleinput}
+
+\begin{Maple Output}
+\end{Maple Output}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{2}} \,{\displaystyle \frac {
+{\displaystyle \int _{0}^{2\,\pi }} {\rm arccos}({\rm cos}(t))\,d
+t}{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalc(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplettyout}
+Error, (in evalc/int) Unable to handle definite integral
+\end{maplettyout}
+
+\end{maplegroup}
+\begin{maplegroup}
+Il faut utiliser les séries de Fourier en réels, puis prendre des
+valeurs approchées avec evalf :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h10R := evalf(fourierR2(h,10,0,2*Pi,x));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it h10R} := 1.570796327 - 1.273239544\,{\rm cos}(x) - 
+.6579099401\,10^{-16}\,{\rm cos}(2.\,x)} \\
+ & & \mbox{} - .1414710605\,{\rm cos}(3.\,x) - .7237009346\,10^{
+-15}\,{\rm cos}(4.\,x) - .05092958178\,{\rm cos}(5.\,x) \\
+ & & \mbox{} - .7565964313\,10^{-15}\,{\rm cos}(6.\,x) - 
+.02598448050\,{\rm cos}(7.\,x) + .3618504673\,10^{-15}\,{\rm cos}
+(8.\,x) \\
+ & & \mbox{} - .01571900672\,{\rm cos}(9.\,x) - .7565964313\,10^{
+-15}\,{\rm cos}(10.\,x)
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h0R := op(1,h10R):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h1R := op(1,h10R) + op(2,h10R):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{h4R := op(1,h10R) + op(2,h10R) + op(3,h10R) +
+op(4,h10R) + op(5,h10R):}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([h(x),h0R], x=-4*Pi..4*Pi,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP425.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([h(x),h1R], x=-4*Pi..4*Pi,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP426.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([h(x),h4R], x=-4*Pi..4*Pi,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP427.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([h(x),h10R], x=-4*Pi..4*Pi,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP428.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+Ici, il y a convergence uniforme sur R.
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{sup}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+
+\section{Exercice 5}
+
+Sommes remarquables et égalité de Parseval.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{j := x->x*(Pi-x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+j := x\rightarrow x\,(\pi  - x)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot(j(x), x=0..Pi, color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP429.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{j7R := fourierR2(j,7,0,Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it j7R} := {\displaystyle \frac {1}{6}} \,\pi ^{2} - 
+{\rm cos}(2\,x) - {\displaystyle \frac {1}{4}} \,{\rm cos}(4\,x)
+ - {\displaystyle \frac {1}{9}} \,{\rm cos}(6\,x) - 
+{\displaystyle \frac {1}{16}} \,{\rm cos}(8\,x) - {\displaystyle 
+\frac {1}{25}} \,{\rm cos}(10\,x)} \\
+ & & \mbox{} - {\displaystyle \frac {1}{36}} \,{\rm cos}(12\,x)
+ - {\displaystyle \frac {1}{49}} \,{\rm cos}(14\,x)
+\mbox{\hspace{216pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{plot([j(x),j7R], x=-2*Pi..2*Pi, y=-3..3,
+color=black);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{center}
+\mapleplot{TP430.eps}
+\end{center}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,k,0,Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac { - {\displaystyle \frac {1}{4}} \,
+{\displaystyle \frac {2\,\pi \,k\,{\rm cos}(\pi \,k)^{2} - \pi \,
+k - 2\,{\rm sin}(\pi \,k)\,{\rm cos}(\pi \,k)}{k^{3}}}  - 
+{\displaystyle \frac {1}{4}} \,{\displaystyle \frac {\pi }{k^{2}}
+} }{\pi }} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assume(k, integer, k>0);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,k,0,Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ - {\displaystyle \frac {1}{2}} \,{\displaystyle \frac {1}{{\it k
+\symbol{126}}^{2}}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,0,0,Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{6}} \,\pi ^{2}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B(j,k,0,Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+Donc, la série de Fourier de j est :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{SF_j := fourierR(j,infinity,0,Pi,x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it SF\_j} := {\displaystyle \frac {1}{6}} \,\pi ^{2} + 2\,
+ \left(  \! {\displaystyle \sum _{{\it k\symbol{126}}=1}^{\infty 
+}} \,( - {\displaystyle \frac {1}{2}} \,{\displaystyle \frac {
+{\rm cos}(2\,{\it k\symbol{126}}\,x)}{{\it k\symbol{126}}^{2}}} )
+ \!  \right) 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+En x=0, cela donne :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{subs(x=0,SF_j);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{6}} \,\pi ^{2} + 2\, \left(  \! 
+{\displaystyle \sum _{{\it k\symbol{126}}=1}^{\infty }} \,( - 
+{\displaystyle \frac {1}{2}} \,{\displaystyle \frac {{\rm cos}(0)
+}{{\it k\symbol{126}}^{2}}} ) \!  \right) 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{value(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+or, 
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{j(0);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+0
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+ok. Mais surtout, on retrouve la somme remarquable  
+\mapleinline{inert}{2d}{Pi^2/6 = sum(1/k^2,k=1..infinity)}{%
+$\frac {\pi ^{2}}{6}=\sum _{k=1}^{\infty }\,\frac {1}{k^{2}}$%
+} .
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{sum(1/k^2, k=1..infinity);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{6}} \,\pi ^{2}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+
+\section{Exercice 6}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{k:='k';}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+k := k
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{norme2carreR := (f,a,b) -> 1/(b-a) *
+int(f(t)^2, t=a..b);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it norme2carreR} := (f, \,a, \,b)\rightarrow {\displaystyle 
+\frac {{\displaystyle \int _{a}^{b}} f(t)^{2}\,dt}{b - a}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{parsevalR := (f,a,b) -> A(f,0,a,b)^2   +   2
+* sum(A(f,k,a,b)^2 + B(f,k,a,b)^2, k=1..infinity);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it parsevalR} := (f, \,a, \,b)\rightarrow {\rm A}(f, \,0, \,a, 
+\,b)^{2} + 2\,({\displaystyle \sum _{k=1}^{\infty }} \,({\rm A}(f
+, \,k, \,a, \,b)^{2} + {\rm B}(f, \,k, \,a, \,b)^{2}))
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{norme2carreR(cos,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{2}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{parsevalR(cos,0,2*Pi);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\displaystyle \frac {1}{2}} 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+ok.
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{f := x->(-1)^floor(x);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{norme2carreR(f,0,2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{pf := parsevalR(f,0,2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(f,k,0,2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assume(k, integer, k>0);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(f,k,0,2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B(f,k,0,2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{k:=2*l+1;}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assume(l, integer, l>=0);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B(f,k,0,2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{parseval_f := 2 * sum(B(f,k,0,2)^2,
+l=0..infinity);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+ok !
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{k:='k':}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{l:='l':}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{parsevalR(j,0,Pi);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{?hypergeom}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,0,0,Pi);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,k,0,Pi);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assume(k, integer, k>0);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,k,0,Pi);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B(j,k,0,Pi);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+Donc, la "somme de Parseval" est :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A(j,0,0,Pi)^2   +   2 * Sum(A(j,k,0,Pi)^2,
+k=1..infinity);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+or,
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{norme2carreR(j,0,Pi);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+On retrouve donc que la valeur de  
+\mapleinline{inert}{2d}{sum(1/k^4,k=1..infinity)}{%
+$\sum _{k=1}^{\infty }\,\frac {1}{k^{4}}$%
+}  est :
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{2* (norme2carreR(j,0,Pi) - A(j,0,0,Pi)^2);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\end{mapleinput}
+
+\end{maplegroup}
+\end{document}
+%% End of Maple V Output

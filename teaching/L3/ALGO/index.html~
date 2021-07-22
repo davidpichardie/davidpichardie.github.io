@@ -1,0 +1,150 @@
+<html>
+  <head>
+<title>ENS Rennes : Algorithmique</title>
+  <link rel=STYLESHEET href="../../../style.css" type="text/css">
+  </head>
+
+<body>
+<a name="top" id="top"></a>
+
+<div id="header">
+  <h1>Algorithmique</h1>
+  <h2>Année 2016/2017</h2>
+</div>
+
+<div id="content">
+
+<h1>Intervenants</h1>
+
+<p>Cours : <a href="http://www.irisa.fr/celtique/pichardie">David Pichardie</a></p>
+<p>Travaux dirigés : David Cachera et Yannick Zakowski</p>
+
+<!-- <h1>Devoir à la maison</h1> -->
+
+<!-- <p> -->
+<!-- <lu> -->
+<!--   <li>L'<a href="homework_algo.pdf">énoncé</a> du devoir</li> -->
+<!-- <lu> -->
+<!-- </p> -->
+
+<!-- <h1>Examen final</h1> -->
+
+<!-- <p> -->
+<!-- <lu> -->
+<!--   <li>L'<a href="sujet_final.pdf">énoncé</a></li> -->
+<!--   <li>Le <a href="corrige_final.pdf">corrigé</a></li> -->
+<!-- <lu> -->
+<!-- </p> -->
+
+<h1>Planning des cours</h1>
+
+<p>
+
+ <table border=1 class=mytab>
+ <tr>
+   <th width=80>Cours</th><th>Date</th><th width=30%>Sujet</th><th width=70%>Matériel supplémentaire</th>
+ </tr><tr>
+   <td align=center>1</td>
+   <td>06/09/2016</td>
+   <td>Introduction <lu><li> Union-Find</li><li>preuve par invariants de boucle</li></lu></td>
+   <td>Quelques expériences avec des variantes de l'algorithme Union-Find<br>
+     <lu>
+       <li><a href="quickfind1000.pdf">Quick-Find</a></li>
+       <li><a href="quickunion1000.pdf">Quick-Union</a></li>
+       <li><a href="unionfindsize1000.pdf">Union-find sans compression de chemin</a></li>
+       <li><a href="unionfindsizecompress1000.pdf">Union-find avec compression de chemin</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>2</td>
+   <td>13/09/2016</td>
+   <td>Analyse de l'efficacité des algorithmes</td>
+   <td>Quelques visualisations de tris (à utiliser en plein écran avec Acrobat Reader pour déclencher l'animation)<br>
+     <lu>
+       <li><a href="insertion_et_fusion_random.pdf">Tris insertion et fusion sur une entrée aléatoire</a></li>
+       <li><a href="insertion_et_fusion_almost_sorted.pdf">Tris insertion et fusion sur une entrée presque triée</a></li>
+       <li><a href="shell_sort.pdf">Tri Shell</a></li>
+     </lu>
+   </td>
+ </tr><tr>
+   <td align=center>3</td>
+   <td>20/09/2013</td>
+   <td>Recherche : <lu><li>techniques simples</li><li>arbres de recherche</li><li>arbres équilibrés (AVL)</li></lu></td>
+   <td></td>
+ </tr><tr>
+   <td align=center>4</td>
+   <td>27/09/2016</td>
+   <td>Recherche (fin):<lu><li>arbres équilibrés (AVL)</li><li>tables de hachage</li></lu></td>
+   <td><a href="old/hash_function.pdf">Expériences sur les fonctions de hachage</a>: on hache une fois tous les mots distincts du livre <a href="http://www.gutenberg.org/files/17489/17489-8.txt">Les misérable (Tome 1)</a> et on observe le nombre de collision.</td>
+ </tr><tr>
+   <td align=center>5</td>
+   <td>04/10/2016</td>
+   <td>Graphes : <lu><li>Premières définitions</li><li>Représentations</li><li>Parcours</li></lu></td>
+   <td><lu>
+       <li>Quelques <a href="illustrations_graphes.pdf">illustrations</a>.
+       </li>
+       <li>Un <a href="old/maze_dfs_rec.pdf">parcours récursif en profondeur animé</a> (sous Acrobat Reader) du labyrinthe.
+	 Les sommets déjà vus sont noirs ou bleus. Les sommets bleus représentent 
+	 des sommets <i>i</i> dont l'appel récursif <i>VISITE(i)</i> n'est pas encore terminé.
+	 Pour les sommets noirs, la date de fin a été déjà choisie.
+       </li>
+       <li>Un <a href="old/maze_dfs_iter.pdf">parcours itératif en profondeur animé</a> (sous Acrobat Reader) du labyrinthe.
+	 Les sommets déjà vus sont noirs ou bleus. Les sommets bleus représentent les sommets actuellement sur la pile.
+       </li>
+       <li>Un <a href="old/maze_bfs.pdf">parcours en largeur animé</a> (sous Acrobat Reader) du labyrinthe.
+	 Les sommets déjà vus sont noirs ou bleus. Les sommets bleus représentent les sommets actuellement sur la file d'attente.
+       </li>
+   </lu></td>
+ </tr><tr>
+   <td align=center>6</td>
+   <td>11/10/2016</td>
+   <td>Graphes : <lu>
+       <li>Etude formelle du parcours en profondeur</li>
+       <li>Détection de cycles</li>
+       <li>Tri topologique</li>
+       <li>Calcul de composantes fortement connexes avec l'algorithme de Kosaraju</li></lu></td>
+   <td></td>
+ </tr><tr>
+   <td align=center>7</td>
+   <td>18/10/2016</td>
+   <td>Graphes :
+     <lu>
+       <li>Fin de la preuve de l'algorithme de Kosaraju</li>
+       <li>Algorithme de Tarjan pour la caclul de composantes fortement connexes</li>
+       <li>Propriétés du parcours en largeur</li>
+     </lu></td>
+   <td><lu><li><a href="tarjan.pdf">Présentation</a> de l'algorithme de Tarjan</li>
+           <li><a href="comparaison_tarjan_kosaraju.pdf">Comparaison</a> Tarjan/Kosaraju</li></lu></td>
+ </tr><tr>
+ </tr><tr>
+   <td align=center>Bonus 1</td>
+   <td>23/10/2016</td>
+   <td>Cours de programmation Python avancé</td>
+   <td><a href="cm1_prog.pdf">Notes de cours</a>.</td>
+ </tr><tr>
+   <td align=center>8</td>
+   <td>08/11/2016</td>
+   <td>Réseaux de flot</td>
+   <td><a href="cm8.pdf">Notes de cours</a></td>
+ </tr><tr>
+   <td align=center>9</td>
+   <td>15/11/2016</td>
+   <td></td>
+   <td></td>
+ </tr><tr>
+   <td align=center>10</td>
+   <td>22/11/2016</td>
+   <td></td>
+   <td></td>
+ </tr><tr>
+   <td align=center>Bonus 2</td>
+   <td>29/11/2016</td>
+   <td></td>
+   <td></td>
+ </tr>
+</table></p>
+
+
+</div>
+  </body>
+</html>

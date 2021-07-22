@@ -1,0 +1,154 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+
+\title{TP1 {\sc Maple} : Algèbre linéaire}
+\author{}
+\date{}
+
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+
+\pagestyle{fancy}
+\lhead{TP1 {\sc Maple}}
+\rhead{Algèbre linéaire}
+
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{question}
+  Diagonaliser la matrice
+$$M =  \left( 
+\begin{array}{cccc}
+0 & 1 & 1  & 1 \\
+1 & 0 & -1 & -1 \\
+1 & -1 & 0 & -1 \\
+1 & -1 & -1 & 0 
+\end{array} \right)$$ 
+Dans un premier temps on s'interdira l'usage des commandes {\tt
+  jordan}, {\tt eigenvals} et {\tt eigenvects}. Donner la matrice de
+  passage et vérifier votre résultat.
+\end{question}
+
+\begin{question}
+Soit
+$$A =  \left( 
+\begin{array}{ccc}
+a - b - c & 2a & 2a \\
+2b & b - a - c & 2b \\
+2c & 2c & c - a - b
+\end{array} \right)$$ 
+On suppose que $(a,b,c)\not=0$. Montrer que $A$ est diagonalisable si
+et seulement si $A$ est inversible.
+\end{question}
+
+\begin{question}
+On pose 
+$$A =  \left( 
+\begin{array}{ccc}
+58 & 52 & 36 \\
+-29 & 187 & 9 \\
+-145 & 65 & 219
+\end{array} \right)$$ 
+Calculer $A^n$ pour $n\in\mathbf{N}$ de deux manières différentes.
+\end{question}
+
+\begin{question}
+Trouver une condition nécessaire et suffisante pour que la matrice
+suivante soit diagonalisable.   
+$$A =  \left( 
+\begin{array}{ccccc}
+a & 0 & 0 & 0 & b \\
+0 & a & 0 & b & 0 \\
+0 & 1 & 2 & 1 & 0 \\
+0 & b & 0 & a & 0 \\
+b & 0 & 0 & 0 & a
+\end{array} \right)$$ 
+\end{question}
+
+\begin{question}
+Calculer l'ensemble des matrices qui commutent avec la matrice
+suivante.
+$$A =  \left( 
+\begin{array}{ccc}
+1 & 0 & 0 \\
+0 & 0 & \lambda \\
+0 & 2 & 3
+\end{array} \right)$$ 
+Quel est la dimension de l'espace vectoriel obtenu ?
+\end{question}
+
+\begin{question}
+Montrer que l'ensemble $\mathcal{T}(\mathbf{R},4)$ des matrices
+triangulaires supérieures d'ordre $4$ est stable par multiplication et
+inverse.   
+
+On pose
+$$A =  \left( 
+\begin{array}{ccccc}
+1 & 2 & 3 & 4  \\
+0 & 1 & 2 & 3  \\
+0 & 0 & 1 & 2  \\
+0 & 0 & 0 & 1  
+\end{array} \right)\text{ et }
+B =  \left( 
+\begin{array}{ccccc}
+1 & 1 & 0 & 0  \\
+0 & 1 & 1 & 0  \\
+0 & 0 & 1 & 1  \\
+0 & 0 & 0 & 1  
+\end{array}\right)
+$$ 
+Ces deux matrices sont-elles semblables ?
+\end{question}
+
+\begin{question}
+Déterminer $a,b,c,d,e$ et $f$ pour que les vecteurs
+$$\left(\begin{array}{c}
+   1 \\ 1 \\ 0 \end{array}\right),
+\left(\begin{array}{c}
+   1 \\ 2 \\ 1 \end{array}\right),
+\left(\begin{array}{c}
+   1 \\ 1 \\ 2 \end{array}\right)
+$$ 
+  forment une base de vecteurs propres de la matrice
+$$A = \left( 
+\begin{array}{ccc}
+a & 1 & b \\
+1 & c & d \\
+e & f & -1 
+\end{array} \right)$$ 
+\end{question}
+
+\begin{question}
+Trouver tous les triplets $(x,y,z)\in\mathbf{R}^3$ tels que la matrice
+$$A = \left( 
+\begin{array}{ccc}
+x & 0 & 0 \\
+0 & y & \sqrt{3} \\
+0 & \sqrt{3} & z 
+\end{array} \right)$$ 
+admette $4,8$ et $12$ comme valeurs propres.
+\end{question}
+
+\begin{question}
+  Ecrire une procédure qui teste si une matrice est nilpotente.
+\end{question}
+
+\end{document}
+

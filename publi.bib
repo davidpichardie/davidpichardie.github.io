@@ -1,0 +1,1023 @@
+@inproceedings{ITP15:Blazy:al,
+  author    = {Sandrine Blazy and
+               Delphine Demange and
+               David Pichardie},
+  title     = {Validating Dominator Trees for a Fast, Verified Dominance Test},
+  booktitle = {Proc. of the 6th International Conference on Interactive
+                Theorem Proving (ITP 2015)},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  year      = {2015},
+  pdf = {papers/itp15.pdf},
+  abstract = {
+     The problem of computing dominators in a control flow graph is central
+     to numerous modern compiler optimizations. Many efficient algorithms
+     have been proposed in the litterature, but mechanizing the correctness
+     of the most sophisticated algorithms is still considered as too hard
+     problems, and to this date, verified compilers use less optimized
+     implementations.
+     In contrast, production compilers, like GCC or LLVM, implement the
+     classic, efficient Lengauer-Tarjan
+     algorithm, to compute dominator trees. And
+     subsequent optimization phases can then determine whether a CFG node
+     dominates another node in constant time by using their respective
+     depth-first search numbers in the dominator tree.
+
+     In this work, we aim at integrating such techniques in verified
+     compilers. We present a formally verified validator of untrusted
+     dominator trees, on top of which we implement and prove correct a fast
+     dominance test following these principles.
+     We conduct our formal development in the Coq proof assistant, and
+     integrate it in the middle-end of the CompCertSSA verified
+     compiler. We also provide experimental results showing performance
+     improvement over previous formalizations.
+},
+}
+
+@inproceedings{CC15:Demange:al,
+  author    = {Delphine Demange
+               David Pichardie and
+               Léo Stefanesco},
+  title     = {Verifying Fast and Sparse SSA-based Optimizations in Coq},
+  booktitle = {Proc. of the 24th International Conference on Compiler 
+               Construction (CC 2015)},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  year      = {2015},
+  pdf = {papers/cc15.pdf},
+  abstract = {
+     Abstract The Static Single Assignment (SSA) form is a predominant
+     technology in modern compilers, enabling powerful and fast
+     program optimizations. Despite its great success in the
+     implementation of pro- duction compilers, it is only very
+     recently that this technique has been introduced in verified
+     compilers. As of today, few evidence exist on that, in this
+     context, it also allows faster and simpler optimizations. This
+     work builds on the CompCertSSA verified compiler (an SSA branch
+     of the verified CompCert C compiler). We implement and verify two
+     prevail- ing SSA optimizations: Sparse Conditional Constant
+     Propagation and Global Value Numbering. For both transformations,
+     we mechanically prove their soundness in the Coq proof
+     assistant. Both optimization proofs are embedded in a single
+     sparse optimization framework, factoring out many of the
+     dominance-based reasoning steps required in proofs of SSA-based
+     optimizations. Our experimental evaluations indicate both a
+     better precision, and a significant compilation time speedup.
+},
+}
+
+
+@inproceedings{POPL15:Jourdan:al,
+  author = {Jacques-Henri Jourdan and
+            Vincent Laporte and
+            Sandrine Blazy and
+            Xavier Leroy and David Pichardie},
+  title = {A Formally-Verified {C} Static Analyzer},
+  booktitle = {42nd symposium Principles of Programming Languages},
+  publisher = {ACM Press},
+  year = 2015,
+  pages = {247-259},
+  pdf = {papers/popl15.pdf},
+  abstract = {
+       This paper reports on the design and soundness proof, using the
+       Coq proof assistant, of Verasco, a static analyzer based on
+       abstract interpretation for most of the ISO~C~1999
+       language (excluding recursion and dynamic allocation).  Verasco
+       establishes the absence of run-time errors in the analyzed
+       programs.  It enjoys a modular architecture that supports the
+       extensible combination of multiple abstract domains, both
+       relational and non-relational.  Verasco integrates with the
+       CompCert formally-verified C~compiler so that not only the
+       soundness of the analysis results is guaranteed with mathematical
+       certitude, but also the fact that these guarantees carry over to
+       the compiled code.}
+}
+
+
+
+@inproceedings{CPP15:Blazy:al,
+  author    = {Sandrine Blazy and
+               André Maroneze and
+               David Pichardie},
+  title     = {Verified Validation of Program Slicing},
+  year      = {2015},
+  booktitle = {Proc. of the 2015 Conference on Certified Programs and Proofs, CPP 2015},
+  publisher = {ACM},
+  year      = {2015},
+  pdf = {papers/cpp15.pdf},
+  abstract = {
+       Program slicing is a well-known program transformation which
+       simplifies a program with respect to a given criterion while
+       preserving its semantics. Since the seminal paper published by
+       Weiser in 1981, program slicing is still widely used in various
+       application domains. State of the art program slicers operate
+       over program de- pendence graphs (PDG), a sophisticated data
+       structure combining data and control dependences.
+       
+       In this paper, we follow the a posteriori validation approach to
+       formally verify (in Coq) a general program slicer. Our validator
+       for program slicing is efficient and validates the results of a
+       run of an unverified program slicer. Program slicing is
+       interesting for a posteriori validation because the correctness
+       proof of program slicing requires to compute new supplementary
+       information from the PDG, thus decoupling the slicing algorithm
+       from its proof.
+       
+       Our semantics-preserving program slicer is integrated into the
+       CompCert formally verified compiler. It operates over an
+       intermediate language of the compiler having the same
+       expressiveness as C. Our experiments show that our formally
+       verified validator scales on large realistic programs.
+ },
+}
+
+@inproceedings{CCS14:Barthe:al,
+  author    = {Gilles Barthe and
+               Gustavo Betarte and
+               Juan Diego Campo and
+               Carlos Luna and
+               David Pichardie},
+  title     = {System-level non-interference for constant-time cryptography},
+  year      = {2014},
+  booktitle = {ACM SIGSAC Conference on Computer and Communications Security, CCS'14},
+  publisher = {ACM},
+  year      = {2014},
+  pdf = {papers/ccs14.pdf},
+  abstract = {
+     Cache-based attacks are a class of side-channel attacks that are
+     particularly effective in virtualized or cloud-based environments,
+     where they have been used to recover secret keys from cryptographic
+     implementations. One common approach to thwart cache-based attacks is
+     to use constant-time implementations, i.e., which do not
+     branch on secrets and do not perform memory accesses that depend on
+     secrets.  However, there is no rigorous proof that constant-time
+     implementations are protected against concurrent cache-attacks in
+     virtualization platforms with shared cache; moreover, many prominent
+     implementations are not constant-time. An alternative approach is to
+     rely on system-level mechanisms. One recent such mechanism is stealth
+     memory, which provisions a small amount of private cache for programs
+     to carry potentially leaking computations securely. Stealth memory
+     induces a weak form of constant-time, called S-constant-time,
+     which encompasses some widely used cryptographic
+     implementations. However, there is no rigorous analysis of stealth
+     memory and S-constant-time, and no tool support for checking if
+     applications are S-constant-time.
+     
+     We propose a new information-flow analysis that checks if an x86
+     application executes in constant-time, or in
+     S-constant-time. Moreover, we prove that constant-time
+     (resp. S-constant-time) programs do not leak confidential information
+     through the cache to other operating systems executing concurrently on
+     virtualization platforms (resp. platforms supporting stealth
+     memory). The soundness proofs are based on new theorems of independent
+     interest, including isolation theorems for virtualization platforms
+     (resp. platforms supporting stealth memory), and proofs that
+     constant-time implementations (resp. S-constant-time implementations)
+     are non-interfering with respect to a strict information flow policy
+     which disallows that control flow and memory accesses depend on
+     secrets.  We formalize our results using the Coq proof
+     assistant and we demonstrate the effectiveness of our analyses on
+     cryptographic implementations, including PolarSSL AES, DES and RC4,
+     SHA256 and Salsa20.},
+}
+
+
+@article{TOPLAS14:Jagannathan:al,
+ author = {Jagannathan, Suresh and Laporte, Vincent and Petri, Gustavo and Pichardie, David and Vitek, Jan},
+ title = {Atomicity Refinement for Verified Compilation},
+ journal = {ACM Trans. Program. Lang. Syst. (TOPLAS)},
+ volume = {36},
+ number = {2},
+ year = {2014},
+ pages = {1},
+  pdf = {papers/toplas_pldi14.pdf},
+  abstract = {
+     We consider the verified compilation of high-level managed languages like
+     Java or C\# whose intermediate representations provide support for
+     shared-memory synchronization and automatic memory management.  Our
+     development is framed in the context of the Total Store Order relaxed memory
+     model.  Ensuring complier correctness is challenging because high-level
+     actions are translated into sequences of non-atomic actions with
+     compiler-injected snippets of racy code; the behavior of this code depends
+     not only on the actions of other threads, but also on out-of-order
+     executions performed by the processor. A na\"{\i}ve proof of correctness
+     would require reasoning over all possible thread interleavings. In this
+     paper we propose a refinement-based proof methodology that precisely relates
+     concurrent code expressed at different abstraction levels, cognizant
+     throughout of the relaxed memory semantics of the underlying processor.  Our
+     technique allows the compiler writer to reason compositionally about the
+     atomicity of low-level concurrent code used to implement managed services.
+     We illustrate our approach with examples taken from the verification of a
+     concurrent garbage collector.},
+}
+
+@inproceedings{PLDI14:Jagannathan:al,
+  author    = {Suresh Jagannathan and
+               Vincent Laporte and
+               Gustavo Petri and
+               David Pichardie and
+               Jan Vitek},
+  title     = {Atomicity refinement for verified compilation},
+  year      = {2014},
+  pages     = {5},
+  booktitle = {ACM SIGPLAN Conference on Programming Language Design and
+               Implementation, PLDI'14},
+  publisher = {ACM},
+  year      = {2014},
+  pdf = {papers/toplas_pldi14.pdf},
+  note      = {Submitted and accepted to TOPLAS vol 36, presented at PLDI the same year},
+  abstract = {
+     We consider the verified compilation of high-level managed languages like
+     Java or C\# whose intermediate representations provide support for
+     shared-memory synchronization and automatic memory management.  Our
+     development is framed in the context of the Total Store Order relaxed memory
+     model.  Ensuring complier correctness is challenging because high-level
+     actions are translated into sequences of non-atomic actions with
+     compiler-injected snippets of racy code; the behavior of this code depends
+     not only on the actions of other threads, but also on out-of-order
+     executions performed by the processor. A na\"{\i}ve proof of correctness
+     would require reasoning over all possible thread interleavings. In this
+     paper we propose a refinement-based proof methodology that precisely relates
+     concurrent code expressed at different abstraction levels, cognizant
+     throughout of the relaxed memory semantics of the underlying processor.  Our
+     technique allows the compiler writer to reason compositionally about the
+     atomicity of low-level concurrent code used to implement managed services.
+     We illustrate our approach with examples taken from the verification of a
+     concurrent garbage collector.}}
+
+@article{TOPLAS14:Barthe:al,
+  author    = {Gilles Barthe and
+               Delphine Demange and
+               David Pichardie},
+  title     = {Formal Verification of an SSA-Based Middle-End for CompCert},
+  journal   = {ACM Trans. Program. Lang. Syst. (TOPLAS)},
+  volume    = {36},
+  number    = {1},
+  year      = {2014},
+  pages     = {4},
+  pdf = {papers/toplas14.pdf},
+  abstract = {
+     CompCert is a formally verified compiler that generates compact and
+     efficient code for a large subset of the C language. However, CompCert
+     foregoes using SSA, an intermediate representation employed by many
+     compilers that enables writing simpler, faster optimizers. In fact, it
+     has remained an open problem to verify formally an SSA-based compiler.
+     We report on a formally verified, SSA-based, middle-end for
+     CompCert. In addition to providing a formally verified SSA-based
+     middle-end, we address two problems raised by Leroy in 2009: giving an
+     intuitive formal semantics to SSA, and leveraging its global
+     properties to reason locally about program optimizations.},     
+}
+
+@inproceedings{ITP14:Blazy:al,
+  author    = {Sandrine Blazy and
+               Vincent Laporte and
+               David Pichardie},
+  title     = {Verified Abstract Interpretation Techniques for Disassembling
+               Low-level Self-modifying Code},
+  pages     = {128-143},
+  booktitle = {Proc. of the 5th International Conference on Interactive
+                Theorem Proving (ITP 2014)},
+  booktitle = {ITP},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {8558},
+  year      = {2014},
+  pdf = {papers/itp14.pdf},
+  abstract = {
+  Static analysis of binary code is challenging for several
+  reasons. In particular, standard static analysis 
+  techniques operate over control flow graphs, which are not available 
+  when dealing with self-modifying programs which can modify
+  their own code at runtime.
+  We formalize in the Coq proof assistant some key abstract
+  interpretation techniques that automatically extract memory safety   
+  properties from binary code. Our analyzer is formally proved
+  correct and has been run on several self-modifying challenges,
+  provided by Cai et al in their PLDI 2007 paper.},
+}
+
+@inproceedings{WCET14:Maroneze:al,
+  author    = {Andr{\'e} Maroneze and
+               Sandrine Blazy and
+               David Pichardie and
+               Isabelle Puaut},
+  title     = {A Formally Verified WCET Estimation Tool},
+  pages     = {11-20},
+  booktitle     = {14th International Workshop on Worst-Case Execution Time
+               Analysis, WCET 2014, July 8, 2014, Ulm, Germany},
+  publisher = {Schloss Dagstuhl - Leibniz-Zentrum fuer Informatik},
+  volume    = {39},
+  pdf       = {papers/wcet14.pdf},
+  year      = {2014},
+  abstract  = {
+      The application of formal methods in the development of safety-critical 
+      embedded software is recommended in order to provide strong guarantees about 
+      the absence of software errors. In this context, WCET
+      estimation tools constitute an important element to be formally verified.
+      We present a formally verified WCET estimation tool, integrated to the formally
+      verified CompCert C compiler. Our tool comes with a machine-checked proof which
+      ensures that its WCET estimates are safe. 
+      Our tool operates over C programs and is composed of two main parts, 
+      a loop bound estimation and an Implicit Path Enumeration Technique (IPET)-based 
+      WCET calculation method.
+      We evaluated the precision of the WCET estimates on a reference benchmark and
+      obtained results which are competitive with state-of-the-art WCET estimation
+      techniques.}
+}
+
+
+@inproceedings{POPL14:Azevedo:al,
+  author = {Arthur Azevedo de Amorim and Nathan Collins and André DeHon and Delphine Demange and Catalin Hritcu and David Pichardie and Benjamin Pierce and Randy Pollack and Andrew Tolmach},
+  title = {A Verified Information-Flow Architecture},
+  booktitle = {Proc. of the 41th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, POPL 2014},
+  year = 2014,
+  pages     = {165-178},
+  publisher = {ACM},
+  pdf = {papers/popl14.pdf},
+  abstract = {  
+    SAFE is a clean-slate design for a highly secure computer system, 
+    with pervasive mechanisms for tracking and limiting information
+    flows. At the lowest level, the SAFE hardware supports
+    fine-grained programmable tags, with efficient and flexible propagation
+    and combination of tags as instructions are executed. The
+    operating system virtualizes these generic facilities to present
+    an information-flow abstract machine that allows user programs to
+    label sensitive data with rich confidentiality policies. We
+    present a formal, machine-checked model of the key hardware and
+    software mechanisms used to control information flow in SAFE and
+    an end- to-end proof of noninterference for this model.}
+}
+
+@InProceedings{VSTTE13:Blazy:al,
+  AUTHOR = {Sandrine Blazy and Andr\'e Maroneze and David Pichardie},
+  TITLE = {Formal Verification of Loop Bound Estimation for {WCET} Analysis},
+  BOOKTITLE = {Proc. of the 5th Working Conference on Verified Software:  
+   Theories, Tools, and Experiments (VSTTE 2013)},
+  year      = {2013},
+  pages     = {281-303},
+  volume    = {8164},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  pdf       =    "papers/vstte13.pdf",
+  abstract = "Worst-case execution time (WCET) estimation tools are complex
+    pieces of software performing tasks such as computation on
+    control flow graphs (CFGs) and bound calculation. 
+    In this paper, we present a formal verification (in Coq) of a loop bound
+    estimation. It relies on program slicing and bound calculation. 
+    
+    The work has been integrated into the CompCert verified C compiler.
+    Our verified analyses directly operate on non-structured CFGs. We
+    extend the CompCert RTL intermediate language with a notion of loop
+    nesting (a.k.a. weak topological ordering on CFGs) that is useful for
+    reasoning on CFGs.  
+    The automatic extraction of our loop bound estimation into OCaml yields
+    a program with competitive results, obtained from experiments on a
+    reference benchmark for WCET bound estimation tools."
+}
+
+@InProceedings{SAS13:Blazy:al,
+  AUTHOR = {Sandrine Blazy and Vincent Laporte and Andr\'e Maroneze and David Pichardie},
+  TITLE = {Formal Verification of a {C} Value Analysis Based on Abstract Interpretation},
+  BOOKTITLE = {Proc. of the 20th Static Analysis Symposium (SAS 2013)},
+  YEAR = {2013},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  PAGES = "324-344",
+  pdf       = "papers/sas13.pdf",
+  volume    = {7935},
+  abstract = "Static analyzers based on abstract interpretation are complex
+    pieces of software implementing delicate algorithms. Even if
+    static analysis techniques are well understood, their
+    implementation on real languages is still error-prone.  
+    
+    This paper presents a formal verification using the Coq proof
+    assistant: a formalization of a value analysis (based on abstract
+    interpretation), and a soundness proof of the value analysis. The
+    formalization relies on generic interfaces. The mechanized proof
+    is facilitated by a translation validation of a Bourdoncle
+    fixpoint iterator.  
+    
+    The work has been integrated into the CompCert verified
+    C-compiler. Our verified analysis directly operates over an
+    intermediate language of the compiler having the same
+    expressiveness as C. The automatic extraction of our value
+    analysis into OCaml yields a program with competitive results,
+    obtained from experiments on a number of benchmarks and
+    comparisons with the Frama-C tool."
+}
+
+@InProceedings{POPL13:Demange:al,
+  author = 	 {Delphine Demange and Vincent Laporte and Lei Zhao and David Pichardie and Suresh Jagannathan and Jan Vitek},
+  title = 	 {Plan {B}: A Buffered Memory Model for {J}ava},
+  booktitle =	 {Proc. of the 40th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, POPL 2013},
+  year =	 2013,
+  publisher =	 {ACM},
+  pdf = {papers/popl13.pdf},
+  abstract = {  Recent advances in verification have made it possible to envision trusted
+  implementations of real-world languages.  Java with its type-safety and
+  fully specified semantics would appear to be an ideal candidate; yet, the
+  complexity of the translation steps used in production virtual machines
+  have made it a challenging target for verifying compiler technology.  One
+  of Java's key innovations, its memory model, poses significant obstacles
+  to such an endeavor.  The Java Memory Model is an ambitious attempt at
+  specifying the behavior of multithreaded programs in a portable, hardware
+  agnostic, way.  While experts have an intuitive grasp of the properties
+  that the model should enjoy, the specification is complex and not
+  well-suited for integration within a verifying compiler infrastructure.
+  Moreover, the specification is given in an axiomatic style that is distant
+  from the intuitive reordering-based reasonings traditionally used to
+  justify or rule out behaviors, and ill suited to the kind of operational
+  reasoning one would expect to employ in a compiler.  This paper takes a
+  step back, and introduces a Buffered Memory Model (BMM) for
+  Java. We choose a pragmatic point in the design space sacrificing
+  generality in favor of a model that is fully characterized in terms of the
+  reorderings it allows, amenable to formal reasoning, and which can be
+  efficiently applied to a specific hardware family, namely x86
+  multiprocessors.  Although the BMM restricts the reorderings compilers are
+  allowed to perform, it serves as the key enabling device to achieving a
+  verification pathway from bytecode to machine instructions.  Despite its
+  restrictions, we show that it is backwards compatible with the Java Memory
+  Model and that it does not cripple performance on TSO architectures.},
+}
+
+@Article{MSCS13:Barthe:Pichardie:Rezk,
+  AUTHOR = {Gilles Barthe and David Pichardie and Tamara Rezk},
+  TITLE = {A Certified Lightweight Non-Interference {J}ava Bytecode Verifier},
+  journal = "Mathematical Structures in Computer Science (MSCS)",
+  volume    = {23},
+  number    = {5},
+  year      = {2013},
+  pages     = {1032-1081},
+  pdf       =    "papers/mscs13.pdf",
+  abstract = "Non-interference guarantees the absence of illicit information 
+ flow throughout program execution. It can be enforced by appropriate 
+ information flow type systems. Much of previous work on type systems for 
+ non-interference has focused on calculi or high-level programming languages,
+ and existing type systems for low-level languages typically omit objects, 
+ exceptions, and method calls. We define an information flow type system for 
+ a sequential JVM-like language that includes all these programming features,
+ and we prove, in the Coq proof assistant, that it guarantees non-interference.
+ An additional benefit of the formalization is that we have extracted from our
+ proof a certified lightweight bytecode verifier for information flow. Our work
+ provides, to our best knowledge, the first sound and certified information 
+ flow type system for such an expressive fragment of the JVM."
+}
+
+@Article{LMCS12:Jensen:Kirchner:Pichardie,
+  AUTHOR = {Thomas Jensen and Florent Kirchner and David Pichardie},
+  TITLE = {Secure the Clones: Static Enforcement of Policies for Secure Object 
+           Copying},
+  JOURNAL = {Logical Methods in Computer Science (LMCS)},
+  YEAR = {2012},
+  volume    = {8},
+  number    = {2},
+  pdf  = "papers/lmcs12.pdf",
+  abstract = "Exchanging mutable data objects with untrusted code is a delicate
+  matter because of the risk of creating a data space that is accessible by 
+  an attacker. Consequently, secure programming guidelines for Java stress the
+  importance of using defensive copying before accepting or handing out 
+  references to an internal mutable object. However, implementation of a copy 
+  method (like clone()) is entirely left to the programmer. It may not provide a
+  sufficiently deep copy of an object and is subject to overriding by a 
+  malicious subclass. Currently no language-based mechanism supports secure 
+  object cloning. This paper proposes a type-based annotation system for
+  defining modular copy policies for class-based object-oriented programs. A 
+  copy policy specifies the maximally allowed sharing between an object and its
+  clone. We present a static enforcement mechanism that will guarantee that all
+  classes fulfil their copy policy, even in the presence of overriding of copy
+  methods, and establish the semantic correctness of the overall approach in 
+  Coq. The mechanism has been implemented and experimentally evaluated on clone 
+  methods from several Java libraries."
+}
+
+@InProceedings{ESOP12:Barthe:demange:Pichardie,
+  AUTHOR = {Gilles Barthe and Delphine Demange and David Pichardie},
+  TITLE = {A formally verified {SSA}-based middle-end - 
+           {S}tatic {S}ingle {A}ssignment meets {C}omp{C}ert},
+  BOOKTITLE = {Proc. of 21th European Symposium on Programming (ESOP 2012)},
+  volume    = {7211},
+  pages     = {47-66},
+  YEAR = {2012},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  pdf       =    "papers/esop12.pdf",
+  abstract = "CompCert is a formally verified compiler that generates compact 
+  and efficient PowerPC, ARM and x86 code for a large and realistic subset
+  of the C language. However, CompCert foregoes using Static Single
+  Assignment (SSA), an intermediate representation that allows for
+  writing simpler and faster optimizers, and is used by many
+  compilers. In fact, it has remained an open problem to verify
+  formally a SSA-based compiler middle-end.
+  We report on a formally verified, SSA-based, middle-end for
+  CompCert.  Our middle-end performs conversion from CompCert
+  intermediate form to SSA form, optimization of SSA programs,
+  including Global Value Numbering, and transforming out of SSA to
+  intermediate form. In addition to provide the first formally
+  verified SSA-based middle-end, we address two problems
+  raised by Leroy: giving a simple and intuitive formal
+  semantics to SSA, and leveraging the global properties
+  of SSA to reason locally about program optimizations."
+}
+
+@InProceedings{CPP11:Besson:Cornilleau:Pichardie,
+  AUTHOR = {Frédéric Besson and Pierre-Emmanuel Cornilleau and David Pichardie},
+  TITLE = {Modular {SMT} Proofs for Fast Reflexive Checking inside {C}oq},
+  BOOKTITLE = {Proc. of the 1st International Conference on Certified Programs
+               and Proofs (CPP 2011)},
+  YEAR = {2011},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  pdf       =    "papers/cpp11.pdf",
+  pages     = {151-166},
+  volume    = {7086},
+  abstract = "  We present a new methodology for exchanging unsatisfiability
+  proofs between an untrusted SMT solver and a sceptical proof
+  assistant with computation capabilities like Coq.  We advocate
+  modular SMT proofs that separate boolean reasoning and theory
+  reasoning; and structure the communication between theories
+  using Nelson-Oppen combination scheme.  We present the design
+  and implementation of a Coq reflexive verifier that is modular
+  and allows for fine-tuned theory-specific verifiers.  The
+  current verifier is able to verify proofs for quantifier-free
+  formulae mixing linear arithmetic and uninterpreted functions.
+  Our proof generation scheme benefits from the efficiency of
+  state-of-the-art SMT solvers while being independent from a
+  specific SMT solver proof format.  Our only requirement for the
+  SMT solver is the ability to extract unsat cores and generate
+  boolean models.  In practice, unsat cores are relatively small
+  and their proof is obtained with a modest overhead by our
+  proof-producing prover.  We present experiments assessing the
+  feasibility of the approach for benchmarks obtained from the
+  SMT competition."
+}
+
+@InProceedings{ESOP11:Jensen:Kirchner:Pichardie,
+  AUTHOR = {Thomas Jensen and Florent Kirchner and David Pichardie},
+  TITLE = {Secure the Clones: Static Enforcement of Policies for Secure Object 
+           Copying},
+  BOOKTITLE = {Proc. of 20th European Symposium on Programming (ESOP 2011)},
+  YEAR = {2011},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  pdf       =    "papers/esop11.pdf",
+  pages     = {317-337},
+  volume    = {6602},
+  abstract = "Exchanging mutable data objects with untrusted code is a delicate
+  matter because of the risk of creating a data space that is
+  accessible by an attacker. Consequently, secure programming guidelines for
+  Java stress the importance of using defensive copying before accepting or
+  handing out references to an internal mutable object.
+
+  However, implementation of a copy method (like clone()) is entirely
+  left to the programmer. It may not provide a sufficiently deep copy of
+  an object and is subject to overriding by a malicious sub-class. Currently 
+  no language-based mechanism supports secure object cloning. 
+
+  This paper proposes a type-based annotation system for defining modular
+  copy policies for class-based object-oriented programs. 
+  A copy policy specifies the maximally allowed sharing between an
+  object and its clone. We present a static
+  enforcement mechanism that will guarantee that all classes fulfill their
+  copy policy, even in the presence of overriding of copy methods, and  
+  establish the semantic correctness of the overall approach in Coq.
+
+  The mechanism has been implemented and experimentally evaluated on
+  clone methods from several Java libraries."
+}
+
+
+@Article{TSI11:Cachera:Pichardie,
+  author = "David Cachera and David Pichardie",
+  title = "Programmation d'un interpr\'eteur abstrait certifi\'e en   
+           logique constructive",
+  journal = "Technique et Science Informatiques (TSI)",
+  year = 2011,
+  volume    = {30},
+  number    = {4},
+  year      = {2011},
+  pages     = {381-408},
+}
+
+@proceedings{BYTECODE10:Pichardie,
+  EDITOR = {David Pichardie},
+  TITLE = {Fifth Workshop on Bytecode Semantics, Verification, Analysis and 
+           Transformation (Bytecode 2010). Proceedings},
+  booktitle = {BYTECODE 2010},
+  SERIES = {Electronic Notes in Theoretical Computer Science},
+  YEAR = {2010},
+}
+
+@InProceedings{FOVEOOS10:sawja,
+  AUTHOR = {Laurent Hubert and Nicolas Barré and
+                  Frédéric Besson and Delphine Demange and Thomas
+                  Jensen and Vincent Monfort and David Pichardie and Tiphaine
+                  Turpin},
+  TITLE = {Sawja: {S}tatic {A}nalysis {W}orkshop for {J}ava},
+  YEAR = 2010,
+  booktitle ="Proc. of the 1st International Conference on Formal
+                  Verification of Object-Oriented Software (FoVeOOS 2010)",
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "Springer-Verlag",
+  pdf       =    "papers/foveoos10.pdf",
+  pages     = {92-106},
+  volume    = {6461},
+  abstract ="Static analysis is a powerful technique for automatic verification
+  of programs but raises major engineering challenges when developing
+  a full-fledged analyzer for a realistic language such as Java.
+  Efficiency and precision of such a tool rely partly on low level
+  components which only depend on the syntactic structure of the
+  language and therefore should not be redesigned for each
+  implementation of a new static analysis.  This paper describes the
+  Sawja library: a static analysis workshop fully compliant with
+  Java 6 which provides OCaml modules for efficiently
+  manipulating Java bytecode programs. We present the main features
+  of the library, including i) efficient functional data-structures
+  for representing a program with implicit sharing and lazy parsing,
+  ii) an intermediate stack-less representation, and iii) fast
+  computation and manipulation of complete programs. We provide
+  experimental evaluations of the different features with respect to
+  time, memory and precision."
+}
+
+@InProceedings{APLAS10:Demange:Jensen:Pichardie,  
+  author =       "Delphine Demange and Thomas Jensen and David Pichardie",
+  title =        "A Provably Correct Stackless Intermediate Representation for
+                 {J}ava Bytecode",
+  booktitle =    "Proc. of the 8th Asian Symposium on Programming Languages and 
+                  Systems (APLAS 2010)",
+  year      =    "2010",
+  pages     = {97-113},
+  volume    = {6461},
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "Springer-Verlag",
+  pdf       =    "papers/aplas10.pdf",
+  abstract = "The Java virtual machine executes stack-based bytecode. The 
+intensive use of an operand stack has been identified as a
+ major obstacle for static analysis and it is now common for 
+static analysis tools to manipulate a stackless 
+intermediate representation (IR) of bytecode programs. 
+This paper provides such a bytecode 
+transformation, describes its semantic 
+correctness and evaluates its performance. 
+We provide the semantic foundations for proving that an initial
+ program and its IR behave similarly, in particular with respect
+ to object creation and throwing of exceptions. The correctness 
+of this transformation is proved with respect to a relation on 
+execution traces taking into account that the object allocation 
+order is not preserved by the transformation."
+}
+
+@InProceedings{ESORICS10:Hubert:Pichardie,  
+  author =       "Laurent Hubert and Thomas Jensen and Vincent Monfort and
+                  David Pichardie",
+  title =        "Enforcing Secure Object Initialization in {J}ava",
+  booktitle =    "Proc. of the 15th European Symposium on Research in Computer 
+                  Security (ESORICS 2010)",
+  year      =    "2010",
+  pages     =    "101-115",
+  volume    =    "6345",
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "Springer-Verlag",
+  pdf       =    "papers/esorics10.pdf",
+  abstract  =    "Sun and the CERT recommend for secure Java development to not 
+  allow partially initialized objects to be accessed.  The CERT considers the
+  severity of the risks taken by not following this recommendation as
+  high.  The solution currently used to enforce object initialization is
+  to implement a coding pattern proposed by Sun, which is not formally checked.
+  We propose a modular type system to formally specify the initialization policy
+  of libraries or programs and a type checker to statically check at load time
+  that all loaded classes respect the policy.  This allows to prove the absence
+  of bugs which have allowed some famous privilege escalations in Java.  Our
+  experimental results show that our safe default policy allows to prove 91\% of
+  classes of java.lang, java.security and
+  javax.security safe without any annotation and by adding 57 simple
+  annotations we proved all classes but four safe.  The type system and its
+  soundness theorem have been formalized and machine checked using Coq."
+}
+
+@InProceedings{ITP10:Cachera:Pichardie,  
+  author =       "David Cachera and David Pichardie",
+  title =        "A Certified Denotational Abstract Interpreter",
+  booktitle =    "Proc. of International Conference on Interactive Theorem 
+                  Proving (ITP-10)",
+  year      =    "2010",
+  pages     =    "9-24",
+  volume    =    "6172",
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "Springer-Verlag",
+  pdf       =    "papers/itp10.pdf",
+  abstract  =    "Abstract Interpretation proposes advanced techniques for 
+ static analysis of programs that raise specific challenges for
+machine-checked soundness proofs. Most classical dataflow analysis
+techniques iterate operators on lattices without infinite ascending
+chains. In contrast, abstract interpreters are looking for fixpoints
+in infinite lattices where widening and narrowing are used for
+accelerating the convergence. Smart iteration strategies are crucial
+when using such accelerating operators because they directly impact
+the precision of the analysis diagnostic. In this paper, we show
+how we manage to program and prove correct in Coq an abstract
+interpreter that uses iteration strategies based on program syntax.
+A key component of the formalization is the introduction of an
+intermediate semantics based on a generic least-fixpoint operator
+on complete lattices and allows us to decompose the soundness proof in an
+elegant manner."
+}
+
+@InProceedings{TGC10:Besson:Jensen:Pichardie:Turpin,  
+  author =       "Fr\'ed\'eric Besson and Thomas Jensen and David Pichardie and
+                  Tiphaine Turpin",
+  title =        "Certified Result Checking for Polyhedral Analysis of Bytecode 
+                  Programs",
+  booktitle =    "Proc. of the 5th International Symposium on Trustworthy Global
+                  Computing (TGC 2010)",
+  year      =    "2010",
+  pages     =    "253-267",
+  volume    =    "6084",
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "Springer-Verlag",
+  pdf       =    "papers/tgc10.pdf"
+}
+@InProceedings{SSTIC10:JAVASEC,  
+  author =       "Guillaume Hiet and Frédéric Guihéry and Goulven Guiheux and 
+                  David Pichardie and Christian Brunette",
+  title =        {S\'ecurit\'e de la plate-forme d'ex\'ecution {J}ava : limites et 
+                  propositions d'am\'eliorations},
+  booktitle =    "Proc. of Symposium sur la s\'ecurit\'e des technologies de 
+                  l'information et des communications (SSTIC 2010)",
+  year      =    "2010",
+  pdf       =    "papers/sstic10.pdf"
+}
+
+@Article{JCS10:Besson:Jensen:Dufay:Pichardie,
+author = "Fr\'ed\'eric Besson and Thomas Jensen and Guillaume Dufay and David 
+          Pichardie",
+title = "Verifying Resource Access Control on Mobile Interactive Devices",
+journal = "Journal of Computer Security",
+  volume    = {18},
+  number    = {6},
+  pages     = {971-998},
+year = 2010,
+pdf = "papers/jcs10.pdf",
+}
+
+
+@inproceedings{FOSAD09:BessonCacheraJensenPichardie,
+  author    = {Fr{\'e}d{\'e}ric Besson and
+               David Cachera and
+               Thomas P. Jensen and
+               David Pichardie},
+  title     = {Certified Static Analysis by Abstract Interpretation},
+  booktitle     = {Foundations of Security Analysis and Design V, FOSAD 
+               2007/2008/2009 Tutorial Lectures},
+  year      = {2009},
+  pages     = {223-257},
+  publisher = {Springer-Verlag},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {5705},
+  pdf       =    "papers/fosad09.pdf",
+}
+
+
+@InProceedings{TPHOLs09:Dabrowski:Pichardie,  
+  author =       "Fr\'ed\'eric Dabrowski and David Pichardie",
+  title =        {A Certified Data Race Analysis for a {J}ava-like Language},
+  booktitle =    "Proc. of 22nd International Conference on Theorem Proving in
+                  Higher Order Logics (TPHOLs'09)",
+  year      =    "2009",
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "Springer-Verlag",
+  volume    = {5674},
+  pages     = {212-227},
+  pdf       =    "papers/tphols09.pdf",
+}
+
+@Article{NFM09:Cachera:Pichardie,
+  AUTHOR = {David Cachera and David Pichardie},
+  TITLE = {Comparing Techniques for Certified Static Analysis},
+  JOURNAL = {Proc. of the 1st NASA Formal Methods Symposium (NFM'09)},
+  YEAR = {2009},
+  pages = {111-115},
+  publisher = "NASA Ames Research Center ",
+  pdf = "papers/nfm09.pdf",
+}
+
+@Article{BYTECODE09:Hubert:Pichardie,
+  AUTHOR = {Laurent Hubert and David Pichardie},
+  TITLE = {Soundly Handling Static Fields: Issues, Semantics and Analysis},
+  JOURNAL = {Proc. of the   4th International Workshop on
+  Bytecode Semantics, Verification, Analysis and Transformation (BYTECODE'09)},
+  SERIES = {Electronic Notes in Theoretical Computer Science},
+  YEAR = {2009},
+  volume    = {253},
+  number    = {5},
+  pages     = {15-30},
+  pdf = "papers/bytecode09.pdf",
+}
+
+@InProceedings{SEFM08:Barthe:Kunz:Pichardie:Forlese,
+  AUTHOR = {Gilles Barthe and C\'esar Kunz and David Pichardie and Juli\'an 
+            Samborski Forlese},
+  TITLE = {Preservation of Proof Obligations for Hybrid Certificates},
+  BOOKTITLE = {Proc. of the 6th IEEE International Conferences on Software 
+              Engineering and Formal Methods (SEFM'08)},
+  YEAR = {2008},
+  PUBLISHER = {IEEE Computer Society},
+  pages =  {127-136},
+  pdf = "papers/sefm08.pdf",
+}
+
+@InProceedings{FMOODS08:HubertJensenPichardie,
+  AUTHOR = {Laurent Hubert and Thomas Jensen and David Pichardie},
+  TITLE = {{Semantic foundations and inference of non-null annotations}},
+  BOOKTITLE = {Proc. of the 10th International Conference on Formal Methods for 
+               Open Object-based Distributed Systems (FMOODS'08)},
+  YEAR = {2008},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  volume =  {5051},
+  pages =  {132-149},
+  pdf =          "papers/fmoods08.pdf"
+}
+
+@INPROCEEDINGS{FICS08:Pichardie,
+AUTHOR= "David Pichardie",
+TITLE= "{Building certified static analysers by modular construction of 
+         well-founded lattices}",
+YEAR = 2008,
+SERIES = {Electronic Notes in Theoretical Computer Science},
+BOOKTITLE={Proc. of the 1st International Conference on Foundations of 
+           Informatics, Computing and Software (FICS'08)},
+pdf =          "papers/fics08.pdf",
+ volume    = {212},
+  pages     = {225-239}
+}
+
+@InProceedings{FMCO7:BCGJP,
+  AUTHOR = {Gilles Barthe and Pierre Cr\'egut and Benjamin Gr\'egoire and Thomas
+            Jensen and David Pichardie},
+  TITLE = {{The MOBIUS Proof Carrying Code infrastructure}},
+  BOOKTITLE = {Proc. of the 6th International Symposium on Formal Methods for 
+               Components and Objects (FMCO'07)},
+  YEAR = {2007},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  volume    = {5382},
+  pages     = {1-24}
+}
+
+@InProceedings{BPR07,
+  AUTHOR = {Gilles Barthe and David Pichardie and Tamara Rezk},
+  TITLE = {{A Certified Lightweight Non-Interference {J}ava Bytecode Verifier}},
+  BOOKTITLE = {Proc. of 16th European Symposium on Programming (ESOP'07)},
+  YEAR = {2007},
+  SERIES = {Lecture Notes in Computer Science},
+  PUBLISHER = {Springer-Verlag},
+  volume =  {4421},
+  pages =  {125-140},
+  pdf =          "papers/esop07.pdf",
+}
+
+@Article{TCSAppSem:BessonJensenPichardie,
+author = "Fr\'ed\'eric Besson and Thomas Jensen and David Pichardie",
+title = "Proof-Carrying Code from Certified Abstract Interpretation to Fixpoint 
+         Compression",
+journal = "Theoretical Computer Science",
+year = 2006,
+volume = 364,
+number = 3,
+pages = {273--291},
+  pdf =          "papers/tcs06.pdf",
+}
+
+@INPROCEEDINGS{EAAI:BessonJensenPichardie,
+AUTHOR= "Fr\'ed\'eric Besson and Thomas Jensen and David Pichardie",
+TITLE= "{A PCC Architecture based on Certified Abstract Interpretation}",
+PUBLISHER = {Springer-Verlag},
+YEAR = 2006,
+SERIES = {ENTCS},
+BOOKTITLE={Proc. of 1st International Workshop on Emerging Applications of 
+           Abstract Interpretation (EAAI'06)},
+  pdf =          "papers/eaai06.pdf",
+}
+
+@inproceedings{BartheFPR06,
+  author    = {Gilles Barthe and
+               Julien Forest and
+               David Pichardie and
+               Vlad Rusu},
+  title     = {Defining and Reasoning About Recursive Functions: A Practical
+               Tool for the Coq Proof Assistant.},
+  pages     = {114-129},
+  booktitle     = {Proc. of 8th International Symposium on Functional and
+                  Logic Programming (FLOPS'06)},
+  series =       "Lecture Notes in Computer Science",
+  publisher =    "{Springer-Verlag}",
+  volume    = {3945},
+  year      = {2006},
+  pdf =          "papers/flops06.pdf",
+}
+
+@PhdThesis{Pich:these,
+  author = 	 {Pichardie David},
+  title = 	 {Interprétation abstraite en logique intuitionniste~: 
+                  extraction d'analyseurs {J}ava certifiés},
+  school = 	 {Université Rennes~1},
+  year = 	 {2005},
+  pdf =          "papers/these-pichardie.pdf",
+  note =         "In french",
+}
+
+@InProceedings{Pich05ParamConcr,  
+  author =       "David Pichardie",
+  title =        {Modular proof principles for parameterized concretizations},
+  booktitle =    "Proc. of 2nd International Workshop on Construction and 
+      Analysis of Safe, Secure and Interoperable Smart Devices (CASSIS 2005)",
+  year =         "2005",
+  number =       "3956",
+  pages =        "138--154",
+  series =       "Lecture Notes in Computer Science",
+  publisher =    "{Springer-Verlag}",
+  pdf =          "papers/param.pdf",
+}
+
+@InProceedings{CaJePiSc05MemoryUsage,  
+  author =       "David Cachera and Thomas Jensen and David Pichardie and 
+                  Gerardo Schneider",
+  title =        {{Certified Memory Usage Analysis}},
+  booktitle =    "Proc. of 13th International Symposium on Formal Methods (FM'05)",
+  year =         "2005",
+  pages =        "91--106",
+  number =       "3582",
+  series =       "Lecture Notes in Computer Science",
+  publisher =    "{Springer-Verlag}",
+  pdf =          "papers/memoryusage.pdf",
+}
+
+@article{CaJePiRu05TCSExtractAnalyser,  
+  author =       "David Cachera and Thomas Jensen and David Pichardie and 
+                  Vlad Rusu",
+  title =        {{Extracting a Data Flow Analyser in Constructive Logic}},
+  journal =      "Theoretical Computer Science",
+  year =         "2005",
+  volume = 	 {342},
+  number = 	 {1},
+  pages = 	 {56-78},
+  month = 	 {September},
+  pdf =          "papers/extract_TCS.pdf",
+  note = "Extended version of \cite{CaJePiRu04ExtractAnalyser}",
+}
+
+@InProceedings{CaJePiRu04ExtractAnalyser,  
+  author =       "David Cachera and Thomas Jensen and David Pichardie and
+                  Vlad Rusu",
+  title =        {{Extracting a Data Flow Analyser in Constructive Logic}},
+  booktitle =    "Proc. of 13th European Symposium on Programming (ESOP'04)",
+  year =         "2004",
+  pages =        "385--400",
+  number =       "2986",
+  series =       "Lecture Notes in Computer Science",
+  publisher =    "{Springer-Verlag}",
+  pdf =          "papers/extractDataFlow.pdf",
+}
+
+@inproceedings{GeJeKoPi04Converter,
+    author = {Thomas Genet and Thomas Jensen and Vikash Kodati and David 
+              Pichardie},
+    title = {{A {J}ava Card CAP converter in PVS}},
+    booktitle = {Proc. of 2nd International Workshop on Compiler Optimization 
+   Meets Compiler Verification (COCV 2003), ENTCS},
+    volume = {82},
+    issue = {2},
+    publisher = {{Elsevier}},
+    editor = {Jens Knoop and Wolf Zimmermann},
+    year = {2004},
+    pdf      = "papers/capConverter.pdf",
+} 
+
+
+@InProceedings{CaPi03AffineRec,  
+  author =       "David Cachera and David Pichardie",
+  title =        {{Embedding of Systems of Affine Recurrence Equations in Coq}},
+  booktitle =    "Proc. of 16th International Conference on Theorem Proving in 
+                   Higher Order Logics (TPHOLs'03)",
+  year      =    "2003",
+  pages     =    "155--170",
+  number    =    "2758",
+  series    =    "Lecture Notes in Computer Science",
+  publisher =    "{Springer-Verlag}",
+  pdf       =    "papers/embedSARE.pdf",
+}
+		 
+@InProceedings{BePi01Convexhull,  
+  author =       "David Pichardie and Yves Bertot",
+  title =        {{Formalizing Convex Hulls Algorithms}},
+  booktitle =    "Proc. of 14th International Conference on Theorem Proving in 
+             Higher Order Logics (TPHOLs'01)",
+  year =         "2001",
+  pages =        "346--361",
+  number =       "2152",
+  series =       "Lecture Notes in Computer Science",
+  publisher =    "{Springer-Verlag}",
+  pdf =          "papers/hulls.pdf",
+}

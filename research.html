@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>David Pichardie - Home page</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<a name="top" id="top"></a>
+<center>
+
+<div id="header">
+<h1>David Pichardie</h1>
+<h2>Research</h2>
+</div>
+		
+<div id="content">
+
+<div id="sidebar">
+<div class="submenu">
+  <h1>Menu</h1>
+  <a href="index.html">Home</a>
+  <a href="research.html">Research</a>
+  <a href="publi.html">Publications</a>
+  <a href="teaching.html">Teaching</a>
+</div>
+</div>
+
+<div id="mainbar">
+
+  <h1 id=research>Current research</h1>
+
+<p>
+The main topic of my research is the design of reliable software using
+provably sound formal methods. Among the various formal methods that
+exist, I am specially interested by two of them: static analysis and
+proof assistant. Static analyses are automatic proof techniques that
+allow to verify targeted properties about program executions like no
+division by zero or no buffer overflow. Realistic static analysers are
+complex pieces of software that, for the best of them, are able to
+prove the absence of runtime errors on million of line of C, in a few
+hours. Such a <i>proof</i> remains ad-hoc since it basically relies on
+the internal logic of the static analyser. To gain trust in these
+tools, I use a second kind of formal method, interactive proof with a
+proof assistant, to formally prove the correctness of static analyses
+with respect to the operational semantics of the analysed programming
+language. In turn, the proof assistant is provably correct by
+construction and by reliability of its underlying foundational logic
+kernel.
+</p>
+
+<p>
+My main application area is the Java programming language which offers
+a large spectrum of properties to be verified by static analysis. I have been
+working on several verified static analyses for this language with the
+long term goal of building an unified and verified Java platform.
+</p>
+
+<h2>Certified static analysis</h2>
+<p>
+ My PhD's works dealt with the development of certified static
+ analyses using the Coq proof assistant and the abstract
+ interpretation theory.  During this work, I have developed static
+ analyses for a programming language similar to Java bytecode. The
+ extraction features of Coq have enabled me to extract an analyser
+ written in OCaml, from the correctness proof of the analysis. The
+ correctness proof followed the abstract interpretation methodology. I
+ proposed a generic framework to formalise static analysers in Coq.
+</p>
+
+<p>
+ After this PhD, I provided two main extensions to this work. The
+ first one is a certified abstract interpreter for a simple imperative
+ programming language. Using recent advances in the Coq proof
+ assistant (type classes), David Cachera and I are able to program
+ and prove correct an abstract interpreter with a complex iteration
+ strategy
+<a href="publi_abstracts.html#ITP10:Cachera:Pichardie">[ITP10]</a> 
+that follows the program
+ syntax. The second extension mixes certified static analysis and
+ proof carrying code (PCC). We follow the PCC methodology to clearly
+ separate the soundness of a static analyser into two distinct parts:
+ first, the external computation that can be performed by untrusted
+ tools to reach a suitable fixpoint and second, the fixpoint checker that must be formally proved
+ correct in Coq. We apply this methodology on a simple bytecode
+ language with an interval analysis
+<a href="publi_abstracts.html#TCSAppSem:BessonJensenPichardie">[TCS06]</a> 
+ and a polyhedral analysis
+<a href="publi_abstracts.html#TGC10:Besson:Jensen:Pichardie:Turpin">[TGC10]</a>.
+</p>
+
+<p>
+The overall goal of this activity is to formalise advanced techniques
+in abstract interpretation. With Sandrine Blazy and other french
+colleagues in the <a href="http://verasco.imag.fr/wiki/Main_Page">Verasco French ANR project</a>,
+ we are currently applying these
+technique to build a realistic certified abstract interpreter on top
+of the CompCert C formal semantics.
+</p>
+
+<h2>Advanced certified static analysis for a realistic Java-like language</h2>
+<p>
+The purpose of this activity is to push further the scope of
+certified static analysis without special emphasis on abstract
+interpretation technique but trying to cope with more advanced
+semantic properties and more realistic features of modern programming languages.
+</p>
+
+<p>
+The first semantic property I study is
+non-interference. Non-interference is a semantical condition on
+programs that guarantees the absence of illicit information flow
+throughout their executions, and that can be enforced by appropriate
+information flow type systems. Much of previous work on type systems
+for non-interference has focused on calculi or high-level programming
+languages, and existing type systems for low-level languages typically
+omit objects, exceptions, and method calls, and/or do not prove
+formally the soundness of the type system. Together with Gilles Barthe
+and Tamara Rezk we define an information flow type system for a
+sequential JVM-like language that includes classes, objects, arrays,
+exceptions and method calls, and prove that it guarantees
+non-interference
+<a href="publi_abstracts.html#BPR07">[ESOP07]</a> 
+<a href="publi_abstracts.html#MSCS12:Cachera:Pichardie">[MSCS13]</a>.
+For
+increased confidence, we formalise the proof in the proof assistant
+Coq.</p>
+
+<p>The second challenging semantic property is data-race freeness.  In
+multithreaded programming a data race occurs in a program execution
+when two threads access a memory location, and at least one of them
+changes its value, without proper synchronisation. Such situations can
+lead to unexpected behaviours, sometimes with damaging
+consequences. Formally ensuring data race freeness of a program is a
+central problem in Java, because the Java Memory Model then guarantees
+that one can safely reason on the interleaved semantics of the
+program. Together with Frédéric Dabrowski, we formalise in Coq a Java
+bytecode data race analyser
+<a href="publi_abstracts.html#TPHOLs09:Dabrowski:Pichardie">[TPHOLs09]</a> 
+ based on the conditional must-not alias
+analysis of Naik and Aiken. The formalisation includes a
+context-sensitive points-to analysis and an instrumented semantics
+that counts method calls and loop iterations. Our Java-like language
+handles objects, virtual method calls, thread spawning and lock and
+unlock operations for threads synchronisation.
+</p>
+
+<p>
+I think these two works push to its limit what can be formally proved
+in a proof assistant with a direct approach where the proof and the
+implementation of the certified static analyser are performed directly
+at the level of the programming language (here the Java bytecode
+language). Each proof was more than 15.000 lines of Coq long and took
+more than one man-year. After this observation, it was clear to me
+that I need to build a suitable static analysis platform that will
+facilitate both the implementation and the proof of a static analyser.
+</p>
+
+<h2>Foundations and implementation of a tool bench for static analysis of Java bytecode programs.</h2>
+<p>
+This activity is closely related to Laurent Hubert's PhD thesis.
+Several static analysis platforms have been proposed in the past in
+order to facilitate the development of static analysis for Java
+bytecode programs.  But none of them was designed with the goal of
+performing a soundness proof.  The goal of this activity was hence to
+study several advanced static analyses and build an Ocaml library that
+makes possible both an efficient implementation and a high level
+reasoning. In Laurent Hubert's thesis several static analyses have
+been proposed to better master initialization in Java. Among them a
+null pointer analysis <a href="publi_abstracts.html#FMOODS08:HubertJensenPichardie">[FMOODS08]</a> finely
+tracks initialization of fields and a type system allows to enforce
+secure object initialization
+<a href="publi_abstracts.html#ESORICS10:Hubert:Pichardie">[ESORICS10]</a>.  For
+both analyses, we formalise their semantic foundations, and prove
+their soundness in Coq. Furthermore, we also provide OCaml
+implementations that lead to realistic tools. During this PhD, and to
+ease the adaptation of such analyses, which have been formalized on
+idealized languages, to the full-featured Java bytecode, we have
+developed a OCaml library that gives a tool bench for static analysis
+of Java bytecode programs (<a href="http://sawja.inria.fr">Sawja</a>). 
+After Laurent Hubert's work this approach has been pursued
+for a specific shape static analysis that verifies the correctness of
+Java copying
+methods <a href="publi_abstracts.html#ESOP11:Jensen:Kirchner:Pichardie">[ESOP11]</a>
+<a href="publi_abstracts.html#LMCS12:Jensen:Kirchner:Pichardie">[LMCS12]</a>,
+in collaboration with Florent Kirchner.  The formal link between the
+idealized language and the full Java bytecode language has been
+formalized during the first
+part <a href="publi_abstracts.html#APLAS10:Demange:Jensen:Pichardie">[APLAS10]</a> of Delphine Demange's
+PhD.
+</p>
+
+<h2>Toward building a certified compiler for the concurrent Java bytecode programming language</h2>
+
+<p>
+The previous activity has built the foundations of a tool bench for developing
+provably correct and realistic static analysers for the Java bytecode
+language. The Sawja program representations can be easily lift from
+Ocaml structures to Coq structures. But it appears that giving a
+realistic semantics to this representation is still difficult since
+the real Java language is concurrent. Indeed the semantics of concurrent Java
+programs is not so well understood. The Java Memory Model (JMM)
+provides a high level semantics for concurrent (and racy) programs,
+portable across architectures. But it appears that the official
+specification is flawed at subtle points. After several patches the
+main criticism against the JMM is his lack of formal connection with
+compiler techniques. The JMM is supposed to act as an interface between
+the programmer and the program transformations that compilers are performing behind
+the scene.
+ I believe it will be hard to fix such a complex model
+without taking care of what these compilers are actually doing. Hence
+the most recent part of my research activity is dedicated to building
+a certified compiler for the concurrent Java bytecode programming
+language. In this area, the recent success of the CompCert C compiler
+has shown that it is possible to construct reasonably efficient
+compilers along with a machine-checked proof of their correctness.
+This leads to a formal toolchain from the program model to the hardware
+semantics. Performing the same effort for the Java platform would
+allow a formal connection between the JMM and hardware. Still, the
+compiler techniques currently used in CompCert would only partially
+reveal the technical issues that have motivated the JMM. 
+</p>
+
+<p>To this end,
+we have embarked on a long-term project to produce a verified Java
+platform for safety-critical systems. The aggressive optimisations
+that we would like to target mainly rely on the SSA (Static Single Assignment)
+intermediate representation. Together with Gilles
+Barthe and Delphine Demange we have developed a provably correct
+SSA-based middle-end <a href="publi_abstracts.html#ESOP12:Barthe:demange:Pichardie">[ESOP12]</a>. We
+address here two problems that have not been solved before: giving a
+simple and intuitive formal semantics to SSA, and leveraging the
+global properties of SSA to reason locally about program
+optimisations.</p>
+
+<p>This long term project is full of new challenging subject. Among them
+we need to find a formal path from the JMM to an operational hardware
+model. In collaboration with Delphine Demange, Vincent Laporte and colleagues at Purdue University we have designed
+an intermediate memory model that could act as an intermediate step between these models <a href="publi_abstracts.html#POPL13:Demange:al">[POPL13]</a>.</p>
+
+
+<!-- <p><b>Information flow type systems</b> We have implemented and proved correct in Coq a -->
+<!-- modular type checker for Java bytecode programs. This work has been presented at ESOP'07. -->
+<!-- This works was mainly achieved during my postoc in the -->
+<!-- <a href="http://www-sop.inria.fr/everest/">Everest</a> team at INRIA Sophia-Antipolis. -->
+<!-- </p> -->
+
+
+<!-- <p><b>Certified static analysis</b>. -->
+<!-- My phd's works dealt with the development of certified static analyses -->
+<!-- using the Coq proof assistant and the abstract interpretation theory. -->
+<!-- This PhD was done under the direction of -->
+<!-- <a target=_top href="http://www.bretagne.ens-cachan.fr/DIT/People/David.Cachera/">David -->
+<!--     Cachera</a> and <a target=_top -->
+<!--     href="http://www.irisa.fr/lande/jensen">Thomas Jensen</a>. It -->
+<!--      takes place at Irisa in project <a target=_top -->
+<!--     href="http://www.irisa.fr/lande">Lande</a>  -->
+<!-- during september 2002 and september 2005. -->
+<!-- During this work, I have developed static analyses for a programming -->
+<!-- language similar to Java bytecode. The extraction features of Coq have -->
+<!-- enabled me to extract an analyser written in OCaml, from the -->
+<!-- correctness proof of the analysis. The correctness proof follows the -->
+<!-- abstract interpretation methodology.  The main theorem establishes -->
+<!-- that the analyser computes correct informations with respect to the -->
+<!-- operational semantics of a program. I propose a generic framework to -->
+<!-- formalise static analysers in Coq.  This work is mainly explained in a TCS'05 article. -->
+<!-- </p> -->
+
+<!-- <p><b>Formal Java Bytecode semantics</b>. I participate to the -->
+<!-- the development of <a target=_top href="http://mobius.inria.fr/bicolano">Bicolano</a>, -->
+<!-- a Formal Java Bytecode semantics written in Coq for the  -->
+<!-- <a target=_top href="http://mobius.inria.fr">Mobius</a>  -->
+<!-- european project. -->
+<!-- </p> -->
+
+<!-- <h1>Software development</h1> -->
+
+<!-- <ul> -->
+<!--   <li>Relational resource analysis for Java bytecode programs (work in progress)</li> -->
+<!--   <li>A <a href="http://www.irisa.fr/lande/pichardie/lattice/">Coq library</a> for modular construction of -->
+<!-- 	well-founded lattice -->
+<!--   <li>A <a href="http://www.irisa.fr/lande/pichardie/iflow">Certified Lightweight Non-Interference Java Bytecode Verifier</a> -->
+<!--   <li><a target=_top href="http://mobius.inria.fr/bicolano">Bicolano</a>, a Formal Java Bytecode semantics</li> -->
+<!-- </ul> -->
+
+<h1>Past research</h1>
+
+<p><b>Proof carrying code</b>.  We have applied my Phd work
+on <a href="http://raw.cs.berkeley.edu/pcc.html">Proof Carrying
+Code</a> (or more precisely certificate checker certification). We
+propose an abstract interpretation framework to build PCC architecture
+with a downloadable Coq soundness proof of the certificate checker.
+The architecture has been evaluated experimentally on a byte code
+language for which we have designed an interval analysis that allows
+to generate certificates ascertaining that no array-out-of-bounds
+accesses will occur (see our TCS'06 paper for more details). 
+</p>
+			
+<p><b>General recursion in Coq</b>.
+We have worked on an extension of Coq to facilitate the definition and
+the reasoning of recursive general functions. This work has led to a
+paper in FLOPS'06.
+</p>
+
+<p><b>Various Coq formalisations</b>.
+My previous research activities were related to formalisation in Coq
+of geometrical algorithms like computation of convex hulls (see
+ TPHOLs' 01 paper), proof of
+programs describing hardware implementations using systems of affine
+recurrence equations (see TPHOLs' 03 paper) and formalisation, in PVS, of an
+algorithm of optimization used for the compilation of JavaCard
+programs (see COCV' 03 paper).
+</p>
+
+
+<!-- <h1 >Research Talks</h1 -->
+		      
+<!-- <p>		      <ul> -->
+<!-- 			<li>Presentation of the french RNTL -->
+<!-- 			  <a href="http://www-sop.inria.fr/everest/projects/castles/">CASTLES</a>  -->
+<!-- 			  project, embedded system session, in the  -->
+<!-- 			  <a href="http://www.rntl.org/colloqueTIC2006/"> -->
+<!-- 			    <i>Grand colloque français TIC</i> -->
+<!-- 			  </a>. -->
+<!-- 			</li> -->
+<!-- 		      </ul> -->
+<!-- </p> -->
+
+<p></p>		      
+</div>
+</div>
+
+<div id="footer">
+Page designed by <a href="http://www.jameskoster.co.uk">James Koster</a>
+via <a href="http://www.oswd.org/">OSWD</a> and shamefully stolen on <a href="http://pauillac.inria.fr/~xleroy/">Xavier Leroy's homepage</a>.
+</div>
+</center>
+</body>
+</html>

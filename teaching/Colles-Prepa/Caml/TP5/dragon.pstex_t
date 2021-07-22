@@ -1,0 +1,19 @@
+\begin{picture}(0,0)%
+\includegraphics{dragon.pstex}%
+\end{picture}%
+\setlength{\unitlength}{2901sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(3036,3037)(2904,-3908)
+\put(5761,-1906){\rotatebox{270.0}{\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}dragon $n-1$}%
+}}}}
+\put(3601,-1051){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}dragon $n-1$}%
+}}}
+\put(3511,-2221){\rotatebox{315.0}{\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}dragon $n$}%
+}}}}
+\end{picture}

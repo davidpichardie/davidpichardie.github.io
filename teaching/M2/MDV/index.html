@@ -1,0 +1,112 @@
+<html>
+  <head>
+<title>Master recherche : Méthode de vérification</title>
+  <link rel=STYLESHEET href="../../style.css" type="text/css">
+  </head>
+
+<body>
+<a name="top" id="top"></a>
+
+
+<div id="header">
+    <h1>MDV : Méthode de vérification</h1>
+<h2>Master recherche Année 2006/2007</h2>
+</div>
+
+<div id="content">
+
+<h1>Planning des cours</h1>
+
+<p>
+
+ <table class=mytab border=1>
+ <tr>
+   <th width=80></th><th>Date</th><th>Titre width=30%</th><th>Transparents</th><th>Exercices</th><th width=40%>A faire</th>
+ </tr><tr>
+   <td>Séance 1</td>
+   <td>04/10/2006</td>
+   <td>Systèmes de déduction et initiation à Coq</td>
+   <td  center><a href="cours1.pdf">cours1.pdf</a></td>
+   <td><a href="prop.v">prop.v</a>
+       <a href="pred.v">pred.v</a></td>
+   <td>Lire intro, chap 1 et chap 4 de 
+     <a href="http://www.lix.polytechnique.fr/~dowek/Cours/proof.ps.gz">Introduction to proof theory</a> par Gilles Dowek</td>
+ </tr><tr>
+   <td>Séance 2</td>
+   <td>18/10/2006</td>
+   <td>Types de données inductifs et prédicats inductifs.
+       Les types inductifs en Coq</td>
+   <td><a href="cours2.pdf">cours2.pdf</a></td>
+   <td><a href="arithmetique.v">arithmetique.v</a>
+       <a href="append.v">append.v</a>
+       <a href="sort.v">sort.v</a></td>
+   <td>Lire (partiellement) les chap 6 et chap 8 du <a href=#coqart>Coq'Art</a><br>
+       Projets individuelles à rendre avant le vendredi 1er Décembre</td>
+ </tr><tr>
+   <td>Séance 3</td>
+   <td>08/11/2006</td>
+   <td>Typage</td>
+   <td><a href="cours3.pdf">cours3.pdf</a></td>
+   <td></td>
+   <td></td>
+ </tr><tr>
+   <td>Séance 4</td>
+   <td>22/11/2006</td>
+   <td>Programmation certifiée avancée</td>
+   <td><a href="cours4.pdf">cours4.pdf</a></td>
+   <td><a href="minus.v">minus.v</a>
+       <a href="set.v">set.v</a></td>
+   <td>Finir l'exercice sur les ensembles finis</td>
+ </tr><tr>
+   <td>Séance 5</td>
+   <td>06/12/2006</td>
+   <td>Logique  équationnelle et réécriture</td>
+   <td></td>
+   <td><a href="newman_exo.v">newman_exo.v</a>
+       <a href="cours5_exo.v">cours5_exo.v</a></td>
+   <td></td>
+ </tr><tr>
+   <td>Séance 6</td>
+   <td>20/12/2006</td>
+   <td>Arithmétique et procédures de décision</td>
+   <td><a href="cours6.pdf">cours6.pdf</a></td>
+   <td><a href="pieces_exo.v">pieces_exo.v</a>
+       <a href="reflexive_exo.v">reflexive_exo.v</a>
+       <a href="cours6.v">cours6.v</a></td>
+   <td></td>
+ </tr>
+</table></p>
+<p>
+Lieu : Salle Noirmoutier<br>
+Horaire : 14h - 17h<br>
+</p>
+
+<h1>Liens</h1>
+
+<p>
+  <ul>
+    <li>Le <a href="http://coq.inria.fr/doc/main.html">manuel</a>  d'utilisation de Coq</li>
+    <li>Une <a href="http://www.irisa.fr/celtique/pichardie/teaching/Emacs/emacs.html">introduction</a> rapide à Emacs
+    <li id=coqart>Un livre sur Coq : <i>Interactive Theorem Proving and Program
+  Development. Coq'Art : the Calculus of Inductive Constructions</i>
+  par Yves Bertot et Pierre Casteran, Springer-Verlag</li>
+  </ul>
+</p>
+
+  <h1>Installer Coq chez soi</h1>
+
+  <ul>
+    <li>Installer la <a href="http://coq.inria.fr/distrib-eng.html">dernière version</a> de Coq</li>
+    <li>Décompresser le repertoire <a href="ProofGeneral.tgz"><tt>ProofGeneral</tt></a> chez vous</li>
+    <li>Ajouter le contenu de <a href=".emacs">ce fichier</a> à votre
+    fichier <tt>.emacs</tt> en adaptant la ligne <tt>(load-file
+    "~/soft/src/ProofGeneral/generic/proof-site.el")</tt> avec le bon
+    chemin d'accès à votre répertoire <tt>ProofGeneral</tt>.
+  </ul>
+
+  <p>Me <a href="../../">contacter</a> en cas de problème</p>
+
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,67 @@
+\begin{question}
+Décomposer la fraction rationelle suivante en élément simple dans $\R$.
+$$F=\frac{1}{X^7 + 27*X^4 - X^3 - 27}$$
+Essayer de décomposer la fraction dans $\C$.
+
+{\bf Commandes Maple :} {\tt parfrac, factor, solve}
+\end{question}
+
+\begin{question}
+Quelle est la multiplicité de $1$ dans le polynôme suivant, $n\in\N$ ?
+$$P_n=X^{2n} - n^2 X^{n+1} + 2 (n^2-1) X^n - n^2 X^{n-1} + 1$$
+
+{\bf Commandes Maple :} {\tt subs, simplify, diff}
+\end{question}
+
+\begin{question}
+
+Vérifier vos résultats.
+
+{\bf Indication :} Ecrire les $\varphi_i$ dans la base duale usuelle de $E$.
+
+{\bf Commandes Maple :} {\tt matrix(4,4,(i,j)->...), linsolve}
+\end{question}
+
+\begin{question} {Suite de Sturm}
+Ecrire une fonction qui renvoie la liste des restes obtenus lors du calcul du pgcd 
+de deux polynômes par l'algorithme d'Euclide.
+
+{\bf Test :} {\tt euclide}$(x^5+1,x^3+3)=[x^5+1,x^3+3,1-3x^2,3+\frac{1}{3}x,-242]$
+
+{\bf Commandes Maple :} {\tt rem, degree}
+
+Ecrire une fonction qui calcule le nombre de changements de signes dans une liste,
+sans tenir compte des valeurs nulles.
+
+{\bf Indication :} Pour enlever les zéros d'une liste {\tt L}, utiliser la commande
+{\tt remove(x->(x=0),L)}.
+
+{\bf Test :} {\tt chg\_signe}$([-2,0,3,0,-4,-2,1,0])=3$
+
+Ecrire une fonction qui calcule pour un polynôme $P$ donné, la suite 
+$P_0,P_1,\ldots,P_{s+1}$ définie par~:
+$$P_0=P,\ P_1=-P',\ P_2=-P_0 \mod P_1,\ldots,
+            P_{i+1}=-P_{i-1} \mod P_i,\ldots,P_{s+1}=0$$
+
+C'est une {\it suite de Sturm} du polynôme $P$.
+
+{\bf Test :} {\tt sturm}$(x^4-20*x^2+9*x-8)=
+[x^3-2x^2-5x+6, -3x^2+4x+5, -\frac{44}{9}+\frac{38}{9}x, -\frac{2025}{361}]$
+
+Ecrire une fonction qui donne le nombre de changements de signes dans une suite de 
+Sturm évaluée en un point $x$ donné.
+
+{\bf Test :} {\tt eval\_sturm}$(x^3-2x^2-5x+6,0)$=1
+
+Grâce à un représentation graphique, proposer une interprétation de l'entier
+{\tt eval\_sturm}$(P,a)-${\tt eval\_sturm}$(P,b)$ où $P$ est le polynôme 
+$x^3-2x^2-5x+6$ et $a<b$.
+
+Cette propriété se généralise au polynômes de $\R[X]$ à zéros simples. Tester-le.
+
+Ecrire une fonction qui pour un polynôme $P$ de $\R[X]$, renvoie un polynôme 
+possédant les même zéros, mais tous simples.
+
+{\bf Commandes Maple :} {\tt quo, gcd, diff}
+
+\end{question}

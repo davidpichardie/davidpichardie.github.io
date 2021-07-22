@@ -1,0 +1,291 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{graphicx,color}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+
+\title{TP6 {\sc Caml} : Plus grand préfixe commun}
+\author{}
+\date{}
+   
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{3cm}
+
+
+\pagestyle{fancy}
+\lhead{TP6 {\sc Caml}}
+\rhead{Plus grand préfixe commun}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\setlength{\parindent}{0cm}
+ 
+\renewcommand{\O}{\mathcal{O}}
+ 
+\begin{document}
+\maketitle
+
+Le but de ce TP est de réaliser un programme qui recherche le plus
+grand préfixe commun dans un ensemble de mots noté $M$. Par exemple, le plus
+grand préfixe commun de la liste {\tt ["indice";"initial";"initier"]}
+est {\tt "in"}. 
+
+Ce problème a des applications pratiques~: certains environnements
+informatiques offrent la possibilité de compléter les noms de fichiers
+autant que possible tant qu'il n'y a pas d'ambiguïté. Si par exemple,
+mon  répertoire courant contient les trois fichiers
+\begin{center}
+  \tt recursivite.ml\quad recurrence.ml \quad arbres.ml
+\end{center}
+alors la chaîne de caractères {\tt re} peut être complété en {\tt
+  recur}, {\tt recurs} complété directement en {\tt recursivite.ml} et
+{\tt a} en {\tt arbres.ml}.
+
+\section{Liste d'association}
+
+Une liste d'association est une liste de type {\tt ('a*'b) list},
+associant des objets de types  {\tt 'b} à des objets de type {\tt
+  'a}. On peut ainsi associé des noms à des numéros de télephone~:
+\begin{verbatim}
+let list_num = ["Pierre",4131;
+                "Paul",2134;
+                "Jacques",7697;
+                "Arthur",2964;
+                "Michel",9871];;
+\end{verbatim}
+
+\begin{question}
+  Ecrire une fonction {\tt appartient: `a -> ('a*'b) list -> bool} qui
+  teste si un objet de type  {\tt 'a} apparait dans une liste
+  d'association.
+
+  Exemple~:
+\begin{verbatim}
+#appartient "Arthur" list_num;;  
+- : bool = true
+#appartient "David" list_num;;
+- : bool = false
+\end{verbatim}
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt recherche: `a -> ('a*'b) list -> 'b} qui
+  retourne l'objet de type {\tt 'b} associé à un objet {\tt a} de type
+  {\tt 'a} dans une liste d'association (et une erreur si {\tt a} n'est
+  pas présent dans la liste).
+
+  Exemple~:
+\begin{verbatim}
+#recherche "Paul" list_num;;
+- : int = 2134
+\end{verbatim}
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt change : `a -> `b -> ('a*'b) list ->
+    ('a*'b) list} qui modifie l'objet associé à une entrée {\tt a}
+  dans une liste d'association (ou crée une nouvelle association si
+  {\tt a} n'était pas présent dans la liste). On supposera qu'une
+  entrée {\tt a} ne peut pas apparaître plus d'une fois dans la liste.
+
+Exemple~:
+\begin{verbatim}
+#change "Jacques" 5555 list_num;;
+- : (string * int) list =
+ ["Pierre", 4131; "Paul", 2134; "Jacques", 5555; "Arthur", 2964;
+  "Michel", 9871]
+#change "David" 9292 list_num;;
+- : (string * int) list =
+ ["David", 9292; "Pierre", 4131; "Paul", 2134; "Jacques", 7697;
+  "Arthur", 2964; "Michel", 9871]
+\end{verbatim}
+\end{question}
+
+\section{Recherche du plus grand préfixe commun}
+
+\subsection{Conversion chaîne de caractères $\leftrightarrow$ liste de
+  caractères}
+
+\begin{question}
+  Ecrire une fonction {\tt char\_list\_of\_string : string -> char
+    list} qui convertit une chaîne de caractères en une liste de
+  caractères.
+
+  Exemple~:
+\begin{verbatim}
+char_list_of_string "Caml";;
+#- : char list = char_list_of_string [`C`; `a`; `m`; `l`];;
+\end{verbatim}
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt string\_of\_char\_list : char list ->
+    string} qui convertit une liste de caractères en une chaîne de
+  caractères. 
+
+  Exemple~:
+\begin{verbatim}
+#string_of_char_list [`C`; `a`; `m`; `l`];;
+- : string = "Caml"
+\end{verbatim}
+\end{question}
+
+\subsection{Utilisation d'un arbre $n-$aire}
+
+Pour pouvoir faire une recherche efficace, on construit à partir des
+mots de $M$ un arbre $n-$aire dont les branches sont étiquetées avec des
+lettres et les n\oe uds avec des mots, qui sont soit des préfixes de
+$M$, soit des mots de $M$. 
+
+Exemple~: si $M=${\tt ["caml";"café";"cafés";"carte";"java"]}, alors l'arbre
+est le suivant~:
+\begin{center}\tt
+\pstree[nodesep=2pt]{\Tr{""}}{
+   \pstree{\Tr{"c"}\tlput{`c`}}{
+     \pstree{\Tr{"ca"}\tlput{`a`}}{
+       \pstree{\Tr{"caf"}\tlput{`f`}}{
+         \pstree{\Tdia{"café"}\tlput{`é`}}{\Tdia{"cafés"}\tlput{`s`}}
+       }
+       \pstree{\Tr{"cam"}\tlput{`m`}}{
+         \Tdia{"caml"}\tlput{`l`}
+       }
+       \pstree{\Tr{"car"}\trput{`r`}}{
+         \pstree{\Tr{"cart"}\trput{`t`}}{\Tdia{"carte"}\trput{`e`}}
+       }
+     }
+   }
+   \pstree{\Tr{"j"}\trput{`j`}}{
+     \pstree{\Tr{"ja"}\trput{`a`}}{
+       \pstree{\Tr{"jav"}\trput{`v`}}{
+          \Tdia{"java"}\trput{`a`}
+       }
+     }
+   }
+}
+\end{center}
+
+Nous considérerons le type {\tt arbre} suivant~:
+\begin{verbatim}
+type etiquette = Mot of string
+               | Prefixe of string ;;
+
+type arbre = Noeud of etiquette * (char * arbre) list ;;
+\end{verbatim}
+
+Les différentes branches partant d'un n\oe ud sont représentées par
+une liste d'association qui associe des étiquettes avec des arbres fils.
+
+\subsubsection{Recherche dans l'arbre}
+
+Vous testerez les fonctions de cette section sur les exemples donnés dans le fichier {\tt TP6.squ}. Les arbres donnés sont les suivants~:
+\begin{center}
+\begin{tabular}[t]{|c|c|}
+\hline
+\bf arbre & \bf ensemble \\
+\hline 
+\tt arbre1 & \tt ["caml";"café";"cafés";"carte";"java"] \\
+\hline
+\tt arbre2 & \tt ["cantine";"canard";"canari";"candide"] \\
+\hline
+\tt arbre3 & \tt ["abricot";"allumette";"allumer"; \\
+ &           \tt   "caml";"café";"cafés";"carte";"java"; \\
+ &           \tt  "cantine";"canard";"canari";"candide"] \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{question}
+Ecrire une fonction {\tt plus\_grand\_prefixe : arbre ->
+string} qui calcule le plus grand préfixe commun d'un ensemble de mots.
+\end{question}
+
+Exemple~:
+\begin{verbatim}
+#plus_grand_prefixe arbre2;;
+- : string = "can"
+\end{verbatim}
+
+\begin{question}
+Ecrire une fonction {\tt arbre\_prefixe : string -> arbre -> arbre}
+qui renvoie, pour un mot $p$,
+le sous-arbre des mots de $M$ dont $p$ est un préfixe. Cette fonction renvoie une erreur si le préfixe donné ne
+correspond à aucun mot dans l'arbre.
+
+Exemple~:
+
+{\tt arbre\_prefixe "ca" arbre1
+=}
+\begin{center}\tt
+\pstree[nodesep=2pt]{\Tr{"ca"}\tlput{`a`}}{
+       \pstree{\Tr{"caf"}\tlput{`f`}}{
+         \pstree{\Tdia{"café"}\tlput{`é`}}{\Tdia{"cafés"}\tlput{`s`}}
+       }
+       \pstree{\Tr{"cam"}\tlput{`m`}}{
+         \Tdia{"caml"}\tlput{`l`}
+       }
+       \pstree{\Tr{"car"}\trput{`r`}}{
+         \pstree{\Tr{"cart"}\trput{`t`}}{\Tdia{"carte"}\trput{`e`}}
+       }
+     }
+   
+\end{center}
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt complete : arbre -> string -> string}
+recherchant le plus grand complément possible d'un mot $p$,
+c'est-à-dire le plus grand préfixe commun à tous les mots de $M$ dont
+$p$ est un préfixe.
+
+Exemple~:
+\begin{verbatim}
+#complete arbre3 "al";;
+- : string "allume"
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt trouve\_complements : arbre -> string ->
+  string list} qui renvoie, pour un mot $p$, tous les mots de $M$ dont
+$p$ est préfixe.
+
+Pour cette fonction vous aurez besoin de plusieurs sous-fonctions
+dont la fonction {\tt map} de {\sc Caml} et
+une fonction {\tt concat\_list : 'a list list -> 'a list} (à écrire) qui
+concatène les listes d'une liste.
+
+Exemple~:
+\begin{verbatim}
+#concat_list [[1;2];[3];[];[4;5;6]];;
+- : int list = [1; 2; 3; 4; 5; 6]
+\end{verbatim}
+\end{question}
+
+\subsubsection{Construction de l'arbre}
+
+L'arbre de recherche est construit en partant d'un arbre initialement
+vide ({\tt Noeud (Prefixe "",[]}) et en y insérant les mots de $M$ un
+à un.
+
+\begin{question}
+Ecrire une fonction {\tt insere\_mot\_liste : arbre -> char list ->
+arbre} qui insère un mot, donné sous forme de liste de caractères,
+dans un arbre. En déduire une fonction {\tt insere\_mot : arbre ->
+string -> arbre} qui insère un mot de type {\tt string}.
+\end{question}
+
+\begin{question}
+En déduire une fonction {\tt construit\_arbre : string list -> arbre}
+qui construit l'arbre associé à une liste de mots. Tester votre
+programme.
+\end{question}
+
+
+\end{document}

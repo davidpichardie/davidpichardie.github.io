@@ -1,0 +1,245 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{pstcol}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+%\usepackage[francais]{layout}
+
+
+\title{TP3 {\sc Caml} : Tri par tas}
+\author{}
+\date{}
+
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\pagestyle{fancy}
+\lhead{TP3 {\sc Caml}}
+\rhead{Tri par tas}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\setlength{\parindent}{0cm}
+ 
+\renewcommand{\O}{\mathcal{O}}
+ 
+\begin{document}
+%\layout
+\maketitle
+
+\section{Tri par sélection}
+
+\begin{question}
+  Ecrire une fonction {\tt min\_liste : int list -> int * int list} qui
+  renvoie le plus petit élément d'une liste et la liste de départ
+  privée de ce plus petit élément. Cette fonction renvoie une erreur
+  pour la liste vide.
+
+  Exemple : 
+  \begin{verbatim}
+    #min_list [2;4;6;8;1;3;7;5;9] ;;
+    - : int * int list = 1, [2; 4; 6; 8; 3; 5; 7; 9]
+  \end{verbatim}
+  \vspace{-.7cm}
+\end{question}
+
+\begin{question}
+  En déduire une fonction {\tt tri\_selection : int list -> int list}
+  qui trie une liste d'entiers par ordre croissant.
+\end{question}
+
+\begin{question}
+  Quelle est la complexité de cet algorithme de tri ?
+\end{question}
+
+\section{Tri par tas}
+
+Pour améliorer l'algorithme précédent on propose de mettre en \oe uvre
+une structure de données facilitant la recherche du minimum d'un
+ensemble~: un {\it tas}.
+
+Un tas est un arbre binaire {\it ordonné} : tous les n\oe uds autre
+que la racine ont une valeur plus grande que leur père.
+
+Exemple :
+\begin{center}
+\pstree[levelsep=1cm]{\Tcircle{1}}{
+  \pstree{\Tcircle{4}}{\Tcircle{5}
+                      \pstree{\Tcircle{7}}{\Tcircle{9}\Tcircle{8}}}
+  \pstree{\Tcircle{2}}{\Tcircle{6}\Tcircle{3}}}
+\end{center}
+
+On utilisera le type suivant~:
+\begin{verbatim}
+  type Tas =
+     Vide
+   | Noeud of int * Tas * Tas ;;
+\end{verbatim}
+
+\begin{question}
+  Ecrire une fonction {\tt min\_tas : Tas -> int} qui renvoie le plus
+  petit élément d'un tas ou une erreur si le tas est vide.
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt enleve\_min : Tas -> Tas} qui retire le
+  plus petit élément d'un tas et renvoie le nouveau tas.
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt ajouter : int -> Tas -> Tas} qui ajoute un
+  élément à un tas. Pour cette fonction il faudra faire un choix :
+  insérer dans le fils gauche ou le fils droit du n\oe ud
+  courant. Afin de garder un tas équilibré on propose de toujours
+  insérer dans le fils gauche mais de permuter ensuite les deux
+  fils.
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt ajouter\_liste : int list -> Tas } qui
+  construit un tas à partir d'une liste d'entiers par ajouts
+  successifs à partir d'un tas vide.
+\end{question}
+ 
+\begin{question}
+  Ecrire une fonction {\tt vider : Tas -> int list} qui vide un tas
+  dans une liste en rendant une liste triée par ordre croissant.
+\end{question}
+
+\begin{question}
+  En déduire une fonction {\tt tri\_par\_tas : int list -> int list} qui
+  trie une liste d'entiers par ordre croissant.
+\end{question}
+
+\begin{question}
+  Quelle est la complexité de cet algorithme de tri ?
+\end{question}
+
+\section{Tri par tas dans un tableau}
+
+Dans la pratique, le tri par tas est réalisé dans un tableau qui
+représente l'arbre binaire associé au tas. On peut ainsi trier {\it sur
+  place} un tableau~: on n'utilise pas d'autres cases mémoires que
+celles qui contiennent le tableau à trier. 
+
+Pour pouvoir être stocké dans un tableau, les tas étudiés ici sont des
+arbres {\it presque complets}~: tous les niveaux sont remplis sauf
+éventuellement le dernier qui est rempli en partant de la gauche
+jusqu'à un certain point ({\it cf} exemple suivant).
+
+Désormais le père d'un n\oe ud (autre que la racine) sera {\bf plus
+  grand} que ses fils.
+
+On utilisera le type suivant~:
+\begin{verbatim}
+  type Tas_vect = { tab : int vect ; mutable taille : int } ;;
+\end{verbatim}
+
+Le champ {\tt taille} représente le nombre de n\oe uds du tas~:
+celui-ci peut être inférieur au nombre d'élément du tableau {\tt
+  tab}. La racine du tas est {\tt tab.(0)}. Pour un n\oe ud d'indice
+$i$ donné, son fils gauche a l'indice $2i+1$ et son fils droit
+l'indice $2i+2$. Le tableau est ainsi rempli niveaux par niveaux, de
+gauche à droite.
+
+Exemple: {\tt \{ tab=[|9;8;7;6;1;5;3;2;4;0;0;0;0|] ; taille=9 \} }
+$$
+\parbox[c]{6cm}{\pstree[levelsep=1cm]{\Tcircle{9}}{
+  \pstree{\Tcircle{8}}{
+              \pstree{\Tcircle{6}}{\Tcircle{2}\Tcircle{4}}
+               \Tcircle{1}}
+  \pstree{\Tcircle{7}}{\Tcircle{5}\Tcircle{3}}}}
+\longleftrightarrow\quad
+\begin{array}{c}
+\begin{array}{ccccccccc}
+ 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 
+\end{array} \\
+\begin{array}{|c|c|c|c|c|c|c|c|c|}
+ \hline 
+ 9 & 8 & 7 & 6 & 1 & 5 & 3 & 2 & 4 \\ 
+ \hline
+\end{array}
+\end{array}
+$$
+
+\begin{question}
+  Ecrire une fonction {\tt max\_noeud : Tas\_vect -> int -> int} qui
+  prend un tas $t$ et un indice $i$ et renvoie l'indice du plus grand
+  élément parmis le n\oe ud d'indice $i$ et ses (éventuels) fils, sans
+  supposer que les n\oe uds du tas sont ordonnés.
+
+  Exemple :
+$$
+\text{si tab}=\parbox[c]{6cm}{\pstree[levelsep=1cm]{\Tcircle{7}}{
+  \pstree{\Tcircle{6}}{
+              \pstree{\Tcircle{8}}{\Tcircle{2}\Tcircle{4}}
+               \Tcircle{1}}
+  \pstree{\Tcircle{3}}{\Tcircle{5}\Tcircle{9}}}}
+,\quad\text{ \tt max\_noeud t 1}= 3
+$$
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt entasser : Tas\_vect -> int -> unit} qui
+  prends en argument un tas $t$ non nécessairement ordonné et un
+  indice $i$. On suppose que les arbres binaires enracinés aux
+  niveaux des fils du n\oe ud d'indice $i$ sont ordonnés. Le rôle de
+  la fonction {\tt entasser} et de modifier le sous-arbre enraciné en
+  $i$ de façon à ce qu'il devienne un arbre binaire ordonné (en
+  utilisant la fonction {\tt max\_noeud}).
+
+  Exemple :
+$$
+\parbox[c]{6cm}{\pstree[levelsep=1cm]{\Tcircle{7}}{
+  \pstree{\Tcircle{6}}{
+              \pstree{\Tcircle{8}}{\Tcircle{2}\Tcircle{4}}
+               \Tcircle{1}}
+  \pstree{\Tcircle{3}}{\Tcircle{5}\Tcircle{9}}}}
+\underrightarrow{\quad\text{\tt entasser t 1}\quad}\
+\parbox[c]{6cm}{\pstree[levelsep=1cm]{\Tcircle{7}}{
+  \pstree{\Tcircle{8}}{
+              \pstree{\Tcircle{6}}{\Tcircle{2}\Tcircle{4}}
+               \Tcircle{1}}
+  \pstree{\Tcircle{3}}{\Tcircle{5}\Tcircle{9}}}}
+$$
+\end{question}
+
+\begin{question}
+  En déduire une fonction {\tt construire\_tas : int vect -> Tas\_vect}
+  qui construit un tas à partir d'un tableau d'entiers en appelant la
+  fonction {\tt entasser} sur les indices du tableau en commençant par
+  les feuilles.
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt retire\_max : Tas\_vect -> unit} qui retire
+  l'élément maximum d'un tas en permutant cet élément avec la dernière
+  valeur du tableau, en décrémentant le champ {\tt taille} et mettant
+  à jour la structure du tas.
+\end{question}
+
+\begin{question}
+  En déduire une fonction {\tt vide\_tas : Tas\_vect -> unit} qui vide
+  un tas en appelant la fonction {\tt retire\_max} jusqu'à ce que le
+  champ {\tt taille} du tas soit $1$. 
+\end{question}
+
+\begin{question}
+  En déduire une fonction {\tt tri\_par\_tas\_vect : int vect -> int
+  vect} qui tri un tableau d'entiers par ordre croissant.
+\end{question}
+\end{document}

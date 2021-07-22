@@ -1,0 +1,385 @@
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage{alltt,hevea,color,amsmath,amssymb,prooftree}
+
+\usepackage{fancyheadings}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx,multicol,amsmath,amssymb,ifthen}
+
+%\input{../../../../mycolor}
+
+\newcommand{\mtt}{\color{Gray}\tt}
+
+\newcommand{\letml}{{\color{OliveGreen}let}}
+\newcommand{\andml}{{\color{OliveGreen}and}}
+\newcommand{\inml}{{\color{OliveGreen}in}}
+\newcommand{\letrecml}{{\color{OliveGreen}let rec}}
+\newcommand{\funml}{{\color{OliveGreen}function}}
+\newcommand{\ifml}{{\color{OliveGreen}if}}
+\newcommand{\thenml}{{\color{OliveGreen}then}}
+\newcommand{\typeml}{{\color{OliveGreen}type}}
+\newcommand{\ofml}{{\color{OliveGreen}of}}
+\newcommand{\elseml}{{\color{OliveGreen}else}}
+\newcommand{\matchml}{{\color{OliveGreen}match}}
+\newcommand{\withml}{{\color{OliveGreen}with}}
+
+\newcommand{\tr}[3]{%
+\begin{toimage}
+$\displaystyle\frac{#1}{#2}\ #3$
+\end{toimage}\imageflush}
+
+\newcommand{\prf}[1]{%
+\begin{toimage}
+  \begin{center}
+    \begin{tabular}{c}
+    \mbox{\input{#1}}
+    \end{tabular}
+  \end{center}
+\end{toimage}\imageflush}
+
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\blanc}{\quad\quad}
+
+\newcommand{\im}[1]{%
+\begin{toimage}
+$#1$
+\end{toimage}\imageflush}
+
+
+
+\title{TP1 Logique}
+
+\begin{document}
+\begin{latexonly}
+\input{../../../../macroTD2} 
+\titreTD{LOG}{TP 1} 
+\setboolean{corrige}{true}
+\setlength{\parindent}{0cm}
+\sf
+\end{latexonly}
+
+\maketitle
+
+Dans ce TP, nous allons développer un assistant interactif pour construire
+et manipuler des preuves en déduction naturelle.
+
+\section{Mise en place de l'environnement de travail}
+
+Suivez les instructions suivantes :
+\begin{enumerate}
+\item récupérez ce fichier \ahref{tp1.tar}{tp1.tar} (en cliquant dessus),
+\item décompressez le ({\mtt tar -xf tp1.tar}),
+\item placez vous dans le répertoire TP1 ainsi créé ({\mtt cd TP1}),
+\item testez votre environnement en tapant {\mtt make},
+\item si aucune erreur se produit, lancer emacs et commencez le TP.
+\end{enumerate}
+
+Pour pouvoir utiliser les fonctions créées durant le TP, en mode compilé, vous
+devrez exécuter {\mtt make} après chaque modification de fichier.
+
+Pour le mode interprété, au lancement d'ocaml (avec le raccourci {\mtt C-c C-e} sous emacs),
+ne choisissez pas l'interpréteur par défaut ({\mtt ocaml}), mais tapez
+plutôt {\mtt ./mytop} et validez. Vous disposerez ainsi des fonctions disponibles pour réaliser le TP.
+
+\section{Présentation des types utilisés}
+
+\subsection{Formules}
+
+Nous manipulerons les formules propositionnelles à l'aide du type
+somme suivant :
+
+\begin{alltt}
+\typeml formule =
+  | Faux
+  | Var \ofml string
+  | Et \ofml formule*formule
+  | Ou \ofml formule*formule
+  | Imp \ofml formule*formule
+\end{alltt}
+
+Les fonctions
+{\mtt parse : string -> formule } et {\mtt print : formule -> string} vous permettrons
+ de comprendre un peu mieux ce type.
+
+\begin{alltt}
+#{\color{Blue}parse "a=>b=>c&d";;}
+- : Lib.formule = Imp (Var "a", Imp (Var "b", Et (Var "c", Var "d")))
+\end{alltt}
+
+\begin{alltt}
+#{\color{Blue}print (Ou (Faux,Imp (Var "b",Et (Var "c",Var "d"))));;}
+- : string = "Faux|(b=>(c&d))"
+\end{alltt}
+
+Par convention, un formule de la forme \im{A\Rightarrow\bot} est affichée 
+\im{\neg A}. Constatez le avec un exemple.
+
+{\bf Exercice :} Écrire une fonction qui teste si une formule
+est de la forme \im{A\vee\neg A}.
+
+\subsection{Ensembles}
+
+Nous utiliserons un type abstrait pour manipuler les ensembles de formules. Les
+différentes opérations disponibles sur ces ensembles sont détaillées 
+\ahref{Lib.html#TYPEens}{ici}
+
+De manière générale, toutes les fonctions à votre disposition dans ce TP sont
+listées sur \ahref{Lib.html}{cette page}.
+
+\subsection{Séquents}
+
+Nous utiliserons un enregistrement pour représenter les séquents
+
+\begin{alltt}
+\typeml sequent = \{ contexte : formule ens; but : formule \}
+\end{alltt}
+
+Pour exemple, voici une fonction qui construit un séquent avec un contexte vide à partir d'une formule logique.
+
+\begin{alltt}
+#{\color{Blue}\letml nouveau_sequent f = \{contexte=vide; but=f\};;}
+val nouveau_sequent : formule -> sequent = <fun>
+\end{alltt}
+
+L'accès à une composante se fait à l'aide du point
+\begin{alltt}
+#{\color{Blue}\letml seq = nouveau_sequent Faux \inml seq.but;;}
+- : formule = Faux
+\end{alltt}
+  
+{\bf Exercice :} Écrire une fonction qui teste si un séquent
+est de la forme \im{\Gamma\vdash f} avec \im{f\in\Gamma}.
+
+\section{Présentation de l'assistant}
+
+Notre assistant de preuve permettra de construire de manière interactive une preuve en déduction naturelle. 
+\ahref{regles.html}{Cette page} récapitule les  règles de la preuve
+par déduction naturelle en donnant pour chacune la commande associée 
+dans notre assistant.
+
+Voici un exemple d'utilisation :
+
+\begin{alltt}
+#{\color{Blue}deduc genSousButs;;}                 {\color{OliveGreen}(* Lancement de l'assistant dans l'interpréteur Ocaml *)}
+
+{\color{Blue}But ?} a=>(a=>b)=>b;;                 {\color{OliveGreen}(* On donne le tautologie à prouver  *)}
+
+{\color{Blue}Règle ?} IntroImp;;                   {\color{OliveGreen}(* Utilisation de la règle IntroImp *)}
+
+{\color{Blue}Règle ?} ii;;                         {\color{OliveGreen}(* Utilisation de la règle IntroImp avec son raccourci *)}
+
+{\color{Blue}Règle ?} ei a;;                       {\color{OliveGreen}(* Utilisation de la règle ElimImp avec la paramètre a *)}
+
+{\color{Blue}Règle ?} a;;                          {\color{OliveGreen}(* Utilisation de la règle Ax *)}
+
+{\color{Blue}Règle ?} a;;                          {\color{OliveGreen}(* Utilisation de la règle Ax *)}
+{\color{Blue}sauver cette preuve ?} (o/n) [o] : ;; {\color{OliveGreen}(* La preuve est finie, on peut la sauvegarder *)}
+{\color{Blue}donnez un nom :} exemple1;;           {\color{OliveGreen}(* Un fichier exemple1.prf est créé *)}
+- : unit = ()
+\end{alltt}
+
+La même manipulation est possible en mode compilé, en lancant {\mtt ./deduc} dans un terminal. Les doubles points virgules deviennent alors superflus.
+
+La commande {\mtt Stop} permet d'interrompre la preuve en cours.
+{\mtt Centre} permet de centrer le but courant dans la fenêtre graphique.
+
+
+Pour visionner l'arbre de preuve précédemment construit, il suffit de taper :
+\begin{alltt}
+#{\color{Blue}affiche (charge "exemple1.prf");;}
+- : unit = ()
+\end{alltt}
+
+La fenêtre suivante apparaît alors.
+
+\begin{center}
+\includegraphics[width=5.5cm]{exemple1.ps}  
+\end{center}
+
+Pour fermer la fenêtre, tapez 'q'. Pour effectuer la même manipulation en mode compilé, tapez {\mtt ./affiche exemple1.prf} dans un terminal.
+
+Les différentes commandes possibles sont regroupées dans le type \ahref{Lib.html#TYPEcommande}{\mtt commande}.
+
+\section{Générateur de sous-buts}
+
+Ouvrir le fichier {\mtt genSousButs.ml}. Vous devez compléter la fonction
+ {\mtt genSousButs : sequent -> commande -> sequent list * string} de façon à
+ce que {\mtt (genSousButs seq com)} renvoie un couple constitué de
+\begin{itemize}
+\item la liste des sous-buts générés
+par l'utilisation de la commande {\mtt com} sur le séquent {\mtt seq}
+\item du nom donné à la règle
+\end{itemize}
+
+Si la commande ne peut être appliquée, renvoyez le couple {\mtt ([],"erreur")}.
+
+{\bf Exemple : } Appliquer la commande {\mtt IntroEt} à un sequent \im{\Gamma\vdash A\wedge B}
+doit produire le couple {\mtt ([\im{\Gamma\vdash A};\im{\Gamma\vdash B}],"IntroEt")}
+
+Cette fonction {\mtt genSousButs} peut être testée de la façon suivante
+\begin{itemize}
+\item évaluer la fonction {\mtt genSousButs} dans l'interpréteur.
+\item lancer le programme de preuve interactive avec {\mtt deduc genSousButs}
+\end{itemize}
+Autre méthode :
+\begin{itemize}
+\item sauvegarder le fichier {\mtt genSousButs.ml}
+\item tapez {\mtt make} dans un terminal
+\item lancer le programme de preuve interactive ainsi créé avec {\mtt ./deduc}
+\end{itemize}
+
+Pour vérifier si un arbre respecte les règles de la déduction naturelle, vous pouvez utilisez la commande
+{\mtt valide (charge {\it fichier})} dans l'interpréteur ou {\mtt ./valide {\it fichier}} dans un terminal.
+
+Un arbre peut être sauvegardé avec la fonction {\mtt sauve : arbreDePreuve -> string -> unit}
+({\mtt (sauve p "f")} sauve la preuve {\mtt p} dans le fichier {\mtt "f.prf"}).
+
+\section{Quelques preuve à réaliser}
+
+Pour tester votre travail et vous exercer un peu aux preuves par déduction naturelle, prouvez les tautologies suivantes dans l'assistant. Sauvegardez vos preuves et vérifier les avec la fonction {\mtt valide}.
+
+\begin{enumerate}
+\item \im{\vdash (a\Rightarrow ((a\Rightarrow b) \Rightarrow b))} 
+\item \im{\vdash (a\Rightarrow b) \Rightarrow ((b\Rightarrow c)\Rightarrow (a\Rightarrow c))} 
+\item \im{\vdash (a\Rightarrow(b\Rightarrow c)) \Rightarrow ((a\Rightarrow b)\Rightarrow (a\Rightarrow c))} 
+\item \im{\vdash (a\vee b) \Rightarrow ((a\Rightarrow b)\Rightarrow b)} 
+\item \im{\vdash (a\vee(b\wedge c))\Rightarrow((a\vee b)\wedge(a\vee c))} 
+\item \im{\vdash \neg a \Rightarrow ((a\vee b)\Rightarrow b)} 
+\item \im{\vdash (a \Rightarrow b) \Rightarrow (\neg b\Rightarrow \neg a)} 
+\item \im{\vdash (\neg b\Rightarrow \neg a) \Rightarrow (a \Rightarrow b)} 
+
+\item \im{\vdash  (\neg a\vee b) \Rightarrow (a \Rightarrow b)}
+\item \im{\vdash  (a \Rightarrow b) \Rightarrow (\neg a\vee b)}
+\item \im{\vdash  \neg (a\vee b) \Rightarrow (\neg a \wedge \neg b)}
+\item \im{\vdash  \neg (a\wedge b) \Rightarrow (\neg a \vee \neg b)}
+\item \im{\vdash (\neg a \vee \neg b) \Rightarrow \neg (a\wedge b)}
+\item \im{\vdash (\neg a \wedge \neg b) \Rightarrow \neg (a\vee b)}
+
+\end{enumerate}
+
+
+
+\section{Premières transformations de preuve}
+
+Nous représentons les preuves à l'aide d'arbres avec le type
+ \ahref{Lib.html#TYPEarbreDePreuve}{\mtt arbreDePreuve}.
+
+À titre d'exemple, voici une fonction qui teste si un arbre de preuve ne contient que des règles
+du système NM.
+
+\begin{alltt}
+#{\color{Blue}\letrecml rec testNM a = \matchml a \withml 
+  | RegleAx s -> true
+  | RegleIntroImp (s,a1) -> testNM a1
+  | RegleElimImp (s,a1,a2) -> testNM a1 && testNM a2
+  | RegleIntroEt (s,a1,a2) -> testNM a1 && testNM a2
+  | RegleElimEt1 (s,a1) -> testNM a1
+  | RegleElimEt2 (s,a1) -> testNM a1
+  | RegleIntroOu1 (s,a1) -> testNM a1
+  | RegleIntroOu2 (s,a1) -> testNM a1
+  | RegleElimOu (s,a1,a2,a3) -> testNM a1 && testNM a2 && testNM a3
+  | RegleElimFalse (s,a1) -> false
+  | RegleIntroNon (s,a1,a2) -> testNM a1 && testNM a2
+  | RegleElimNon (s,a1,a2) -> false
+  | RegleTiersExclu s -> false
+  | RegleAbsurde (s,a1) -> false
+  | RegleElimNonNon (s,a1) -> false
+  | _ -> false;;}
+val testNM : Lib.arbreDePreuve -> bool = <fun>
+\end{alltt}
+
+\subsection{Élimination des règles redondantes (facultatif)}
+
+Comme vous le savez, les règles IntroNon, ElimNon, Absurde et ElimNonNon sont redondantes. 
+Cela signifie qu'un arbre de preuve (valide) peut toujours être transformé de façon à obtenir un preuve
+valide du même but, mais en utilisant aucune de ces règles.
+
+Écrire une fonction {\mtt enleve\_superflu : arbreDePreuve -> arbreDePreuve } qui réalise la transformation
+correspondante. Vous écrirez cette fonction dans le fichier {\mtt enleve\_superflu.ml}. Pour tester, vous pouvez
+utiliser le mode interprété ou le mode compilé.
+
+\subsection{Simplification de preuve : simplification des contextes (facultatif)}
+
+Les arbres de preuves générés par l'assistant {\mtt deduc} possèdent des séquents dont les
+contextes son souvent inutilement grands. Écrire un fonction 
+{\mtt simplifie\_contextes : arbreDePreuve -> arbreDePreuve }
+qui effectue une simplification
+des différents contextes d'un arbre.
+Vous écrirez cette fonction dans le fichier {\mtt simplifie\_contextes.ml}. Pour tester, vous pouvez
+utiliser le mode interprété ou le mode compilé.
+
+\section{Utilisation de lemmes intermédiaires}
+
+La commande {\mtt Lemme $nom$} de l'assistant permet de terminer le sous but courant en invoquant une preuve présente dans le fichier {$nom$.prf}.
+
+{\bf Exemple :}
+ 
+\prf{exlemme.tex}
+
+avec dans le fichier {\mtt et1.prf}, l'arbre suivant
+
+\prf{et1.tex}
+  
+\subsection{Ajout de la commande {\mtt Lemme}}
+
+Ajouter dans le fichier {\mtt genSousButs.ml} le traitement de la commande {\mtt Lemme}. 
+
+Quelques indications :
+\begin{itemize}
+\item l'utilisation d'un lemme inadapté  au sous-but courant devra renvoyer une erreur
+\item la fonction {\mtt fichier\_existe} permet de tester si un fichier existe dans le répertoire courant
+\item le nom donné à la règle sera celui du fichier invoqué
+\end{itemize}
+
+%\ahref{aide_tp2.html}{Un peu d'aide ?}
+{\b Indications :}
+
+Une substitution sera représenté par une liste d'association de type {\mtt (string*formule) list}. Par exemple, la substitution \im{[p\mapsto a\wedge b,q\mapsto b]} sera représentée par
+\begin{alltt}
+# {\color{Blue}[("p",Et (Var "a",Var "b"));("q",Var "b")];;}
+- : (string * formule) list = [("p", Et (Var "a", Var "b")); ("q", Var "b")]
+\end{alltt}
+
+
+\begin{enumerate}
+\item Écrire une fonction qui teste si une substitution est valide, c'est à dire si elle ne contient pas deux assignations différentes pour la même variable.
+
+Exemple de substitution non valide : \im{[p\mapsto a\wedge b,p\mapsto b]}
+\item En déduire une fonction qui, étant données deux formules {\mtt f1} et {\mtt f2}, teste si 
+il existe une substitution qui permet d'instancier  {\mtt f1} pour obtenir {\mtt f2}.
+
+Exemple :
+\begin{itemize}
+\item \im{a\wedge (b\vee a)} peut être instancié pour obtenir \im{c\wedge ((a\imp b)\vee c)}
+\item \im{a\wedge (b\vee a)} ne peut pas être instancié pour obtenir \im{c\wedge ((a\imp b)\vee a)}
+\end{itemize}
+ \end{enumerate}
+
+Attention à ne pas confondre avec de l'unification !
+
+\subsection{Complétion d'arbre de preuve (facultatif)}
+
+L'ajout de cette nouvelle commande a pour conséquence que les arbres sauvegardés ne sont plus valides selon
+les règles strictes de la déduction naturelle (le noeud {\tt RegleLemme (s,f)} indique qu'une preuve a été interrompu en utilisant le lemme du fichier {\tt f}).
+
+Écrire une fonction {\mtt complete\_arbre : arbreDePreuve -> arbreDePreuve } qui permet de compléter
+un arbre (dans le mode interactif d'Ocaml).  
+
+\section{Mise en place d'une aide}
+
+Une commande {\mtt Aide} a été ajoutée. Cette commande affiche dans le terminal la liste des règles applicables à un moment donné de la preuve. Pour en disposer, vous devez mettre à jour les fichiers suivants :
+\begin{itemize}
+\item \ahref{TP1/lib.ml}{lib.ml}
+\item \ahref{TP1/lib.mli}{lib.mli}
+\end{itemize}
+
+Dans {\mtt lib.ml} se trouvent les squelettes des fonctions {\mtt <Règle>Applicable : sequent -> bool} qui renvoient {\mtt true} si la règle {\mtt <Règle>} est applicable au séquent donné en paramètre. Compléter ces squelettes. Que constatez-vous ? 
+
+Vous pouvez reprendre les preuves précédentes avec cette aide supplémentaire. 
+
+%% \subsubsection{Simplification par coupure}
+
+%% Écrire un fonction qui effectue une simplification par coupure d'un arbre.
+
+
+\end{document}

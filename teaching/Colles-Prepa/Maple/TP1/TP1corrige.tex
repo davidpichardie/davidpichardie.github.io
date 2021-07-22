@@ -1,0 +1,1707 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage{maple2e}
+
+\title{TP1 {\sc Maple} : Algèbre linéaire}
+\author{}
+\date{}
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+\pagestyle{fancy}
+\lhead{Corrigé TP1 {\sc Maple}}
+\rhead{Algèbre linéaire}
+
+
+\DefineParaStyle{Heading 1}
+\DefineParaStyle{Maple Output}
+\DefineParaStyle{Warning}
+\DefineCharStyle{2D Comment}
+\DefineCharStyle{2D Math}
+\DefineCharStyle{2D Output}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+
+\begin{document}
+
+{\bf\Large Exercice 1}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{restart:}{}
+\mapleinline{active}{1d}{with(linalg):}{}
+\end{mapleinput}
+\end{maplegroup}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{M:=matrix([[0,1, 1, 1],
+           [1,0,-1,-1],
+           [1,-1,0,-1],
+           [1,-1,-1,0]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+M :=  \left[ 
+{\begin{array}{rrrr}
+0 & 1 & 1 & 1 \\
+1 & 0 & -1 & -1 \\
+1 & -1 & 0 & -1 \\
+1 & -1 & -1 & 0
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=factor(charpoly(M,X));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(X + 3)\,(X - 1)^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Id:=diag(1,1,1,1);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it Id} :=  \left[ 
+{\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{k1:=kernel(M-Id,'n');}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it k1} := \{[1, \,0, \,1, \,0], \,[1, \,0, \,0, \,1], \,[1, \,1
+, \,0, \,0]\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+Autre méthode pour calculer la dimension du sous-espace propre:
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{4-rank(M-Id);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+3
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{k2:=kernel(M+3*Id,'m');}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it k2} := \{[-1, \,1, \,1, \,1]\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{n+m;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+4
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+Donc M est diagonalisable : la somme des dimension de ses sous-espaces
+propres est égale à 4.
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{k:=k1 union k2;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+k := \{[1, \,0, \,1, \,0], \,[1, \,0, \,0, \,1], \,[-1, \,1, \,1
+, \,1], \,[1, \,1, \,0, \,0]\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=transpose(matrix([op(k)]));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P :=  \left[ 
+{\begin{array}{rrrr}
+-1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 1 \\
+1 & 1 & 0 & 0 \\
+1 & 0 & 1 & 0
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(P &* diag(-3,1,1,1) &* P^(-1));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{rrrr}
+0 & 1 & 1 & 1 \\
+1 & 0 & -1 & -1 \\
+1 & -1 & 0 & -1 \\
+1 & -1 & -1 & 0
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{K:=jordan(M,'Q');}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+K :=  \left[ 
+{\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+0 & -3 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(Q);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{ccrr}
+{\displaystyle \frac {11}{4}}  & {\displaystyle \frac {1}{4}}  & 
+2 & 1 \\ [2ex]
+{\displaystyle \frac {1}{4}}  & {\displaystyle \frac {-1}{4}}  & 
+0 & 0 \\ [2ex]
+{\displaystyle \frac {5}{4}}  & {\displaystyle \frac {-1}{4}}  & 
+1 & 0 \\ [2ex]
+{\displaystyle \frac {5}{4}}  & {\displaystyle \frac {-1}{4}}  & 
+1 & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(Q &* K &* Q^(-1));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{rrrr}
+0 & 1 & 1 & 1 \\
+1 & 0 & -1 & -1 \\
+1 & -1 & 0 & -1 \\
+1 & -1 & -1 & 0
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf\Large Exercice 2}\\*
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix(3,3,[a-b-c,2*a,2*a,2*b,b-a-c,2*b,2*
+c,2*c,c-a-b]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{ccc}
+a - b - c & 2\,a & 2\,a \\
+2\,b & b - a - c & 2\,b \\
+2\,c & 2\,c & c - a - b
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(det(A));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(a + b + c)^{3}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Donc $A$ est diagonalisable si et seulement si $a+b+c\not= 0$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(charpoly(A,X));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ - (a - X + c + b)\,(a + X + b + c)^{2}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eigenvects(A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+[ - a - b - c, \,2, \,\{[-1, \,0, \,1], \,[-1, \,1, \,0]\}], \,[a
+ + b + c, \,1, \,\{ \left[  \! {\displaystyle \frac {a}{b}} , \,1
+, \,{\displaystyle \frac {c}{b}}  \!  \right] \}]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+Si $a+b+c\not=0$, $A$ admet deux valeurs propres distinctes~: $-(a+b+c)$
+et $a+b+c$. Le sous-espace propre associé à $-(a+b+c)$ est de
+dimension $2$ et celui de $a+b+c$ de dimension $1$, donc $A$ est
+diagonalisable. 
+
+Si $a+b+c=0$, $A$ a une valeur propre de degré $3$~: elle est
+diagonalisable si et seulement si elle est diagonale. Or
+$(a,b,c)\not=0$ donc $A$ n'est pas diagonalisable.
+
+On peut donc en conclure que 
+$$ A\text{ inversible }\Leftrightarrow\ A\text{ diagonalisable}$$
+
+{\sc Maple} suppose toujours que les expressions avec des inconnus
+sont non nulles~: 
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Ad:=jordan(A,'P');}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it Ad} :=  \left[ 
+{\begin{array}{ccc}
+ - a - b - c & 0 & 0 \\
+0 & a + b + c & 0 \\
+0 & 0 &  - a - b - c
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(P);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{ccr}
+ - {\displaystyle \frac {a}{a + b + c}}  & {\displaystyle \frac {
+a}{a + b + c}}  & -1 \\ [2ex]
+ - {\displaystyle \frac {b}{a + b + c}}  & {\displaystyle \frac {
+b}{a + b + c}}  & 0 \\ [2ex]
+{\displaystyle \frac {a + b}{a + b + c}}  & {\displaystyle 
+\frac {c}{a + b + c}}  & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{map(simplify,evalm(P &* Ad &* P^(-1)));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{ccc}
+a - b - c & 2\,a & 2\,a \\
+2\,b & b - a - c & 2\,b \\
+2\,c & 2\,c & c - a - b
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf\Large Exercice 3}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix([[58, 52, 36], [-29, 187, 9],
+[-145, 65, 219]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{rrr}
+58 & 52 & 36 \\
+-29 & 187 & 9 \\
+-145 & 65 & 219
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf Méthode 1 : en diagonalisant $A$}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eig:=eigenvals(A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it eig} := 116, \,174, \,174
+\]
+\end{maplelatex}
+
+$A$ a trois valeurs propres distinctes et est donc diagonalisable.
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{J:=jordan(A,'P');}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+J :=  \left[ 
+{\begin{array}{rrr}
+174 & 0 & 0 \\
+0 & 116 & 0 \\
+0 & 0 & 174
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+$A=P\cdot J\cdot P^{-1}$, donc $A^n=P\cdot J^n\cdot P^{-1}$.
+
+\begin{maplegroup}
+
+\begin{mapleinput}
+\mapleinline{active}{1d}{puiss:=x->x^n;}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it puiss} := x\rightarrow x^{n}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Jn:=map(puiss,J);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it Jn} :=  \left[ 
+{\begin{array}{ccc}
+174^{n} & 0 & 0 \\
+0 & 116^{n} & 0 \\
+0 & 0 & 174^{n}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{An1:=evalm(P &* Jn &* P^(-1));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it An1} :=  \left[ 
+{\begin{array}{ccc}
+ - 174^{n} + 2\,116^{n} & {\displaystyle \frac {26}{29}} \,174^{n
+} - {\displaystyle \frac {26}{29}} \,116^{n} & {\displaystyle 
+\frac {18}{29}} \,174^{n} - {\displaystyle \frac {18}{29}} \,116
+^{n} \\ [2ex]
+ - {\displaystyle \frac {1}{2}} \,174^{n} + {\displaystyle 
+\frac {1}{2}} \,116^{n} & {\displaystyle \frac {71}{58}} \,174^{n
+} - {\displaystyle \frac {13}{58}} \,116^{n} & {\displaystyle 
+\frac {9}{58}} \,174^{n} - {\displaystyle \frac {9}{58}} \,116^{n
+} \\ [2ex]
+ - {\displaystyle \frac {5}{2}} \,174^{n} + {\displaystyle 
+\frac {5}{2}} \,116^{n} & {\displaystyle \frac {65}{58}} \,174^{n
+} - {\displaystyle \frac {65}{58}} \,116^{n} & {\displaystyle 
+\frac {103}{58}} \,174^{n} - {\displaystyle \frac {45}{58}} \,116
+^{n}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf Méthode 2 : grâce au polynôme minimal de $A$}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=minpoly(A,X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := 20184 - 290\,X + X^{2}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Rem(X^n,P,X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\rm Rem}(X^{n}, \,20184 - 290\,X + X^{2}, \,X)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\sc Maple} ne sait pas répondre à cette question, donc il faut
+l'aider...
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eq:=X^n=Q[n](X)*P+a[n]*X+b[n];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it eq} := X^{n}={Q_{n}}(X)\,(20184 - 290\,X + X^{2}) + {a_{n}}
+\,X + {b_{n}}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{l1:=subs(\{X=116\},eq);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it l1} := 116^{n}=116\,{a_{n}} + {b_{n}}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{l2:=subs(\{X=174\},eq);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it l2} := 174^{n}=174\,{a_{n}} + {b_{n}}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(\{l1,l2\},\{a[n],b[n]\});}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+\{{b_{n}}=3\,116^{n} - 2\,174^{n}, \,{a_{n}}={\displaystyle 
+\frac {1}{58}} \,174^{n} - {\displaystyle \frac {1}{58}} \,116^{n
+}\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(");}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{An2:=evalm(a[n]*A+b[n]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it An2} :=  \left[ 
+{\begin{array}{ccc}
+ - 174^{n} + 2\,116^{n} & {\displaystyle \frac {26}{29}} \,174^{n
+} - {\displaystyle \frac {26}{29}} \,116^{n} & {\displaystyle 
+\frac {18}{29}} \,174^{n} - {\displaystyle \frac {18}{29}} \,116
+^{n} \\ [2ex]
+ - {\displaystyle \frac {1}{2}} \,174^{n} + {\displaystyle 
+\frac {1}{2}} \,116^{n} & {\displaystyle \frac {71}{58}} \,174^{n
+} - {\displaystyle \frac {13}{58}} \,116^{n} & {\displaystyle 
+\frac {9}{58}} \,174^{n} - {\displaystyle \frac {9}{58}} \,116^{n
+} \\ [2ex]
+ - {\displaystyle \frac {5}{2}} \,174^{n} + {\displaystyle 
+\frac {5}{2}} \,116^{n} & {\displaystyle \frac {65}{58}} \,174^{n
+} - {\displaystyle \frac {65}{58}} \,116^{n} & {\displaystyle 
+\frac {103}{58}} \,174^{n} - {\displaystyle \frac {45}{58}} \,116
+^{n}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{iszero(An-An2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it true}
+\]
+\end{maplelatex}
+\end{maplegroup}
+
+{\bf\Large Exercice 4}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix([[a,0,0,0,b],
+           [0,a,0,b,0],
+           [0,1,2,1,0],
+           [0,b,0,a,0],
+           [b,0,0,0,a]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{ccrcc}
+a & 0 & 0 & 0 & b \\
+0 & a & 0 & b & 0 \\
+0 & 1 & 2 & 1 & 0 \\
+0 & b & 0 & a & 0 \\
+b & 0 & 0 & 0 & a
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=factor(charpoly(A,X));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := (X - 2)\,( - b + a - X)^{2}\,(b + a - X)^{2}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eig:=eigenvects(A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it eig} := [ - b + a, \,2, \,\{[-1, \,0, \,0, \,0, \,1
+], \,[0, \,-1, \,0, \,1, \,0]\}], \,[2, \,1, \,\{[0, \,0, \,1, \,
+0, \,0]\}], } \\
+ & & [b + a, \,2, \,\{ \left[  \! 0, \,{\displaystyle \frac {1}{2
+}} \,b + {\displaystyle \frac {1}{2}} \,a - 1, \,1, \,
+{\displaystyle \frac {1}{2}} \,b + {\displaystyle \frac {1}{2}} 
+\,a - 1, \,0 \!  \right] , \,[1, \,0, \,0, \,0, \,1]\}]
+\mbox{\hspace{57pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{vp:=eig[3];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it vp} := [b + a, \,2, \,\{ \left[  \! 0, \,{\displaystyle 
+\frac {1}{2}} \,b + {\displaystyle \frac {1}{2}} \,a - 1, \,1, \,
+{\displaystyle \frac {1}{2}} \,b + {\displaystyle \frac {1}{2}} 
+\,a - 1, \,0 \!  \right] , \,[1, \,0, \,0, \,0, \,1]\}]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{vects:=vp[3];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it vects} := \{ \left[  \! 0, \,{\displaystyle \frac {1}{2}} \,
+b + {\displaystyle \frac {1}{2}} \,a - 1, \,1, \,{\displaystyle 
+\frac {1}{2}} \,b + {\displaystyle \frac {1}{2}} \,a - 1, \,0 \! 
+ \right] , \,[1, \,0, \,0, \,0, \,1]\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{v:=op(2,vects);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+v :=  \left[  \! 0, \,{\displaystyle \frac {1}{2}} \,b + 
+{\displaystyle \frac {1}{2}} \,a - 1, \,1, \,{\displaystyle 
+\frac {1}{2}} \,b + {\displaystyle \frac {1}{2}} \,a - 1, \,0 \! 
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eq:=v[2];}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it eq} := {\displaystyle \frac {1}{2}} \,b + {\displaystyle 
+\frac {1}{2}} \,a - 1
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{sol:=solve(eq);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it sol} := \{a= - b + 2, \,b=b\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+On en déduit que si $a+b\not=2$, A est diagonalisable.
+
+Si $a+b=2$~:
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(sol);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{AA:=map(eval,A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it AA} :=  \left[ 
+{\begin{array}{ccrcc}
+ - b + 2 & 0 & 0 & 0 & b \\
+0 &  - b + 2 & 0 & b & 0 \\
+0 & 1 & 2 & 1 & 0 \\
+0 & b & 0 &  - b + 2 & 0 \\
+b & 0 & 0 & 0 &  - b + 2
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{eigenvects(AA);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+[ - 2\,b + 2, \,2, \,\{[0, \,-1, \,0, \,1, \,0], \,[-1, \,0, \,0
+, \,0, \,1]\}], \,[2, \,3, \,\{[1, \,0, \,0, \,0, \,1], \,[0, \,0
+, \,1, \,0, \,0]\}]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+\textbf{Conclusion} :
+$2$ est une valeur propre d'ordre $3$, mais l'espace propre associé est de
+dimension seulement $2$, $A$ n'est donc pas diagonalisable.
+
+\newpage
+
+
+{\bf\Large Exercice 5}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix(3,3,[1,0,0,0,0,lambda,0,2,3]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{rrc}
+1 & 0 & 0 \\
+0 & 0 & \lambda  \\
+0 & 2 & 3
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{X:=matrix(3,3,[a,b,c,d,e,f,g,h,i]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+X :=  \left[ 
+{\begin{array}{ccc}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(X&*A - A&*X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{ccc}
+0 & 2\,c - b & b\,\lambda  + 2\,c \\
+d - \lambda \,g & 2\,f - h\,\lambda  & e\,\lambda  + 3\,f - 
+\lambda \,i \\
+ - 2\,g - 2\,d & 2\,i - 2\,e - 3\,h & h\,\lambda  - 2\,f
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{convert(",set);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{\{2\,i - 2\,e - 3\,h, \,h\,\lambda  - 2\,f, \,0, \,e\,
+\lambda  + 3\,f - \lambda \,i, \,d - \lambda \,g, \,2\,f - h\,
+\lambda , \,b\,\lambda  + 2\,c, \,2\,c - b, \, - 2\,g - 2\,d} \\
+ & & \}\mbox{\hspace{425pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{sol:=solve(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{{\it sol} := \{e=i - {\displaystyle \frac {3}{2}} \,h, 
+\,i=i, \,\lambda =\lambda , \,h=h, \,b=0, \,f={\displaystyle 
+\frac {1}{2}} \,h\,\lambda , \,d=0, \,c=0, \,g=0\}, } \\
+ & & \{c=c, \,g=g, \,e=i - {\displaystyle \frac {3}{2}} \,h, \,i=
+i, \,h=h, \,b=2\,c, \,f= - {\displaystyle \frac {1}{2}} \,h, \,d=
+ - g, \,\lambda =-1\}\mbox{\hspace{18pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(sol[1]);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{map(eval,X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{ccc}
+a & 0 & 0 \\
+0 & i - {\displaystyle \frac {3}{2}} \,h & {\displaystyle \frac {
+1}{2}} \,h\,\lambda  \\ [2ex]
+0 & h & i
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf Conclusion} :
+Si $\lambda \not= -1$, l'algèbre des commutants de A est de dimension 3.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{unassign('a','b','c','d','e','f','g','h','i',
+'lambda');}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(sol[2]);}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{map(eval,X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{ccc}
+a & 2\,c & c \\
+ - g & i - {\displaystyle \frac {3}{2}} \,h &  - {\displaystyle 
+\frac {1}{2}} \,h \\ [2ex]
+g & h & i
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf Conclusion} :
+Si $\lambda = - 1$, l'algèbre des commutants de $A$ est de dimension $5$.
+
+{\bf\Large Exercice 6}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A1:=matrix([[a1,b1,c1,d1],
+            [0,e1,f1,g1],
+            [0,0,h1,i1],
+            [0,0,0,j1]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it A1} :=  \left[ 
+{\begin{array}{cccc}
+{\it a1} & {\it b1} & {\it c1} & {\it d1} \\
+0 & {\it e1} & {\it f1} & {\it g1} \\
+0 & 0 & {\it h1} & {\it i1} \\
+0 & 0 & 0 & {\it j1}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A2:=matrix([[a2,b2,c2,d2],
+            [0,e2,f2,g2],
+            [0,0,h2,i2],
+            [0,0,0,j2]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it A2} :=  \left[ 
+{\begin{array}{cccc}
+{\it a2} & {\it b2} & {\it c2} & {\it d2} \\
+0 & {\it e2} & {\it f2} & {\it g2} \\
+0 & 0 & {\it h2} & {\it i2} \\
+0 & 0 & 0 & {\it j2}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(A1 &* A2);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{cccc}
+{\it a1}\,{\it a2} & {\it a1}\,{\it b2} + {\it b1}\,{\it e2} & 
+{\it a1}\,{\it c2} + {\it b1}\,{\it f2} + {\it c1}\,{\it h2} & 
+{\it a1}\,{\it d2} + {\it b1}\,{\it g2} + {\it c1}\,{\it i2} + 
+{\it d1}\,{\it j2} \\
+0 & {\it e1}\,{\it e2} & {\it e1}\,{\it f2} + {\it f1}\,{\it h2}
+ & {\it e1}\,{\it g2} + {\it f1}\,{\it i2} + {\it g1}\,{\it j2}
+ \\
+0 & 0 & {\it h1}\,{\it h2} & {\it h1}\,{\it i2} + {\it i1}\,{\it 
+j2} \\
+0 & 0 & 0 & {\it j1}\,{\it j2}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(A1^(-1));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{cccc}
+{\displaystyle \frac {1}{{\it a1}}}  &  - {\displaystyle \frac {
+{\it b1}}{{\it a1}\,{\it e1}}}  &  - {\displaystyle \frac { - 
+{\it b1}\,{\it f1} + {\it e1}\,{\it c1}}{{\it a1}\,{\it e1}\,
+{\it h1}}}  & {\displaystyle \frac { - {\it b1}\,{\it f1}\,{\it 
+i1} + {\it b1}\,{\it g1}\,{\it h1} + {\it e1}\,{\it c1}\,{\it i1}
+ - {\it e1}\,{\it d1}\,{\it h1}}{{\it a1}\,{\it e1}\,{\it h1}\,
+{\it j1}}}  \\ [2ex]
+0 & {\displaystyle \frac {1}{{\it e1}}}  &  - {\displaystyle 
+\frac {{\it f1}}{{\it e1}\,{\it h1}}}  & {\displaystyle \frac {
+{\it f1}\,{\it i1} - {\it g1}\,{\it h1}}{{\it e1}\,{\it h1}\,
+{\it j1}}}  \\ [2ex]
+0 & 0 & {\displaystyle \frac {1}{{\it h1}}}  &  - {\displaystyle 
+\frac {{\it i1}}{{\it h1}\,{\it j1}}}  \\ [2ex]
+0 & 0 & 0 & {\displaystyle \frac {1}{{\it j1}}} 
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix([[1,2,3,4],
+            [0,1,2,3],
+            [0,0,1,2],
+            [0,0,0,1]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{rrrr}
+1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 3 \\
+0 & 0 & 1 & 2 \\
+0 & 0 & 0 & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{B:=matrix([[1,1,0,0],
+            [0,1,1,0],
+            [0,0,1,1],
+            [0,0,0,1]]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+B :=  \left[ 
+{\begin{array}{rrrr}
+1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 1 & 1 \\
+0 & 0 & 0 & 1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+On cherche $A_1\in\mathcal{T}(\mathbf{R},4)$, inversible, tel que 
+$A_1\cdot A = B\cdot A_1$.
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{convert(evalm(A1 &* A - B &* A1),set);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{\{2\,{\it a1} - {\it e1}, \,3\,{\it a1} + 2\,{\it b1} - 
+{\it f1}, \,4\,{\it a1} + 3\,{\it b1} + 2\,{\it c1} - {\it g1}, 
+\,2\,{\it e1} - {\it h1}, \,3\,{\it e1} + 2\,{\it f1} - {\it i1}
+, \,0, } \\
+ & & 2\,{\it h1} - {\it j1}\}\mbox{\hspace{347pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{\{{\it j1}=8\,{\it a1}, \,{\it e1}=2\,{\it a1}, \,{\it 
+a1}={\it a1}, \,{\it c1}={\it c1}, \,{\it b1}={\it b1}, \,{\it f1
+}=3\,{\it a1} + 2\,{\it b1}, \,{\it h1}=4\,{\it a1}, } \\
+ & & {\it i1}=12\,{\it a1} + 4\,{\it b1}, \,{\it g1}=4\,{\it a1}
+ + 3\,{\it b1} + 2\,{\it c1}\}\mbox{\hspace{156pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(");}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{map(eval,A1);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{cccc}
+{\it a1} & {\it b1} & {\it c1} & {\it d1} \\
+0 & 2\,{\it a1} & 3\,{\it a1} + 2\,{\it b1} & 4\,{\it a1} + 3\,
+{\it b1} + 2\,{\it c1} \\
+0 & 0 & 4\,{\it a1} & 12\,{\it a1} + 4\,{\it b1} \\
+0 & 0 & 0 & 8\,{\it a1}
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+On a donc plusieurs solutions, dont celle-ci~:
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:=subs(\{a1=1,b1=0,c1=0,d1=0\},");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P :=  \left[ 
+{\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+0 & 2 & 3 & 4 \\
+0 & 0 & 4 & 12 \\
+0 & 0 & 0 & 8
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{iszero(evalm(P &* A * P^(-1) - B));}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it true}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf\Large Exercice 7}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix(3,3,[a,1,b,1,c,d,e,f,-1]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{ccc}
+a & 1 & b \\
+1 & c & d \\
+e & f & -1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{X:=vector([1,1,0]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+X := [1, \,1, \,0]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Y:=vector([1,2,1]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+Y := [1, \,2, \,1]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{Z:=vector([1,1,2]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+Z := [1, \,1, \,2]
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(A &* X - lambda[X] * X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! a + 1 - {\lambda _{X}}, \,1 + c - {\lambda _{X}}, \,e
+ + f \!  \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=convert(",set);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+S := \{a + 1 - {\lambda _{X}}, \,1 + c - {\lambda _{X}}, \,e + f
+\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(A &* Y - lambda[Y] * Y);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! a + 2 + b - {\lambda _{Y}}, \,1 + 2\,c + d - 2\,{
+\lambda _{Y}}, \,e + 2\,f - 1 - {\lambda _{Y}} \!  \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=S union convert(",set);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+S := \{a + 2 + b - {\lambda _{Y}}, \,1 + 2\,c + d - 2\,{\lambda 
+_{Y}}, \,e + 2\,f - 1 - {\lambda _{Y}}, \,a + 1 - {\lambda _{X}}
+, \,1 + c - {\lambda _{X}}, \,e + f\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{evalm(A &* Z - lambda[Z] * Z);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[  \! a + 1 + 2\,b - {\lambda _{Z}}, \,1 + c + 2\,d - {
+\lambda _{Z}}, \,e + f - 2 - 2\,{\lambda _{Z}} \!  \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{S:=S union convert(",set);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{S := \{a + 1 + 2\,b - {\lambda _{Z}}, \,1 + c + 2\,d - {
+\lambda _{Z}}, \,e + f - 2 - 2\,{\lambda _{Z}}, \,a + 2 + b - {
+\lambda _{Y}}, \,1 + 2\,c + d - 2\,{\lambda _{Y}}, } \\
+ & & e + 2\,f - 1 - {\lambda _{Y}}, \,a + 1 - {\lambda _{X}}, \,1
+ + c - {\lambda _{X}}, \,e + f\}\mbox{\hspace{214pt}}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(S);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+\{d=-3, \,{\lambda _{X}}=5, \,{\lambda _{Y}}=3, \,e=-4, \,b=-3, 
+\,c=4, \,a=4, \,{\lambda _{Z}}=-1, \,f=4\}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{assign(");}{%
+}
+\end{mapleinput}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{map(eval,A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+ \left[ 
+{\begin{array}{rrr}
+4 & 1 & -3 \\
+1 & 4 & -3 \\
+-4 & 4 & -1
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{charpoly(",x);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+x^{3} - 7\,x^{2} + 7\,x + 15
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{factor(");}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+(x - 5)\,(x - 3)\,(x + 1)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+{\bf\Large Exercice 8}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix(3,3,[x,0,0,0,y,sqrt(3),0,sqrt(3),z]
+);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{ccc}
+x & 0 & 0 \\
+0 & y & \sqrt{3} \\
+0 & \sqrt{3} & z
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{P:= X -> charpoly(A,X);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+P := X\rightarrow {\rm charpoly}(A, \,X)
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{solve(\{P(4),P(8),P(12)\});}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\begin{eqnarray*}
+\lefteqn{\{x=8, \,z={\rm RootOf}(51 - 16\,{\it \_Z} + {\it \_Z}^{
+2}), \,y=16 - {\rm RootOf}(51 - 16\,{\it \_Z} + {\it \_Z}^{2})\}
+, } \\
+ & & \{x=12, \,z=5, \,y=7\}, \,\{x=12, \,z=7, \,y=5\}, \,\{z=9, 
+\,x=4, \,y=11\}, \,\{x=4, \,y=9, \,z=11\}
+\end{eqnarray*}
+\end{maplelatex}
+
+\end{maplegroup}
+
+Il y a donc $4$ triplets solutions.
+
+\vspace{.3cm}
+{\bf\Large Exercice 9}
+
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{A:=matrix(4,4,[0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,
+0]);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+A :=  \left[ 
+{\begin{array}{rrrr}
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{array}}
+ \right] 
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{est_nil:=proc(A)}{}
+\end{mapleinput}
+\vspace{-.5cm}
+\begin{verbatim}
+       local n,i,R;
+       n:=coldim(A);
+       R:=A;
+       for i from 1 to n-1 while not iszero(R) do
+         R:= evalm(R &* A);
+       od;
+       if i<n-1 then true
+       else iszero(R)
+       fi;
+      end:
+\end{verbatim}
+
+
+\end{maplegroup}
+\begin{maplegroup}
+\begin{mapleinput}
+\mapleinline{active}{1d}{est_nil(A);}{%
+}
+\end{mapleinput}
+
+\mapleresult
+\begin{maplelatex}
+\[
+{\it true}
+\]
+\end{maplelatex}
+
+\end{maplegroup}
+
+\end{document}
+

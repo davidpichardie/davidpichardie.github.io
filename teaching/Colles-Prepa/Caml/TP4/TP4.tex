@@ -1,0 +1,179 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{graphicx,color}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[frenchb]{babel}
+
+
+\title{TP4 {\sc Caml} : Formules booléennes}
+\author{}
+\date{}
+    
+%MISE EN PAGE------------------------------------------------------
+%\setlength{\hoffset}{-1.90cm}%2.54
+%\setlength{\voffset}{-1.7cm} 
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+% \setlength{\headsep}{0cm}
+% \setlength{\headheight}{0cm}
+\addtolength{\textheight}{3cm}
+% \setlength{\columnseprule}{1pt}
+%\addtolength{\parskip}{-0.1cm}
+
+\pagestyle{fancy}
+\lhead{TP4 {\sc Caml}}
+\rhead{Formules booléennes}
+
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\noindent{\bf \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\setlength{\parindent}{0cm}
+ 
+\renewcommand{\O}{\mathcal{O}}
+ 
+\begin{document}
+\maketitle
+
+\section{Représentation des formules booléennes}
+
+On modélise les formules booléennes par des arbres grâce au type suivant~:
+\begin{verbatim}
+type binop = Et | Ou | Oubien | Impl | Equiv;;
+
+type formule =
+  | Vrai 
+  | Faux
+  | Var  of string
+  | Non  of formule
+  | Bin  of binop * formule * formule
+;;
+\end{verbatim}
+
+{\tt Vrai} et {\tt Faux} sont des formules constantes~; {\tt Var($x$)}
+représente une variable booléenne où $x$ est la chaîne de caractères
+contenant le nom de cette variable~; {\tt Non($f$)} représente la
+formule $\overline{f}$~; {\tt Bin(Et,$f$,$g$)}, {\tt Bin(Ou,$f$,$g$)},
+{\tt Bin(OuBien,$f$,$g$)}, {\tt Bin(Impl,$f$,$g$)} et {\tt
+  Bin(Equiv,$f$,$g$)}   représentent les formules $f\cdot g$, $f+g$,
+$f\oplus g$, $f\Rightarrow g$ et $f\Leftrightarrow g$. Par exemple, si
+$p$ et $q$ sont deux variables booléennes, les formules siuvantes
+$$ f\equiv (p\Rightarrow q)\Leftrightarrow (\overline{q}\Rightarrow\overline{p})
+\quad\text{ et }\quad
+g\equiv(p\Rightarrow q)\Rightarrow (q\Rightarrow p)
+$$
+sont représentées par
+\begin{verbatim}
+Bin(Equiv, Bin(Impl, Var "p", Var "q"),
+           Bin(Impl, Non(Var "q"), Non(Var "p")))
+\end{verbatim}
+et
+\begin{verbatim}
+Bin(Impl, Bin(Impl, Var "p", Var "q"), Bin(Impl, Var "q", Var "p"))
+\end{verbatim}
+
+Pour améliorer l'affichage des formules manipulées, on utilisera la
+fonction {\tt print\_formule : formule -> unit} du fichier {\tt
+  TP4.squ} qui affiche une formule selon la notation infixe en plaçant
+des parenthèses autour des expressions composées quand c'est
+nécessaire. Par exemple~:
+\begin{verbatim}
+#print_formule Bin(Equiv, Bin(Impl, Var "p", Var "q"),
+                          Bin(Impl, Non(Var "q"), Non(Var "p")));;
+(p => q) => (q => p)
+- : unit = ()
+\end{verbatim}
+
+\section{Vérificateur de tautologie}
+
+\begin{question}
+Ecrire une fonction {\tt evalue : formule -> bool} qui
+retourne le booléen associé à une formule, en supposant qu'elle ne
+contient pas de variables booléennes.
+
+Exemple~:
+\begin{verbatim}
+#evalue (Bin(Et, Vrai, Bin(Ou, Faux, Vrai)));;
+- : bool = true
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Ecrire une fonction {\tt subs : string -> formule -> formule ->
+  formule} telle que {\tt (subs $x$ $f$ $g$)} remplace dans la formule
+$g$ toutes les occurrences de la variable $x$ par la formule $f$. Par
+exemple~: 
+\begin{verbatim}
+#print_formule (subs "p" (Bin(Ou, Var "q", Var "r"))
+                         (Bin(OuBien, Var "p", Non (Var "q"))));;
+(q + r) ++ Non(q)
+- : unit = ()
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Une formule est une {\em tautologie} si elle est vraie, quelles que
+soient les valeurs de ces variables booléennes. Par exemple~:
+$p\Rightarrow p$ et $\overline{p+q}\Leftrightarrow
+\overline{p}\cdot\overline{q}$. 
+
+Afin de tester si une formule $f$ est une tautologie, on utilise les
+règles suivantes~:
+\begin{itemize}
+\item si $f$ n'a pas de variable booléenne, {\tt (evalue $f$)} doit
+  être vrai,
+\item si $p$ est l'une des variables de $f$, les formules {\tt (subs
+    "p" Vrai)} et {\tt (subs "p" Faux)} doivent être des tautologies.
+\end{itemize}
+Ecrire une fonction {\tt tautologie : formule -> string list -> bool}
+qui teste si une formule est une tautologie, en prenant comme
+arguments la formule et la liste de ces variables.
+\end{question}
+
+\begin{question}
+La fonction précédente manipule des formules que l'on peut souvent
+simplifier, comme $\text{\tt Vrai}+(p\cdot (q\Rightarrow r))$ qui est
+égale à {\tt Vrai}. Ecrire une fonction {\tt simplifie : formule ->
+  formule} qui réalise ce genre de petites simplifications sur une
+formule. Tester avec~:
+\begin{verbatim}
+#simplifie (Bin(Et, Bin(Ou, Faux, Var "a"), Bin(Ou, Vrai, Var "b")));;
+- : formule = Var "a"
+#simplifie (Non (Bin(Ou, Faux, Non (Var "p"))));;
+- : formule = Var "p"
+\end{verbatim}
+\end{question}
+
+\begin{question}
+En déduire une version plus efficace de {\tt tautologie}.
+\end{question}
+
+\begin{question}
+Lorsqu'une formule n'est pas une tautologie, on aimerait avoir un
+exemple de valeurs pour lesquelles cette formule est fausse. Modifier
+la fonction {\tt tautologie} pour qu'elle renvoie un couple de type
+{\tt bool*string list} qui contient le booléen indiquant si la formule
+est une tautologie et une liste donnant un exemple de valeurs
+booléennes rendant la formule fausse, si cet exemple existe.
+On obtiendra par exemple~:
+\begin{verbatim}
+#tautologie3 (Bin(Impl, Var "q", Bin(Et, Var "q", Var "r"))) ["q","r"];;
+- : bool * string list = false, ["q=Vrai"; "r=Faux"]
+\end{verbatim}
+\end{question}
+
+\begin{question}
+Améliorer la fonction {\tt tautologie} de façon à ne plus avoir à lui
+fournir la liste des variables d'une formule.
+\end{question}
+
+\begin{question}
+Ecrire une fonction qui exprime une formule sous forme d'une
+conjonction de plusieurs disjonctions de variables booléennes ou de
+négations de variables booléennes. En déduire une autre méthode pour
+vérifier les tautologies.  
+\end{question}
+\end{document}

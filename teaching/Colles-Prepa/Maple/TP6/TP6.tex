@@ -1,0 +1,178 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage[frenchb]{babel}
+
+\title{TP6 {\sc Maple} : Introduction aux équations différentielles}
+\author{}
+\date{}
+
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+
+\pagestyle{fancy}
+\lhead{TP6 {\sc Maple}}
+\rhead{Introduction aux équations différentielles}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\N}{\mathbf{N}}
+ 
+\newcounter{numsubquestion}
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\setcounter{numsubquestion}{1}\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newenvironment{subquestion}{\smallskip\noindent{\bf \thenumquestion.\thenumsubquestion}}%
+{\stepcounter{numsubquestion}\smallskip}
+
+\begin{document}
+\maketitle
+
+\section{Etude qualitative}
+
+Le but ce de TP est de résoudre les deux équations différentielles
+non-linéaires d'ordre $1$ suivantes~:
+\begin{eqnarray}
+  \label{eq1}
+  y'&=&y^2 \\
+  \label{eq2}
+  y'&=&y^2-1 
+\end{eqnarray}
+
+Ces deux équations sont de la forme
+\begin{eqnarray}
+  \label{eq3}
+y'=\phi(x,y)  
+\end{eqnarray}
+avec $\phi(x,y)=y^2$ pour \eqref{eq1} et
+$\phi(x,y)=y^2-1$ pour \eqref{eq2}.
+
+Une solution d'une telle équation est un couple $(I,f)$ où $I$ est un
+intervalle de $\R$ est $f:I\to\R$ une fonction de classe $\C^1$ qui
+vérifie
+$$f'(x)=\phi(x,f(x))\quad\forall x\in I$$
+
+Dans le cadre des deux équations considérées ici, le {\it théorème de
+Cauchy-lipschitz} permet d'affirmer que pour tout couple $(x_0,y_0)$
+de $\R^2$, il existe une unique solution {\it maximale} $(I,f)$ à
+l'équation \eqref{eq3},
+vérifiant $x_0\in I$ et $f(x_0)=y_0$.
+
+Une solution $(I,f)$ de \eqref{eq3} est dite {\it maximale} si pour
+toute solution $(J,g)$ de \eqref{eq3} vérifiant
+$$I\subset J\text{ et }\forall x\in I\ f(x)=g(x)$$
+on a nécessairement
+$$I=J\text{ et }f=g$$
+Intuitivement, une solution maximale ne peut pas être prolongée sur un
+intervalle strictement plus grand.
+
+Une conséquence de ce résultat est que deux solutions maximales
+distinctes ne peuvent coïncider en aucun point.
+
+\begin{question}
+A l'aide de la commande {\tt dsolve}, résoudre l'équation
+\eqref{eq1}. Quelle solution
+particulière {\sc Maple} a-t-il oublié ?
+\end{question}
+
+Le {\it champ des tangentes} associé à l'équation \eqref{eq3} est une
+application de $\R^2$ dans $\R$ qui à tout point $(x,y)$ de $\R^2$
+associe la pente des solutions de l'équation passant par le point
+$(x,y)$.
+
+\begin{question}
+  Comment calculer le champ des tangentes, connaissant $\phi$ ?
+  Représenter le champ des tangentes de l'équation \eqref{eq1} avec la
+  commande {\tt dfieldplot} (package {\tt DEtools}). Observer le
+  comportement d'une solution dans ce champ avec la commande {\tt DEplot}. 
+\end{question}
+
+\begin{question}
+  Quelles sont les solutions maximales de \eqref{eq1} qui ne
+  s'annulent jamais ? En déduire toutes les solutions maximales de
+  \eqref{eq1}. 
+\end{question}
+
+\begin{question}
+  Reprendre les questions précédentes pour déterminer les solutions
+  maximales de l'équation \eqref{eq2}.
+\end{question}
+
+\begin{question}
+  Montrer graphiquement que les solutions maximales de l'équation
+  \begin{eqnarray}
+    \label{eq4}
+    y'=|y|^{\frac{2}{3}}
+  \end{eqnarray}
+  ne sont pas uniques, pour certaines conditions initiales.
+\end{question}
+
+\section{Résolution approchée : méthode d'Euler}
+ 
+Certaines équations différentielles ne peuvent pas être résolues
+explicitement. De nombreuses méthodes permettent cependant de calculer
+des solutions approchées. Nous nous intéressons ici à une des plus
+simples~: la méthode d'Euler.
+
+Etant donné une condition initiale $(x_0,y_0)$ et une subdivision
+$x_0<\ldots<x_n$ de pas $h$, la méthode d'Euler permet de calculer une
+approximation d'une solution de \eqref{eq3} sur l'intervalle
+$[x_0,x_n]$. 
+
+Cette approximation est une fonction affine par morceaux
+qui relie les point $(x_i,y_i)$, pour $i=0,\ldots,n$. Sur chaque
+intervalle $[x_i,x_{i+1}]$, la solution est approximée par sa tangente
+en le point $(x_i,y_i)$. Ainsi $y_{i+1}$ est calculée de façon à ce
+que $(x_{i+1},y_{i+1})$ soit le point d'intersection de la tangente en 
+$(x_i,y_i)$ avec la droite d'équation $x=x_{i+1}$.
+
+\begin{question}
+  Donner les équations qui permettent de calculer la suite
+  $\left(y_i\right)$. 
+\end{question}
+
+\begin{question}
+  Ecrire une fonction {\tt Euler(phi,n,x0,y0,xn)}
+  qui renvoie la liste $[y_0,y_1,\ldots,y_n]$ associée à l'équation
+  \eqref{eq3}.
+
+  Test~: {\tt Euler((x,y)->x+y,6,0,1,3);}
+\[
+[[0, \,1], \,[{\displaystyle \frac {1}{2}} , \,{\displaystyle 
+\frac {3}{2}} ], \,[1, \,{\displaystyle \frac {5}{2}} ], \,[
+{\displaystyle \frac {3}{2}} , \,{\displaystyle \frac {17}{4}} ]
+, \,[2, \,{\displaystyle \frac {57}{8}} ], \,[{\displaystyle 
+\frac {5}{2}} , \,{\displaystyle \frac {187}{16}} ], \,[3, \,
+{\displaystyle \frac {601}{32}} ]]
+\]
+\end{question}
+
+\begin{question}
+  Comparer la solution exacte et la solution approchée de l'équation
+  suivante~: 
+  $$\left\lbrace
+    \begin{array}{rcl}
+       y'&=&y+x \\
+       y(0)&=&1
+    \end{array}\right.$$
+sur l'intervalle $[0,3]$.
+\end{question}
+
+\begin{question}
+  Comparer la solution exacte et la solution approchée de l'équation
+  \eqref{eq1} avec $y(0)=1$ sur l'intervalle $[0,2]$. Que se
+  passe-t-il ? 
+\end{question}
+\end{document}
+
+ 

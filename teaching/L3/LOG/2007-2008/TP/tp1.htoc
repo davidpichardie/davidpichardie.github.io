@@ -1,0 +1,23 @@
+\begin{tocenv}
+\tocitem \@locref{htoc1}{\begin{@norefs}\@print{1}\quad{}Mise en place de l'environnement de travail{}\end{@norefs}}
+\tocitem \@locref{htoc2}{\begin{@norefs}\@print{2}\quad{}Présentation des types utilisés{}\end{@norefs}}
+\begin{tocenv}
+\tocitem \@locref{htoc3}{\begin{@norefs}\@print{2.1}\quad{}Formules{}\end{@norefs}}
+\tocitem \@locref{htoc4}{\begin{@norefs}\@print{2.2}\quad{}Ensembles{}\end{@norefs}}
+\tocitem \@locref{htoc5}{\begin{@norefs}\@print{2.3}\quad{}Séquents{}\end{@norefs}}
+\end{tocenv}
+\tocitem \@locref{htoc6}{\begin{@norefs}\@print{3}\quad{}Présentation de l'assistant{}\end{@norefs}}
+\tocitem \@locref{htoc7}{\begin{@norefs}\@print{4}\quad{}Générateur de sous-buts{}\end{@norefs}}
+\tocitem \@locref{htoc8}{\begin{@norefs}\@print{5}\quad{}Quelques preuve à réaliser{}\end{@norefs}}
+\tocitem \@locref{htoc9}{\begin{@norefs}\@print{6}\quad{}Premières transformations de preuve{}\end{@norefs}}
+\begin{tocenv}
+\tocitem \@locref{htoc10}{\begin{@norefs}\@print{6.1}\quad{}Élimination des règles redondantes (facultatif){}\end{@norefs}}
+\tocitem \@locref{htoc11}{\begin{@norefs}\@print{6.2}\quad{}Simplification de preuve : simplification des contextes (facultatif){}\end{@norefs}}
+\end{tocenv}
+\tocitem \@locref{htoc12}{\begin{@norefs}\@print{7}\quad{}Utilisation de lemmes intermédiaires{}\end{@norefs}}
+\begin{tocenv}
+\tocitem \@locref{htoc13}{\begin{@norefs}\@print{7.1}\quad{}Ajout de la commande {\mtt Lemme}{}\end{@norefs}}
+\tocitem \@locref{htoc14}{\begin{@norefs}\@print{7.2}\quad{}Complétion d'arbre de preuve (facultatif){}\end{@norefs}}
+\end{tocenv}
+\tocitem \@locref{htoc15}{\begin{@norefs}\@print{8}\quad{}Mise en place d'une aide{}\end{@norefs}}
+\end{tocenv}

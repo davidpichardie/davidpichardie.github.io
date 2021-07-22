@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD><TITLE>Initiation rapide à Emacs</TITLE>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.07">
+</HEAD>
+<BODY TEXT=black BGCOLOR=white>
+<!--HEVEA command line is: hevea -fix my.hva emacs.tex -->
+<!--HTMLHEAD-->
+<!--ENDHTML-->
+<!--PREFIX <ARG ></ARG>-->
+<!--CUT DEF section 1 -->
+<BR>
+<BR>
+
+<DIV ALIGN=center><TABLE CELLPADDING=10>
+<TR><TD BGCOLOR="#0087cc"><DIV ALIGN=center>
+<FONT SIZE=8><B>
+ Initiation rapide à Emacs</B></FONT><BR>
+</DIV></TD>
+</TR></TABLE></DIV><BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+Emacs est un éditeur de texte qui peut faire gagner énormément de temps, une fois que l'on en a assimilé les 
+commandes de base. Ce document présente quelques fonctionnalités, accompagnées de petits exercices pour
+mettre en pratique. La philosophie de ces exercices est simple : être capable d'effectuer une manipulation de
+texte avec un minimum d'interaction avec le clavier et... sans souris ! Les exemples nécessaires sont tous
+présents dans l'archive <FONT COLOR="#9932cc"><TT>ExemplesEmacs.tar</TT></FONT> <A HREF="ExemplesEmacs.tar">à télécharger</A> et à décompresser (avec la commande
+<FONT COLOR="#9932cc"><TT>tar -xf ExemplesEmacs.tar</TT></FONT>).<BR>
+<BR>
+Chaque section commence par un tableau récapitulatif de raccourcis clavier. 
+<FONT COLOR="#9932cc"><TT>C-<I>a</I></TT></FONT> représente la combinaison de touche Ctrl+<I>a</I> et
+<FONT COLOR="#9932cc"><TT>M-<I>a</I></TT></FONT> représente la combinaison de touche Alt+<I>a</I> (ou Meta+<I>a</I> sur certains claviers).
+Certains raccourcis ne sont accessibles qu'avec le fichier de configuration <A HREF=".emacs">suivant</A> à placer
+à la racine de votre compte.<BR>
+<BR>
+
+<!--TOC section Table of Contents-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#2da8e5"><DIV ALIGN=center><TABLE>
+<TR><TD><B><FONT SIZE=5>Table of Contents</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+
+<UL><LI>
+<A HREF="#htoc1">1&nbsp;&nbsp;Manipulation des fichiers, fenêtres et tampons</A>
+<LI><A HREF="#htoc2">2&nbsp;&nbsp;Manipulation de texte</A>
+<LI><A HREF="#htoc3">3&nbsp;&nbsp;Quelques commandes plus avancées</A>
+<UL><LI>
+<A HREF="#htoc4">3.1&nbsp;&nbsp;Complétion dans un tampon</A>
+<LI><A HREF="#htoc5">3.2&nbsp;&nbsp;Rechercher</A>
+<LI><A HREF="#htoc6">3.3&nbsp;&nbsp;Rechercher et remplacer</A>
+</UL>
+</UL>
+
+<BR>
+<BR>
+<BR>
+Tout d'abord, deux commandes de base : <FONT COLOR="#9932cc"><TT>C-_</TT></FONT> pour annuler la dernière action (à itérer pour revenir
+plusieurs actions en arrière), et <FONT COLOR="#9932cc"><TT>C-g</TT></FONT> pour annuler l'action en cours.<BR>
+<BR>
+<!--TOC section Manipulation des fichiers, fenêtres et tampons-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#2da8e5"><DIV ALIGN=center><TABLE>
+<TR><TD><A NAME="htoc1"><B><FONT SIZE=5>1</FONT></B></A></TD>
+<TD WIDTH="100%" ALIGN=center><B><FONT SIZE=5>Manipulation des fichiers, fenêtres et tampons</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+<BR>
+<DIV ALIGN=center>
+ <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1>
+<TR><TD ALIGN=left NOWRAP>Ouvrir un fichier</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x C-f</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Sauvegarder le buffer courant</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x C-s</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Supprimer le buffer courant (n'affecte pas le fichier)</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x k</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Changer de buffer</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x b</TT></FONT> + complétion avec <FONT COLOR="#9932cc"><TT>tab</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Changer de fenêtre</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x o</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Couper la fenêtre courante horizontalement</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x 2</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Couper la fenêtre courante verticalement</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x 3</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Revenir à une seule fenêtre</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-x 1</TT></FONT></TD>
+</TR></TABLE>
+</DIV><BR>
+Fichiers, fenêtres et tampons sont trois objets distincts sous Emacs: une fois ouvert, un <EM>fichier</EM>
+est placé dans un <I>tampon</I> qui est lui-même affiché dans une <I>fenêtre</I>. <BR>
+<BR>
+La gestion des fichiers
+est classique : ouvrir (<FONT COLOR="#9932cc"><TT>C-x C-f</TT></FONT>+ nom du fichier à saisir dans la ligne de dialogue en bas de la fenêtre
+principale), fermer (<FONT COLOR="#9932cc"><TT>C-x k</TT></FONT>), sauvegarder (<FONT COLOR="#9932cc"><TT>C-x C-s</TT></FONT>). <BR>
+<BR>
+Plusieurs
+fenêtre peuvent être affichées en même temps : <FONT COLOR="#9932cc"><TT>C-x 3</TT></FONT> partage la fenêtre courante en deux sous-fenêtres
+verticales et <FONT COLOR="#9932cc"><TT>C-x 2</TT></FONT> fait de même horizontalement. Le passage entre les différentes fenêtres se fait sans souris,
+bien sûr, avec <FONT COLOR="#9932cc"><TT>C-x o</TT></FONT>. <BR>
+<BR>
+Le buffer de la fenêtre courante peut être changé avec <FONT COLOR="#9932cc"><TT>C-x b</TT></FONT> : la ligne de dialogue
+propose alors un tampon par défaut (que l'on peut choisir en pressant immédiatement la touche entrée). 
+Pour faire un autre choix, il faut saisir le nom du tampon souhaité en s'aidant éventuellement de la 
+complétion (avec <FONT COLOR="#9932cc"><TT>Tab</TT></FONT>). <BR>
+<BR>
+De manière générale, chaque interaction avec la ligne de dialogue peut être réalisée avec l'aide de la complétion.<BR>
+<TABLE CELLPADDING=10>
+<TR><TD BGCOLOR="#0fe2ff"><B>Exercice :</B>
+Ouvrir les trois fichiers <TT>anthropophage.txt</TT>,
+<TT>bachi-bouzouk.txt</TT> et <TT>tonnerre-de-Brest.txt</TT> du répertoire <FONT COLOR="#9932cc"><TT>ExemplesEmacs</TT></FONT>. Séparer la fenêtre principale selon quatre fenêtres (à peu prés
+carrées), puis placer chacun des tampons dans une fenêtre distincte, plus une fenêtre avec un shell (en tapant
+<FONT COLOR="#9932cc"><TT>M-x shell</TT></FONT>+ entrée).
+</TD>
+</TR></TABLE><BR>
+<!--TOC section Manipulation de texte-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#2da8e5"><DIV ALIGN=center><TABLE>
+<TR><TD><A NAME="htoc2"><B><FONT SIZE=5>2</FONT></B></A></TD>
+<TD WIDTH="100%" ALIGN=center><B><FONT SIZE=5>Manipulation de texte</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+<BR>
+Emacs permet de se déplacer rapidement dans un texte. En plus du déplacement classique à l'aide des flèches
+directionnelles, on peut sauter de mot en mot en utilisant les flèches horizontales et la touche <FONT COLOR="#9932cc"><TT>alt</TT></FONT> 
+(ou <FONT COLOR="#9932cc"><TT>meta</TT></FONT>).<BR>
+<BR>
+La suppression est similaire: les touches <FONT COLOR="#9932cc"><TT>back</TT></FONT> et <FONT COLOR="#9932cc"><TT>suppr</TT></FONT> peuvent être couplées avec la touche
+<FONT COLOR="#9932cc"><TT>alt</TT></FONT> pour supprimer directement des mots au lieu de caractères. <BR>
+<DIV ALIGN=center>
+ <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1>
+<TR><TD ALIGN=left NOWRAP>Supprimer le caractère sous le curseur</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-d</TT></FONT> ou <FONT COLOR="#9932cc"><TT>suppr</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Supprimer le mot sous le curseur</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>M-d</TT></FONT> ou <FONT COLOR="#9932cc"><TT>M+suppr</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Supprimer le caractère à gauche du curseur</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>back</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Supprimer le mot à gauche du curseur</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>M+back</TT></FONT></TD>
+</TR></TABLE>
+</DIV><BR>
+<TABLE CELLPADDING=10>
+<TR><TD BGCOLOR="#0fe2ff"><B>Exercice :</B>
+Utiliser la touche <FONT COLOR="#9932cc"><TT>alt</TT></FONT> pour se déplacer rapidement et supprimer quelques mots
+dans le fichier <FONT COLOR="#9932cc"><TT>anthropophage.txt</TT></FONT> précédement ouvert.
+</TD>
+</TR></TABLE><BR>
+Pour copier/coller du texte, on dispose d'un mécanisme puissant : le <I>kill-ring</I>. A chaque fois
+qu'une portion de texte est copiée (ou collée) elle est placée dans une liste. Afin d'être
+copiée ou coupée, la portion de texte doit être sélectionné : placer un marqueur (<FONT COLOR="#9932cc"><TT>C-space</TT></FONT>)
+puis déplacer vous avec les flèches directionnelles. On peut ensuite couper (<FONT COLOR="#9932cc"><TT>C-w</TT></FONT>) ou
+simplement copier (<FONT COLOR="#9932cc"><TT>M-w</TT></FONT>). Pour coller, on utilise <FONT COLOR="#9932cc"><TT>C-y</TT></FONT>, suivi directement 
+de <FONT COLOR="#9932cc"><TT>M-y</TT></FONT> si on veut accéder aux autres éléments du <I>kill-ring</I>.<BR>
+<TABLE CELLPADDING=10>
+<TR><TD BGCOLOR="#0fe2ff"><B>Exercice :</B>
+Pour éclaircir un peu les explications précédentes suivez ces instructions
+<UL><LI>
+taper les trois mots <FONT COLOR="#9932cc"><TT>un</TT></FONT> <FONT COLOR="#9932cc"><TT>deux</TT></FONT> <FONT COLOR="#9932cc"><TT>trois</TT></FONT> dans un buffer, 
+<LI>revenir devant le premier mot (en tapant trois fois <FONT COLOR="#9932cc"><TT>M-left</TT></FONT>),
+<LI>copier successivement les trois mots (en tapant trois fois de suite la séquence 
+ <FONT COLOR="#9932cc"><TT>C-space</TT></FONT>, <FONT COLOR="#9932cc"><TT>M-right</TT></FONT>, <FONT COLOR="#9932cc"><TT>M-w</TT></FONT> puis <FONT COLOR="#9932cc"><TT>space</TT></FONT>)
+<LI>coller successivement les trois mots précédents avec la séquence<BR>
+<FONT COLOR="#9932cc"><TT>C-y</TT></FONT>, <FONT COLOR="#9932cc"><TT>M-y</TT></FONT>(3 fois), <FONT COLOR="#9932cc"><TT>space</TT></FONT>,<BR>
+<FONT COLOR="#9932cc"><TT>C-y</TT></FONT>, <FONT COLOR="#9932cc"><TT>M-y</TT></FONT>(2 fois), <FONT COLOR="#9932cc"><TT>space</TT></FONT>,<BR>
+<FONT COLOR="#9932cc"><TT>C-y</TT></FONT>
+</UL>
+</TD>
+</TR></TABLE><BR>
+Le raccourcis <FONT COLOR="#9932cc"><TT>C-k</TT></FONT> permet de couper directement des lignes entières. Couper successivement plusieurs
+lignes et taper <FONT COLOR="#9932cc"><TT>C-y</TT></FONT>. Que se passe-t-il ?<BR>
+<DIV ALIGN=center>
+ <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1>
+<TR><TD ALIGN=left NOWRAP>Supprimer le reste de la ligne</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-k</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Coller</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-y</TT></FONT> puis <FONT COLOR="#9932cc"><TT>M-y</TT></FONT> pour faire son choix dans le <I>kill-ring</I></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Couper</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-w</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Copier</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>M-w</TT></FONT></TD>
+</TR></TABLE>
+</DIV><BR>
+<!--TOC section Quelques commandes plus avancées-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#2da8e5"><DIV ALIGN=center><TABLE>
+<TR><TD><A NAME="htoc3"><B><FONT SIZE=5>3</FONT></B></A></TD>
+<TD WIDTH="100%" ALIGN=center><B><FONT SIZE=5>Quelques commandes plus avancées</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+<BR>
+<!--TOC subsection Complétion dans un tampon-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#66cbff"><DIV ALIGN=center><TABLE>
+<TR><TD><A NAME="htoc4"><B><FONT SIZE=4>3.1</FONT></B></A></TD>
+<TD WIDTH="100%" ALIGN=center><B><FONT SIZE=4>Complétion dans un tampon</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+<BR>
+<DIV ALIGN=center>
+ <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1>
+<TR><TD ALIGN=left NOWRAP>Complétion dans un tampon</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>M-/</TT></FONT></TD>
+</TR></TABLE>
+</DIV><BR>
+Vous n'aurez plus jamais d'excuses pour ne pas avoir utilisé des noms de variable longs ! <FONT COLOR="#9932cc"><TT>M-/</TT></FONT>
+vous permet de compléter le mot courant, en se basant sur les mots présents dans les tampons couramment ouverts.<BR>
+<TABLE CELLPADDING=10>
+<TR><TD BGCOLOR="#0fe2ff"><B>Exercice :</B>
+Se placer dans le tampon (vide) <FONT COLOR="#9932cc"><TT>bachi-bouzouk.txt</TT></FONT>, taper le mot <FONT COLOR="#9932cc"><TT>anti</TT></FONT> puis
+utiliser <FONT COLOR="#9932cc"><TT>M-/</TT></FONT> pour compléter. Utiliser plusieurs fois <FONT COLOR="#9932cc"><TT>M-/</TT></FONT> pour essayer toutes les possibilités.
+</TD>
+</TR></TABLE><BR>
+<!--TOC subsection Rechercher-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#66cbff"><DIV ALIGN=center><TABLE>
+<TR><TD><A NAME="htoc5"><B><FONT SIZE=4>3.2</FONT></B></A></TD>
+<TD WIDTH="100%" ALIGN=center><B><FONT SIZE=4>Rechercher</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+<BR>
+<DIV ALIGN=center>
+ <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1>
+<TR><TD ALIGN=left NOWRAP>Rechercher un mot (en avant)</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-s</TT></FONT></TD>
+</TR>
+<TR><TD ALIGN=left NOWRAP>Rechercher l'occurrence suivante (en avant)</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>C-s C-s</TT></FONT></TD>
+</TR></TABLE>
+</DIV><BR>
+<FONT COLOR="#9932cc"><TT>C-s</TT></FONT> permet de rechercher un mot dans le tampon courant. Pour chercher les autres occurrences,
+ taper <FONT COLOR="#9932cc"><TT>C-s C-s</TT></FONT> puis <FONT COLOR="#9932cc"><TT>C-s</TT></FONT> pour passer à l'occurrence suivante. La touche entrée (ou <FONT COLOR="#9932cc"><TT>C-g</TT></FONT>)
+arrête la recherche.<BR>
+<BR>
+On peut faire la même chose en arrière avec <FONT COLOR="#9932cc"><TT>C-r</TT></FONT>.<BR>
+<BR>
+<!--TOC subsection Rechercher et remplacer-->
+<TABLE CELLPADDING=0 CELLSPACING=0 WIDTH="100%">
+<TR><TD BGCOLOR="#66cbff"><DIV ALIGN=center><TABLE>
+<TR><TD><A NAME="htoc6"><B><FONT SIZE=4>3.3</FONT></B></A></TD>
+<TD WIDTH="100%" ALIGN=center><B><FONT SIZE=4>Rechercher et remplacer</FONT></B></TD>
+</TR></TABLE></DIV></TD>
+</TR></TABLE><!--SEC END -->
+<BR>
+<DIV ALIGN=center>
+ <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1>
+<TR><TD ALIGN=left NOWRAP>Rechercher un mot et le remplacer par un autre</TD>
+<TD ALIGN=left NOWRAP><FONT COLOR="#9932cc"><TT>M-%</TT></FONT></TD>
+</TR></TABLE>
+</DIV><BR>
+<!--HTMLFOOT-->
+<!--ENDHTML-->
+<!--FOOTER-->
+<HR SIZE=2>
+<BLOCKQUOTE><EM>This document was translated from L<sup>A</sup>T<sub>E</sub>X by
+</EM><A HREF="http://pauillac.inria.fr/~maranget/hevea/index.html"><EM>H<FONT SIZE=2><sup>E</sup></FONT>V<FONT SIZE=2><sup>E</sup></FONT>A</EM></A><EM>.
+</EM></BLOCKQUOTE>
+</BODY>
+</HTML>

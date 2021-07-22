@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage{alltt,hevea,color,amsmath,amssymb}
+
+\input{../mycolor}
+
+\newcommand{\mtt}{\color{Gray}\tt}
+
+\newcommand{\letml}{{\color{OliveGreen}let}}
+\newcommand{\inml}{{\color{OliveGreen}in}}
+\newcommand{\letrecml}{{\color{OliveGreen}let rec}}
+\newcommand{\funml}{{\color{OliveGreen}function}}
+\newcommand{\ifml}{{\color{OliveGreen}if}}
+\newcommand{\thenml}{{\color{OliveGreen}then}}
+\newcommand{\typeml}{{\color{OliveGreen}type}}
+\newcommand{\ofml}{{\color{OliveGreen}of}}
+\newcommand{\elseml}{{\color{OliveGreen}else}}
+\newcommand{\matchml}{{\color{OliveGreen}match}}
+\newcommand{\withml}{{\color{OliveGreen}with}}
+
+\newcommand{\tr}[3]{%
+\begin{toimage}
+$\displaystyle\frac{#1}{#2}\ #3$
+\end{toimage}\imageflush}
+
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\blanc}{\quad\quad}
+
+\begin{document}
+
+\section{Logique minimale ($NM$)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{\bf Règles} & \multicolumn{1}{|c|}{\bf commande} 
+& \multicolumn{1}{|c|}{\bf raccourci} \\\hline
+\tr{\ }{\Gamma,A\vdash A}{} &   {\tt Ax} & {\tt a}  \\\hline
+\tr{\Gamma,A\vdash B}{\Gamma\vdash A \imp B}{\text{intro}_\imp} & {\tt IntroImp} & {\tt ii} \\\hline
+\tr{\Gamma\vdash A\blanc\Delta\vdash A\imp B}{\Gamma,\Delta\vdash B}{\text{élim}_\imp} & {\tt ElimImp A} & {\tt ei A} \\\hline
+\tr{\Gamma\vdash A\blanc\Delta\vdash B}{\Gamma,\Delta\vdash A\wedge B}{\text{intro}_\wedge} & {\tt IntroEt} & {\tt ie} \\\hline
+\tr{\Gamma\vdash A\wedge B}{\Gamma\vdash A}{\text{élim}^1_\wedge} & {\tt ElimEt1 B} & {\tt ee1 B} \\\hline
+\tr{\Gamma\vdash A\wedge B}{\Gamma\vdash B}{\text{élim}^2_\wedge} & {\tt ElimEt2 A} & {\tt ee2 A} \\\hline
+\tr{\Gamma\vdash A}{\Gamma\vdash A\vee B}{\text{intro}^1_\vee} & {\tt IntroOu1} & {\tt io1}  \\\hline
+\tr{\Gamma\vdash B}{\Gamma\vdash A\vee B}{\text{intro}^2_\vee} & {\tt IntroOu2} & {\tt io2} \\\hline
+\tr{\Gamma\vdash A\vee B\blanc \Delta,A\vdash C\blanc \Delta',B\vdash C}{\Gamma,\Delta,\Delta'\vdash C}{\text{élim}_\vee} & {\tt ElimOu A B} & {\tt eo A B} \\\hline
+\end{tabular}
+\end{center}
+
+\section{Logique intuitionniste ($NJ$)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{\bf Règles} & \multicolumn{1}{|c|}{\bf commande} 
+& \multicolumn{1}{|c|}{\bf raccourci} \\\hline
+\tr{\Gamma\vdash \bot}{\Gamma\vdash A}{\text{élim}_\bot} & {\tt ElimFalse} & {\tt ef}\\\hline
+\tr{\Gamma,A\vdash \neg B\blanc\Delta,A\vdash B}{\Gamma,\Delta\vdash\neg A}{\text{intro}_\neg} & {\tt IntroNon B} & {\tt in B}\\\hline
+\tr{\Gamma\vdash \neg A\blanc\Delta\vdash A}{\Gamma,\Delta\vdash B}{\text{élim}_\neg} & {\tt ElimNon A} & {\tt en A}\\\hline
+\end{tabular}
+\end{center}
+
+\section{Logique classique ($NK$)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{\bf Règles} & \multicolumn{1}{|c|}{\bf commande} 
+& \multicolumn{1}{|c|}{\bf raccourci} \\\hline
+\tr{\ }{\Gamma\vdash A\vee\neg A}{\text{TE}} & {\tt TiersExclu} & {\tt te}\\\hline
+\tr{\Gamma,\neg A\vdash\bot}{\Gamma\vdash A}{\text{abs}} & {\tt Absurde} & {\tt ab}\\\hline
+\tr{\Gamma\vdash\neg\neg A}{\Gamma\vdash A}{\text{élim}_{\neg\neg}} & {\tt ElimNonNon} & {\tt enn} \\\hline
+\end{tabular}
+\end{center}
+
+\end{document}

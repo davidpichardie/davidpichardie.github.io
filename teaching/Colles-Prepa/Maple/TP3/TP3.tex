@@ -1,0 +1,128 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fancyheadings}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{amsmath}
+\usepackage[ansinew]{inputenc}
+
+\title{TP3 {\sc Maple} : Suites}
+\author{}
+\date{}
+
+
+\setlength{\oddsidemargin}{0cm}
+\addtolength{\textwidth}{70pt}
+\setlength{\topmargin}{0cm}
+\addtolength{\textheight}{2cm}
+\setlength{\parindent}{0cm}
+
+
+\pagestyle{fancy}
+\lhead{TP3 {\sc Maple}}
+\rhead{Suites}
+
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\N}{\mathbf{N}}
+ 
+\newcounter{numsubquestion}
+\newcounter{numquestion}
+\setcounter{numquestion}{1}
+\newenvironment{question}{\setcounter{numsubquestion}{1}\noindent{\bf Exercice \thenumquestion.}}%
+{\stepcounter{numquestion}\medskip}
+
+\newenvironment{subquestion}{\smallskip\noindent{\bf \thenumquestion.\thenumsubquestion}}%
+{\stepcounter{numsubquestion}\smallskip}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{question} {\bf Comparaison entre calcul formel et calcul numérique}\\
+\begin{subquestion}
+Ecrire une procédure qui calcule le $n$-ième terme de la suite suivante
+$$\left\lbrace
+\begin{array}{l}
+A_0 = \frac{11}{2} \\
+A_1 = \frac{61}{11} \\
+A_n = 111-\frac{1130}{A_{n-1}}+\frac{3000}{A_{n-1}A_{n-2}}\quad\text{si }n>1
+\end{array}\right.$$
+\end{subquestion}
+
+\vspace{-.5cm}
+
+\begin{subquestion}
+Ecrire une procédure qui calcule les $n$ premiers termes de la suite $(A_n)_{n\in\N}$
+sous la forme $[[0,A_0],[1,A_1],\ldots,[n,A_n]]$. Représenter ainsi le comportement
+de la suite avec un graphique.
+\end{subquestion}
+
+\begin{subquestion}
+Recommencer le travail précédent en prenant des valeurs numériques
+({\tt evalf}) 
+pour $A_0$ et $A_1$.
+Comparer les deux calculs.
+\end{subquestion}
+
+\begin{subquestion}
+Reprendre les questions précédentes pour la suite suivante
+$$\left\lbrace
+\begin{array}{l}
+U_0 = 1 \\
+U_1 = \frac{1}{3} \\
+U_n = \frac{10}{3}U_{n-1}-U_{n-2}\quad\text{si }n>1
+\end{array}\right.$$
+\end{subquestion}
+
+\vspace{-.5cm}
+
+\begin{subquestion}
+Donner l'expression de $U_n$ en fonction de $n$ ({\tt rsolve}) pour $U_1=1$ et
+$U_1=1+\varepsilon$. Comparer les limites des suites obtenues.
+\end{subquestion}
+\end{question}
+
+\begin{question} {\bf Développement asymptotique}\\
+On définit la suite $u_n$ comme étant la solution unique de l'équation
+$\tan(u_n)=u_n$ dans l'intervalle
+$](n-\frac{1}{2})\pi,(n+\frac{1}{2})\pi[$, pour tout $n\in\N$.
+Le but de cet exercice est de trouver un développement asymptotique de
+cette suite.
+
+\begin{subquestion}
+Calculer numériquement les valeurs de $u_1$, $u_2$, $u_3$ et $u_{10}$
+({\tt fsolve}).
+\end{subquestion}
+
+\begin{subquestion}
+Montrer que $\lim\limits_{n\to+\infty}u_n=+\infty$.
+\end{subquestion}
+
+\begin{subquestion}
+Pour $n\in\N$, on pose $v_n=n\pi+\frac{\pi}{2}-u_n$. Montrer que 
+$\lim\limits_{n\to+\infty}v_n=0$. Vérifier ce résultat graphiquement.
+\end{subquestion}
+
+\begin{subquestion}
+On suppose que $u_n=n\pi+\frac{\pi}{2}+\frac{a_1}{n}+\frac{a_2}{n^2}
++\cdots+\frac{a_p}{n^p}+o\left(\frac{1}{n^p}\right)$ ({\tt
+  sum}). Déterminer $a_1$, $a_2$ et $a_3$ en identifiant $u_n$ avec le
+développement asymptotique de $\tan(u_n-n\pi)$ ({\tt series}). Pour
+manipuler les coefficients du développement, le convertir en polynôme
+({\tt convert}), puis utiliser {\tt coeffs}. Vérifier graphiquement ce
+résultat. 
+\end{subquestion}
+
+\begin{subquestion}
+Déterminer $a_1,\ldots,a_{12}$.
+\end{subquestion}
+
+\begin{subquestion}
+Comparer la valeur numérique de $u_{10}$ obtenu avec {\tt fsolve} et
+avec le dernier développement asymptotique.
+\end{subquestion}
+
+\end{question}
+
+\end{document}
+

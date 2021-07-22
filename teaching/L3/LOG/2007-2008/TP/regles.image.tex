@@ -1,0 +1,88 @@
+\newif\ifimagen\imagentrue
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage{alltt,hevea,color,amsmath,amssymb}
+\newcommand{\mtt}{\color{Gray}\tt}
+\newcommand{\letml}{{\color{OliveGreen}let}}
+\newcommand{\inml}{{\color{OliveGreen}in}}
+\newcommand{\letrecml}{{\color{OliveGreen}let rec}}
+\newcommand{\funml}{{\color{OliveGreen}function}}
+\newcommand{\ifml}{{\color{OliveGreen}if}}
+\newcommand{\thenml}{{\color{OliveGreen}then}}
+\newcommand{\typeml}{{\color{OliveGreen}type}}
+\newcommand{\ofml}{{\color{OliveGreen}of}}
+\newcommand{\elseml}{{\color{OliveGreen}else}}
+\newcommand{\matchml}{{\color{OliveGreen}match}}
+\newcommand{\withml}{{\color{OliveGreen}with}}
+\newcommand{\tr}[3]{%
+\begin{toimage}
+$\displaystyle\frac{#1}{#2}\ #3$
+\end{toimage}\imageflush}
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\blanc}{\quad\quad}
+
+\pagestyle{empty}
+\thispagestyle{empty}
+\begin{document}
+
+$\displaystyle\frac{\ }{\Gamma,A\vdash A}\ $
+
+\clearpage% page: 0
+
+$\displaystyle\frac{\Gamma,A\vdash B}{\Gamma\vdash A \imp B}\ \text{intro}_\imp$
+
+\clearpage% page: 1
+
+$\displaystyle\frac{\Gamma\vdash A\blanc\Delta\vdash A\imp B}{\Gamma,\Delta\vdash B}\ \text{élim}_\imp$
+
+\clearpage% page: 2
+
+$\displaystyle\frac{\Gamma\vdash A\blanc\Delta\vdash B}{\Gamma,\Delta\vdash A\wedge B}\ \text{intro}_\wedge$
+
+\clearpage% page: 3
+
+$\displaystyle\frac{\Gamma\vdash A\wedge B}{\Gamma\vdash A}\ \text{élim}^1_\wedge$
+
+\clearpage% page: 4
+
+$\displaystyle\frac{\Gamma\vdash A\wedge B}{\Gamma\vdash B}\ \text{élim}^2_\wedge$
+
+\clearpage% page: 5
+
+$\displaystyle\frac{\Gamma\vdash A}{\Gamma\vdash A\vee B}\ \text{intro}^1_\vee$
+
+\clearpage% page: 6
+
+$\displaystyle\frac{\Gamma\vdash B}{\Gamma\vdash A\vee B}\ \text{intro}^2_\vee$
+
+\clearpage% page: 7
+
+$\displaystyle\frac{\Gamma\vdash A\vee B\blanc \Delta,A\vdash C\blanc \Delta',B\vdash C}{\Gamma,\Delta,\Delta'\vdash C}\ \text{élim}_\vee$
+
+\clearpage% page: 8
+
+$\displaystyle\frac{\Gamma\vdash \bot}{\Gamma\vdash A}\ \text{élim}_\bot$
+
+\clearpage% page: 9
+
+$\displaystyle\frac{\Gamma,A\vdash \neg B\blanc\Delta,A\vdash B}{\Gamma,\Delta\vdash\neg A}\ \text{intro}_\neg$
+
+\clearpage% page: 10
+
+$\displaystyle\frac{\Gamma\vdash \neg A\blanc\Delta\vdash A}{\Gamma,\Delta\vdash B}\ \text{élim}_\neg$
+
+\clearpage% page: 11
+
+$\displaystyle\frac{\ }{\Gamma\vdash A\vee\neg A}\ \text{TE}$
+
+\clearpage% page: 12
+
+$\displaystyle\frac{\Gamma,\neg A\vdash\bot}{\Gamma\vdash A}\ \text{abs}$
+
+\clearpage% page: 13
+
+$\displaystyle\frac{\Gamma\vdash\neg\neg A}{\Gamma\vdash A}\ \text{élim}_{\neg\neg}$
+
+\clearpage% page: 14
+%Options: 
+\end{document}

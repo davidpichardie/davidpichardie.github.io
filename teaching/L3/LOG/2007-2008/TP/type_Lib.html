@@ -1,0 +1,82 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Lib" rel="Chapter" href="Lib.html"><title>Lib</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;do_list&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;ens<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;vide&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;estVide&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;membre&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ajoute&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enleve&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;union&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;inter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;eq&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enumere&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Lib</span>.ens&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;formule&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Faux</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Var</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Et</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule&nbsp;*&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Ou</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule&nbsp;*&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Imp</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule&nbsp;*&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print&nbsp;:&nbsp;<span class="constructor">Lib</span>.formule&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;sequent&nbsp;=&nbsp;{&nbsp;contexte&nbsp;:&nbsp;<span class="constructor">Lib</span>.formule&nbsp;<span class="constructor">Lib</span>.ens;&nbsp;but&nbsp;:&nbsp;<span class="constructor">Lib</span>.formule;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_sequent&nbsp;:&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;arbreDePreuve&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">RegleAx</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleIntroImp</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimImp</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleIntroEt</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimEt1</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimEt2</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleIntroOu1</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleIntroOu2</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimOu</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimFalse</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleIntroNon</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimNon</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleTiersExclu</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleAbsurde</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleElimNonNon</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">RegleLemme</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;*&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;affiche_fichier&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;affiche&nbsp;:&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;charge&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Lib</span>.arbreDePreuve<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sauve&nbsp;:&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;fichier_existe&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;valide&nbsp;:&nbsp;<span class="constructor">Lib</span>.arbreDePreuve&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;commande&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stop</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Saut</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Annule</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Centre</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Aide</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Lemme</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Ax</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IntroImp</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimImp</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IntroEt</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimEt1</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimEt2</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IntroOu1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IntroOu2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimOu</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule&nbsp;*&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimFaux</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimNon</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IntroNon</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Lib</span>.formule<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ElimNonNon</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TiersExclu</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Absurde</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;deduc&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Lib</span>.sequent&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Lib</span>.commande&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Lib</span>.sequent&nbsp;list&nbsp;*&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+<span class="keyword">end</span></code></body></html>

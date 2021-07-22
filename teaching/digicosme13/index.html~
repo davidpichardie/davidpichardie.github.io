@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Building Verified Program Analyzers in Coq</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<a name="top" id="top"></a>
+<center>
+
+<div id="header">
+<h1>Building Verified Program Analyzers in Coq</h1>
+<h2>DigiCosme Spring School 2013: Program Analysis and Verification</h2>
+</div>
+		
+<div id="content">
+
+<div id="mainbar">
+
+<h2>Installing the Coq proof assistant</h2>
+<p>
+<ul>
+<li>Download and install the last version of Coq (from sources or with binaries): <a href="http://coq.inria.fr/download">http://coq.inria.fr/download</a></li>
+<li>Install an IDE for interacting with Coq
+  <ul>
+    <li>a standalone IDE distributed with Coq (easier for beginners
+    but difficult to install on some platforms): <a href="http://www.lix.polytechnique.fr/coq/coqide-screenshots?id=1">CoqIDE</a></li>
+    <li>a Emacs mode: <a href="http://proofgeneral.inf.ed.ac.uk/download">Proof General</a></li>
+  </ul>
+</li>
+</ul>
+</p>
+
+<h2>Lecture 1: Motivations and Examples</h2>
+<p>
+<ul><li>
+    Slides: <a href="lecture1.pdf">lecture1.pdf</a>
+</li></ul>
+</p>
+
+<h2>Lecture 2: Coq Crash Course</h2>
+<p>
+<ul><li>
+  Slides: <a href="lecture2.pdf">lecture2.pdf</a>
+</li><li>
+  Coq file with holes: <a href="lecture2_with_holes.v">lecture2_with_holes.v</a> (to be opened with a Coq IDE)
+</li><li>
+  Coq file without holes: <a href="lecture2.v">lecture2.v</a> 
+</li></ul>
+</p>
+
+<h2>Lecture 3</h2>
+<p>
+  <i>Coming soon...</i>
+</p>
+
+<h2>Lecture 4</h2>
+<p>
+  <i>Coming soon...</i>
+</p>
+
+</div>
+</div>
+
+<div id="footer">
+Page designed by <a href="http://www.jameskoster.co.uk">James Koster</a>
+via <a href="http://www.oswd.org/">OSWD</a>.
+</div>
+</center>
+</body>
+</html>
