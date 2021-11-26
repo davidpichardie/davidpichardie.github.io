@@ -1,0 +1,16 @@
+
+TP5
+
+Utilisez le projet fourni dans tp5.tar.gz comme dans les TPs précédents.
+
+Ce TP est constitué d'un fichier TP5ConstantInference.java à compléter et à rendre. Le TP s'appuie sur le CM5.
+
+Vous devez implémenter une analyse de propagation de constantes. Celle-ci doit, via un système d'équations, indiquer en chaque point de programme quelles variables sont constantes. Plus exactement, le résultat de l'analyse doit, pour chaque point de programme renvoyé une ConstMap, c'est-à-dire une map des Ident vers un élément du treillis IntOrTop.
+Ce qui est déjà fait:
+- Les équations In et Out de l'analyse, qui utilisent deux fonctions auxiliaires initial et transfer.
+- La condition de point fixe
+- Le treillis ConstMap, qui dispose d'un élément bottom et d'un opérateur join (voir rtl/constant/ConstMap.java). Étant donnée un ensemble S d'identifiants et une valeur v dans le treillis, vous pouvez créer une ConstMap où tous les identifiants sont initialisés avec cette valeur: `ConstMap(v, S)`.
+Ce que vous devez faire:
+- Compléter la fonction initial, telle que vu en cours (slide 26). La valeur retournée dépend du nœud courant n.
+- Compléter la fonction transfer, telle que vu en cours (slide 27). La valeur retournée dépend du nœud courant n, mais aussi de la propriété en entrée du nœud: une ConstMap cm.
+
