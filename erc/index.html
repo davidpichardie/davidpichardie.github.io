@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>VESTA ERC Project</title>
+    <link href="../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <a name="top" id="top"></a>
+    <center>
+
+      <div id="header">
+	<h1>ERC VESTA Project - Verified Static Analysis Platform</h1>
+	<h2>David Pichardie ERC Consolidator Grant 2018-<strike>2023</strike>2021 </h2>
+      </div>
+      
+      <div id="content">
+
+	<div id="sidebar">
+
+	  <a href="https://erc.europa.eu">
+	    <img src="../img/logo-erc.png" height="150" width="150" style="margin-top:100px;">
+	    </a>
+	    
+	  </div>
+
+	  <div id="mainbar">
+
+	    <h1>Description of the project</h1>
+	    <p>
+	      Computer software pervades our life but far too much of
+	      it contains programming errors (bugs). Software is more
+	      and more complex and such errors are unavoidable if
+	      programmers are not accompanied with some tools that
+	      help auditing software codes. Static analysis is an
+	      increasingly popular technique that aims at automatically compute properties of software. These properties
+	      then help finding bugs, or proving absence of
+	      them. Industrial static analysers are
+	      flourishing. Facebook, Google, Microsoft develop their
+	      own static analysis tools to help maintaining their huge
+	      code base. Critical software industry (aircraft,
+	      railways, nuclear, etc.) has embraced the use of
+	      advanced static analysis tool as Astree to companion
+	      and sometimes, ligthen their traditional software
+	      validation campaigns based on meticulous testing and
+	      reviews. Unfortunately, designing advanced static
+	      analyses like Astree requires a very rare expertise in
+	      Abstract Interpretation, a foundational landmark in the
+	      research area, and implementing these ideas efficiently
+	      and correctly is specially tricky.
+	    </p>
+	    
+	    <p>
+	      The VESTA project will propose guidance and tool-support
+to the designers of static analysis, in order to build advanced but
+reliable static analysis tools. We focus on analyzing low-level
+softwares written in C, leveraging on the CompCert verified
+compiler. This compiler toolchain is fully verified in the Coq proof
+assistant.
+	    </p>
+
+	    <p>
+	      Verasco is a verified static analyser that I have
+architected. It analyses C programs and follows many of the advanced
+abstract interpretation technique developped for Astree, but it is
+formally verified. The outcome of the VESTA project will be a platform
+that help designing other verified advanced abstract interpreters like
+Verasco, without starting from a white page. We will apply this
+technique to develop security analyses for C programs. The platform
+will be open-source and will help the adoption of abstract
+interpretation techniques.
+	    </p>
+
+	    <h1>Publications</h1>
+
+	    <p>
+	      <ul>
+		<li>Lucas Franceschino, David Pichardie, Jean-Pierre Talpin:
+		  <a href="https://arxiv.org/pdf/2107.09472.pdf">
+		    Verified Functional Programming of an Abstract Interpreter</a>.
+		  SAS 2021: 124-143 (2021).
+		</li>
+		<li>Gilles Barthe, Sandrine Blazy, Remi Hutin, David Pichardie:
+		  <a href="https://hal.archives-ouvertes.fr/hal-03221440/document">
+		    Secure Compilation of Constant-Resource Programs</a>.
+		  Proc. of CSF 2021: 1-12 (2021).
+		</li>
+		<li>Aurele Barriere, Sandrine Blazy, Olivier Fluckiger, David Pichardie, Jan Vitek:
+		  <a href="https://hal.archives-ouvertes.fr/hal-03185848/document">
+		    Formally verified speculation and deoptimization in a JIT compiler</a>.
+		  Proc. ACM Program. Lang. 5(POPL): 1-26 (2021)
+		</li>
+		<li>
+		  Gilles Barthe, Sandrine Blazy, Benjamin Gregoire, Remi Hutin, Vincent Laporte, David Pichardie, Alix Trieu:
+		  <a href="https://dl.acm.org/doi/pdf/10.1145/3371075">
+		    Formal verification of a constant-time preserving C compiler</a>.
+		  Proc. ACM Program. Lang. 4(POPL): 7:1-7:30 (2020)
+		</li>
+		<li>
+		  Jean-Christophe Lechenet, Sandrine Blazy, David Pichardie:
+		  <a href="https://hal.inria.fr/hal-02904204/document">
+		    A Fast Verified Liveness Analysis in SSA Form</a>.
+		  Proc. of IJCAR 2020: 324-340
+		</li>
+		<li>
+		  Sandrine Blazy, David Pichardie, Alix Trieu:
+		  <a href="https://hal.inria.fr/hal-01588444/file/esorics17.pdf">
+		    Verifying constant-time implementations by abstract interpretation</a>.
+		  In J. Comput. Secur. 27(1): 137-163 (2019)
+		</li>
+		
+	      </ul>
+	      
+	    </p>
+	    
+	    
+	  </div>
+
+	</div>
+	
+	<div id="footer">
+	  Page designed by <a href="http://www.jameskoster.co.uk">James Koster</a>
+	  via <a href="http://www.oswd.org/">OSWD</a> and shamefully stolen on <a href="http://pauillac.inria.fr/~xleroy/">Xavier Leroy's homepage</a>.
+	</div>
+      </center>
+    </body>
+  </html>
