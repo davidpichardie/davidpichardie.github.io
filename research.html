@@ -55,13 +55,13 @@ long term goal of building an unified and verified Java platform.
 <h2>Certified static analysis</h2>
 <p>
  My PhD's works dealt with the development of certified static
- analyses using the Coq proof assistant and the abstract
+ analyses using the Rocq proof assistant and the abstract
  interpretation theory.  During this work, I have developed static
  analyses for a programming language similar to Java bytecode. The
- extraction features of Coq have enabled me to extract an analyser
+ extraction features of Rocq have enabled me to extract an analyser
  written in OCaml, from the correctness proof of the analysis. The
  correctness proof followed the abstract interpretation methodology. I
- proposed a generic framework to formalise static analysers in Coq.
+ proposed a generic framework to formalise static analysers in Rocq.
 </p>
 
 <p>
@@ -78,7 +78,7 @@ that follows the program
  separate the soundness of a static analyser into two distinct parts:
  first, the external computation that can be performed by untrusted
  tools to reach a suitable fixpoint and second, the fixpoint checker that must be formally proved
- correct in Coq. We apply this methodology on a simple bytecode
+ correct in Rocq. We apply this methodology on a simple bytecode
  language with an interval analysis
 <a href="publi_abstracts.html#TCSAppSem:BessonJensenPichardie">[TCS06]</a>
  and a polyhedral analysis
@@ -120,7 +120,7 @@ non-interference
 <a href="publi_abstracts.html#MSCS12:Cachera:Pichardie">[MSCS13]</a>.
 For
 increased confidence, we formalise the proof in the proof assistant
-Coq.</p>
+Rocq.</p>
 
 <p>The second challenging semantic property is data-race freeness.  In
 multithreaded programming a data race occurs in a program execution
@@ -130,7 +130,7 @@ lead to unexpected behaviours, sometimes with damaging
 consequences. Formally ensuring data race freeness of a program is a
 central problem in Java, because the Java Memory Model then guarantees
 that one can safely reason on the interleaved semantics of the
-program. Together with Fr&eacute;d&eacute;ric Dabrowski, we formalise in Coq a Java
+program. Together with Fr&eacute;d&eacute;ric Dabrowski, we formalise in Rocq a Java
 bytecode data race analyser
 <a href="publi_abstracts.html#TPHOLs09:Dabrowski:Pichardie">[TPHOLs09]</a>
  based on the conditional must-not alias
@@ -146,7 +146,7 @@ I think these two works push to its limit what can be formally proved
 in a proof assistant with a direct approach where the proof and the
 implementation of the certified static analyser are performed directly
 at the level of the programming language (here the Java bytecode
-language). Each proof was more than 15.000 lines of Coq long and took
+language). Each proof was more than 15.000 lines of Rocq long and took
 more than one man-year. After this observation, it was clear to me
 that I need to build a suitable static analysis platform that will
 facilitate both the implementation and the proof of a static analyser.
@@ -168,7 +168,7 @@ tracks initialization of fields and a type system allows to enforce
 secure object initialization
 <a href="publi_abstracts.html#ESORICS10:Hubert:Pichardie">[ESORICS10]</a>.  For
 both analyses, we formalise their semantic foundations, and prove
-their soundness in Coq. Furthermore, we also provide OCaml
+their soundness in Rocq. Furthermore, we also provide OCaml
 implementations that lead to realistic tools. During this PhD, and to
 ease the adaptation of such analyses, which have been formalized on
 idealized languages, to the full-featured Java bytecode, we have
@@ -192,7 +192,7 @@ PhD.
 The previous activity has built the foundations of a tool bench for developing
 provably correct and realistic static analysers for the Java bytecode
 language. The Sawja program representations can be easily lift from
-Ocaml structures to Coq structures. But it appears that giving a
+Ocaml structures to Rocq structures. But it appears that giving a
 realistic semantics to this representation is still difficult since
 the real Java language is concurrent. Indeed the semantics of concurrent Java
 programs is not so well understood. The Java Memory Model (JMM)
@@ -240,21 +240,21 @@ an intermediate memory model that could act as an intermediate step between thes
 on <a href="http://raw.cs.berkeley.edu/pcc.html">Proof Carrying
 Code</a> (or more precisely certificate checker certification). We
 propose an abstract interpretation framework to build PCC architecture
-with a downloadable Coq soundness proof of the certificate checker.
+with a downloadable Rocq soundness proof of the certificate checker.
 The architecture has been evaluated experimentally on a byte code
 language for which we have designed an interval analysis that allows
 to generate certificates ascertaining that no array-out-of-bounds
 accesses will occur (see our TCS'06 paper for more details).
 </p>
 
-<p><b>General recursion in Coq</b>.
-We have worked on an extension of Coq to facilitate the definition and
+<p><b>General recursion in Rocq</b>.
+We have worked on an extension of Rocq to facilitate the definition and
 the reasoning of recursive general functions. This work has led to a
 paper in FLOPS'06.
 </p>
 
-<p><b>Various Coq formalisations</b>.
-My previous research activities were related to formalisation in Coq
+<p><b>Various Rocq formalisations</b>.
+My previous research activities were related to formalisation in Rocq
 of geometrical algorithms like computation of convex hulls (see
  TPHOLs' 01 paper), proof of
 programs describing hardware implementations using systems of affine
