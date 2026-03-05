@@ -1,35 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>David Pichardie - Home page</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>David Pichardie - Publications (BibTeX)</title>
+<link href="style.css" rel="stylesheet">
 </head>
-
 <body>
-<a name="top" id="top"></a>
-<center>
+<div class="container">
 
-<div id="header">
+<header>
 <h1>David Pichardie</h1>
-<h2>Publications</h2>
-</div>
-		
-<div id="content">
+</header>
 
-<div id="sidebar">
-<div class="submenu">
-  <h1>Menu</h1>
+<nav>
   <a href="index.html">Home</a>
   <a href="research.html">Research</a>
-  <a href="publi.html">Publications</a>
+  <a href="publi.html" class="active">Publications</a>
   <a href="teaching.html">Teaching</a>
-</div>
-</div>
+  <a href="http://scholar.google.com/citations?user=pFAWVGIAAAAJ">Scholar</a>
+  <a href="https://dblp.org/pid/37/6728.html">DBLP</a>
+</nav>
 
-<div id="mainbar">
-<body>
+<main>
 <h1>publi.bib</h1><a name="CSF17:Barthe:al"></a><pre>
 @inproceedings{<a href="publi.html#CSF17:Barthe:al">CSF17:Barthe:al</a>,
   author = {Gilles Barthe and Sandrine Blazy and Vincent Laporte and David
@@ -162,7 +155,7 @@
 @inproceedings{<a href="publi.html#CC15:Demange:al">CC15:Demange:al</a>,
   author = {Delphine Demange
                David Pichardie and
-               Léo Stefanesco},
+               Lï¿½o Stefanesco},
   title = {Verifying Fast and Sparse SSA-based Optimizations in Coq},
   booktitle = {Proc. of the 24th International Conference on Compiler 
                Construction (CC 2015)},
@@ -223,7 +216,7 @@
 <a name="CPP15:Blazy:al"></a><pre>
 @inproceedings{<a href="publi.html#CPP15:Blazy:al">CPP15:Blazy:al</a>,
   author = {Sandrine Blazy and
-               André Maroneze and
+               Andrï¿½ Maroneze and
                David Pichardie},
   title = {Verified Validation of Program Slicing},
   year = {2015},
@@ -467,7 +460,7 @@
 
 <a name="POPL14:Azevedo:al"></a><pre>
 @inproceedings{<a href="publi.html#POPL14:Azevedo:al">POPL14:Azevedo:al</a>,
-  author = {Arthur Azevedo de Amorim and Nathan Collins and André DeHon and Delphine Demange and Catalin Hritcu and David Pichardie and Benjamin Pierce and Randy Pollack and Andrew Tolmach},
+  author = {Arthur Azevedo de Amorim and Nathan Collins and Andrï¿½ DeHon and Delphine Demange and Catalin Hritcu and David Pichardie and Benjamin Pierce and Randy Pollack and Andrew Tolmach},
   title = {A Verified Information-Flow Architecture},
   booktitle = {Proc. of the 41th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, POPL 2014},
   year = 2014,
@@ -674,7 +667,7 @@
 
 <a name="CPP11:Besson:Cornilleau:Pichardie"></a><pre>
 @inproceedings{<a href="publi.html#CPP11:Besson:Cornilleau:Pichardie">CPP11:Besson:Cornilleau:Pichardie</a>,
-  author = {Frédéric Besson and Pierre-Emmanuel Cornilleau and David Pichardie},
+  author = {Frï¿½dï¿½ric Besson and Pierre-Emmanuel Cornilleau and David Pichardie},
   title = {Modular {SMT} Proofs for Fast Reflexive Checking inside {C}oq},
   booktitle = {Proc. of the 1st International Conference on Certified Programs
                and Proofs (CPP 2011)},
@@ -769,8 +762,8 @@
 
 <a name="FOVEOOS10:sawja"></a><pre>
 @inproceedings{<a href="publi.html#FOVEOOS10:sawja">FOVEOOS10:sawja</a>,
-  author = {Laurent Hubert and Nicolas Barré and
-                  Frédéric Besson and Delphine Demange and Thomas
+  author = {Laurent Hubert and Nicolas Barrï¿½ and
+                  Frï¿½dï¿½ric Besson and Delphine Demange and Thomas
                   Jensen and Vincent Monfort and David Pichardie and Tiphaine
                   Turpin},
   title = {Sawja: {S}tatic {A}nalysis {W}orkshop for {J}ava},
@@ -910,7 +903,7 @@ elegant manner.}
 
 <a name="SSTIC10:JAVASEC"></a><pre>
 @inproceedings{<a href="publi.html#SSTIC10:JAVASEC">SSTIC10:JAVASEC</a>,
-  author = {Guillaume Hiet and Frédéric Guihéry and Goulven Guiheux and 
+  author = {Guillaume Hiet and Frï¿½dï¿½ric Guihï¿½ry and Goulven Guiheux and 
                   David Pichardie and Christian Brunette},
   title = {S\'ecurit\'e de la plate-forme d'ex\'ecution {J}ava : limites et 
                   propositions d'am\'eliorations},
@@ -1117,9 +1110,9 @@ elegant manner.}
 <a name="Pich:these"></a><pre>
 @phdthesis{<a href="publi.html#Pich:these">Pich:these</a>,
   author = {Pichardie David},
-  title = {Interprétation abstraite en logique intuitionniste~: 
-                  extraction d'analyseurs {J}ava certifiés},
-  school = {Université Rennes~1},
+  title = {Interprï¿½tation abstraite en logique intuitionniste~: 
+                  extraction d'analyseurs {J}ava certifiï¿½s},
+  school = {Universitï¿½ Rennes~1},
   year = {2005},
   pdf = {papers/these-pichardie.pdf},
   note = {In french}
@@ -1233,7 +1226,9 @@ elegant manner.}
 }
 </pre>
 
-<hr><p><em>This file was generated by
+<p><em>This file was generated by
 <a href="http://www.lri.fr/~filliatr/bibtex2html/">bibtex2html</a> 1.98.</em></p>
+</main>
+</div>
 </body>
 </html>
