@@ -204,4 +204,23 @@ pre {
 
 .mytab {
   font-size: 14px;
+  border-collapse: collapse;
+  width: 100%;
+}
+.mytab th, .mytab td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.mytab th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+.mytab ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.mytab li {
+  margin-bottom: 2px;
 }
